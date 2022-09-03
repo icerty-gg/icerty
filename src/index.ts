@@ -1,5 +1,7 @@
 import Fastify from 'fastify'
 
+import { productsRoutes } from './modules/products/index'
+
 const fastify = Fastify({
   logger: true
 })
@@ -7,6 +9,8 @@ const fastify = Fastify({
 fastify.get('/', () => {
   return { message: 'Hello from the api!' }
 })
+
+void fastify.register(productsRoutes, { prefix: '/api/products' })
 
 const start = async () => {
   try {
