@@ -1,16 +1,16 @@
 import Fastify from 'fastify'
 
+import { categoriesRoutes } from './modules/categories/index'
 import { productsRoutes } from './modules/products/index'
 
-const fastify = Fastify({
-  logger: true
-})
+const fastify = Fastify({ logger: true })
 
 fastify.get('/', () => {
-  return { message: 'Hello from the api!' }
+  return { message: 'Hello from api!' }
 })
 
 void fastify.register(productsRoutes, { prefix: '/api/products' })
+void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 
 const start = async () => {
   try {

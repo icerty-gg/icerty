@@ -1,9 +1,28 @@
-import type { FastifyRequest } from 'fastify'
+import { prisma } from '../../utils/prisma'
 
-export const createProduct = (
-  request: FastifyRequest<{ readonly Body: { readonly name: string; readonly surname: string } }>
+import type { FastifyReply, FastifyRequest } from 'fastify'
+
+export const createProduct = async (
+  request: FastifyRequest<{ readonly Body: { readonly category: string; readonly name: string } }>,
+  reply: FastifyReply
 ) => {
-  const { name, surname } = request.body
+  const { category, name } = request.body
 
-  return { user: { name, surname } }
+  const foundCategory = await prisma.category.findFirst({
+    where: {
+      name: category
+    }
+  })
+
+  if (foundCategory) {
+    return { name, category }
+  }
+
+  void reply.send({ message: `Category with name: '${category}' does not exist!` }).status(404)
+}
+
+export const getProducts = async () => {
+  const products = await prisma.product.findMany()
+
+  return { products }
 }
