@@ -16,7 +16,8 @@ export const createProduct = async (
     })
 
     if (foundCategory) {
-      return reply.code(201).send({ name, category })
+      const product = await prisma.product.create({ data: { name, categoryId: foundCategory.id } })
+      return reply.code(201).send(product)
     }
 
     void reply.code(404).send({ message: `Category with name: '${category}' does not exist!` })
