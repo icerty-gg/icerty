@@ -11,14 +11,29 @@ datasource db {
 }
 
 model product {
-  id         String      @id @default(uuid())
-  name       String
-  category   category @relation(fields: [categoryId], references: [id])
-  categoryId String
+  id           String   @id @default(uuid())
+  name         String   @unique
+  category     category @relation(fields: [categoryId], references: [id])
+  categoryId   String
+  categoryName String
+  count        Int      @default(1)
+  createdAt    DateTime @default(now())
+  price        Int
+  priceUnit    PriceU   @default(USD)
+  updatedAt    DateTime @updatedAt
 }
 
 model category {
-  id      String       @id @default(uuid())
-  name    String
-  product product[]
+  id        String    @id @default(uuid())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  product   product[]
+}
+
+enum PriceU {
+  USD
+  EUR
+  PLN
+  GBP
 }

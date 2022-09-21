@@ -3,11 +3,13 @@ import { prisma } from '../../utils/prisma'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 
 export const createProduct = async (
-  request: FastifyRequest<{ readonly Body: { readonly category: string; readonly name: string } }>,
+  request: FastifyRequest<{
+    readonly Body: { readonly category: string; readonly name: string; readonly price: number }
+  }>,
   reply: FastifyReply
 ) => {
   try {
-    const { category, name } = request.body
+    const { category, name, price } = request.body
 
     const foundCategory = await prisma.category.findFirst({
       where: {
@@ -16,7 +18,9 @@ export const createProduct = async (
     })
 
     if (foundCategory) {
-      const product = await prisma.product.create({ data: { name, categoryId: foundCategory.id } })
+      const product = await prisma.product.create({
+        data: { name, categoryId: foundCategory.id, price }
+      })
       return reply.code(201).send(product)
     }
 
