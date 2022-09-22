@@ -13,7 +13,7 @@ datasource db {
 model product {
   id           String   @id @default(uuid())
   name         String   @unique
-  category     category @relation(fields: [categoryId], references: [id])
+  category     category @relation(fields: [categoryId, categoryName], references: [id, name])
   categoryId   String
   categoryName String
   count        Int      @default(1)
@@ -29,6 +29,8 @@ model category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   product   product[]
+
+  @@unique([id, name])
 }
 
 enum PriceU {
