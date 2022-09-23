@@ -64,9 +64,10 @@
     "no-unused-vars": "off",
     "no-var": "error",
     "prefer-const": "error",
-    "require-await": "error",
+    "require-await": "off",
     "sort-destructure-keys/sort-destructure-keys": [2, { "caseSensitive": false }],
     "typescript-sort-keys/interface": "error",
-    "typescript-sort-keys/string-enum": "error"
+    "typescript-sort-keys/string-enum": "error",
+    "@typescript-eslint/require-await": "off"
   }
 }

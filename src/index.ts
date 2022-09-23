@@ -1,6 +1,6 @@
 import Fastify from 'fastify'
 
-import { categoriesRoutes } from './modules/categories/index'
+import { categoriesRoutes } from './modules/categories/categories.routes'
 import { productsRoutes } from './modules/products/products.routes'
 
 const fastify = Fastify({ logger: true })
