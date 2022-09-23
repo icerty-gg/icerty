@@ -1,14 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-// import type { TypeBoxFastifySchema } from '../../types'
 import type { Static } from '@sinclair/typebox'
-
-enum PriceU {
-  EUR = 'EUR',
-  GBP = 'GBP',
-  PLN = 'PLN',
-  USD = 'USD'
-}
 
 export const ProductSchema = Type.Object({
   id: Type.String(),
@@ -17,7 +9,7 @@ export const ProductSchema = Type.Object({
   categoryId: Type.String(),
   count: Type.Number(),
   price: Type.Number(),
-  priceUnit: Type.Enum(PriceU),
+  priceUnit: Type.Union([Type.Literal('USD'), Type.Literal('PLN'), Type.Literal('GBP'), Type.Literal('EUR')]),
   updatedAt: Type.String(),
   createdAt: Type.String()
 })
@@ -28,12 +20,18 @@ export const createProductSchema = {
   body: Type.Object({
     name: Type.String(),
     categoryName: Type.String(),
-    categoryId: Type.String(),
-    count: Type.Number(),
+    count: Type.Optional(Type.Number()),
     price: Type.Number(),
-    priceUnit: Type.Enum(PriceU)
+    priceUnit: Type.Optional(
+      Type.Union([Type.Literal('USD'), Type.Literal('PLN'), Type.Literal('GBP'), Type.Literal('EUR')])
+    )
   }),
   response: {
-    201: ProductSchema
+    201: ProductSchema,
+    404: Type.Object({
+      message: Type.String(),
+      statusCode: Type.Number()
+    }),
+    500: Type.Unknown()
   }
 }

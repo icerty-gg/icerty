@@ -71,6 +71,11 @@
   dependencies:
     fast-json-stringify "^5.0.0"
 
+"@fastify/type-provider-typebox@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@fastify/type-provider-typebox/-/type-provider-typebox-2.3.0.tgz#4adb4a9cd3ccdbc5b2506852f3cec9554d678425"
+  integrity sha512-arEH1FL6CNTgctoVw++jNPJN9DdzUe7rJlb3XJyw7rAGiT2m402P4GMFVhtDqndQzEJN37UJXVYbCR9D0AahgQ==
+
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.10.4.tgz#01e7366e57d2ad104feea63e72248f22015c520c"
