@@ -20,3 +20,13 @@ export const createCategorySchema = {
     500: Type.Unknown()
   }
 }
+
+export const deleteCategorySchema = {
+  body: Type.Object({
+    name: Type.String()
+  }),
+  response: {
+    201: CategorySchema,
+    500: Type.Unknown()
+  }
+}
