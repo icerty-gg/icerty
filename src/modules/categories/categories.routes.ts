@@ -8,6 +8,18 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const categoriesRoutes: FastifyPluginAsync = async fastify => {
+  fastify.get('/', async (request, reply) => {
+    try {
+      const categories = await prisma.category.findMany()
+      return reply.code(200).send({ categories })
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        return reply.code(Number(err.code)).send({ message: err.message })
+      }
+      return reply.code(500).send({ message: 'Something went wrong' })
+    }
+  })
+
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createCategorySchema }, async (request, reply) => {
@@ -20,22 +32,11 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         })
       } catch (err) {
         if (err instanceof PrismaClientKnownRequestError) {
-          return reply.code(Number(err.code)).send({ message: err.message })
+          return reply.code(500).send({ message: err.message })
         }
-        void reply.code(500).send({ message: 'Something went wrong' })
+        return reply.code(500).send({ message: 'Something went wrong' })
       }
     })
-  fastify.get('/', async (request, reply) => {
-    try {
-      const categories = await prisma.category.findMany()
-      void reply.code(200).send({ categories })
-    } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        return reply.code(Number(err.code)).send({ message: err.message })
-      }
-      void reply.code(500).send({ message: 'Something went wrong' })
-    }
-  })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
@@ -68,12 +69,16 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           }
         })
 
-        void reply.code(200).send(deletedCategory)
+        return reply.code(200).send({
+          ...deletedCategory,
+          updatedAt: deletedCategory.updatedAt.toISOString(),
+          createdAt: deletedCategory.createdAt.toISOString()
+        })
       } catch (err) {
         if (err instanceof PrismaClientKnownRequestError) {
           return reply.code(Number(err.code)).send({ message: err.message })
         }
-        void reply.code(500).send({ message: 'Something went wrong' })
+        return reply.code(500).send({ message: 'Something went wrong' })
       }
     })
 }

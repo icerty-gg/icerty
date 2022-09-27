@@ -16,6 +16,15 @@ export const ProductSchema = Type.Object({
 
 export type Product = Static<typeof ProductSchema>
 
+export const getProductsSchema = {
+  response: {
+    200: Type.Object({ products: Type.Array(ProductSchema) }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
+
 export const createProductSchema = {
   body: Type.Object({
     name: Type.String(),
@@ -29,9 +38,25 @@ export const createProductSchema = {
   response: {
     201: ProductSchema,
     404: Type.Object({
-      message: Type.String(),
-      statusCode: Type.Number()
+      message: Type.String()
     }),
-    500: Type.Unknown()
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
+
+export const deleteProductSchema = {
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    200: ProductSchema,
+    404: Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
   }
 }

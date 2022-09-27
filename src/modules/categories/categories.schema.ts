@@ -17,7 +17,12 @@ export const createCategorySchema = {
   }),
   response: {
     201: CategorySchema,
-    500: Type.Unknown()
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
   }
 }
 
@@ -26,7 +31,12 @@ export const deleteCategorySchema = {
     id: Type.String()
   }),
   response: {
-    201: CategorySchema,
-    500: Type.Unknown()
+    200: CategorySchema,
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
   }
 }
