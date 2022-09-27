@@ -1,3 +1,5 @@
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
+
 import { prisma } from '../../utils/prisma'
 
 import { createCategorySchema, deleteCategorySchema } from './categories.schema'
@@ -17,7 +19,10 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           createdAt: category.createdAt.toISOString()
         })
       } catch (err) {
-        void reply.code(500).send(err)
+        if (err instanceof PrismaClientKnownRequestError) {
+          return reply.code(Number(err.code)).send({ message: err.message })
+        }
+        void reply.code(500).send({ message: 'Something went wrong' })
       }
     })
   fastify.get('/', async (request, reply) => {
@@ -25,7 +30,10 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       const categories = await prisma.category.findMany()
       void reply.code(200).send({ categories })
     } catch (err) {
-      void reply.code(500).send(err)
+      if (err instanceof PrismaClientKnownRequestError) {
+        return reply.code(Number(err.code)).send({ message: err.message })
+      }
+      void reply.code(500).send({ message: 'Something went wrong' })
     }
   })
 
@@ -47,7 +55,6 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         })
 
         if (product) {
-          // some products use this category - throw error
           return reply.code(403).send({ message: `Cannot delete category with id: ${id}!` })
         }
 
@@ -63,7 +70,10 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
         void reply.code(200).send(deletedCategory)
       } catch (err) {
-        void reply.code(500).send(err)
+        if (err instanceof PrismaClientKnownRequestError) {
+          return reply.code(Number(err.code)).send({ message: err.message })
+        }
+        void reply.code(500).send({ message: 'Something went wrong' })
       }
     })
 }
