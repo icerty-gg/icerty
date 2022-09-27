@@ -22,8 +22,8 @@ export const createCategorySchema = {
 }
 
 export const deleteCategorySchema = {
-  body: Type.Object({
-    name: Type.String()
+  params: Type.Object({
+    id: Type.String()
   }),
   response: {
     201: CategorySchema,

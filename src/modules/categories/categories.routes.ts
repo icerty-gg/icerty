@@ -31,23 +31,37 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/', { schema: deleteCategorySchema }, async (request, reply) => {
+    .delete('/:id', { schema: deleteCategorySchema }, async (request, reply) => {
       try {
+        const { id } = request.params
         const category = await prisma.category.findFirst({
           where: {
-            name: request.body.name
+            id
           }
         })
 
-        if (!category) {
-          return reply.code(404).send({ message: `Category with name: ${request.body.name} doesn't exist!` })
+        const product = await prisma.product.findFirst({
+          where: {
+            categoryId: id
+          }
+        })
+
+        if (product) {
+          // some products use this category - throw error
+          return reply.code(403).send({ message: `Cannot delete category with id: ${id}!` })
         }
 
-        void prisma.category.delete({
+        if (!category) {
+          return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+        }
+
+        const deletedCategory = await prisma.category.delete({
           where: {
-            name: request.body.name
+            id
           }
         })
+
+        void reply.code(200).send(deletedCategory)
       } catch (err) {
         void reply.code(500).send(err)
       }

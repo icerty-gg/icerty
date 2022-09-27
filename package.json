@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node ./src/index.ts"
+    "start": "nodemon --exec ts-node ./src/index.ts"
   },
   "license": "ISC",
   "dependencies": {
@@ -24,6 +24,7 @@
     "eslint-plugin-sort-destructure-keys": "^1.4.0",
     "eslint-plugin-typescript-sort-keys": "^2.1.0",
     "eslint-plugin-unicorn": "^40.1.0",
+    "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
     "prisma": "^4.3.1",
     "ts-node": "^10.9.1",
