@@ -2,16 +2,22 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 
 import { prisma } from '../../utils/prisma'
 
-import { createCategorySchema, deleteCategorySchema } from './categories.schema'
+import { createCategorySchema, deleteCategorySchema, getCategoriesSchema } from './categories.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const categoriesRoutes: FastifyPluginAsync = async fastify => {
-  fastify.get('/', async (request, reply) => {
+  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
     try {
       const categories = await prisma.category.findMany()
-      return reply.code(200).send({ categories })
+      return reply.code(200).send({
+        categories: categories.map(c => ({
+          ...c,
+          updatedAt: c.updatedAt.toISOString(),
+          createdAt: c.createdAt.toISOString()
+        }))
+      })
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError) {
         return reply.code(Number(err.code)).send({ message: err.message })
