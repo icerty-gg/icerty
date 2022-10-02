@@ -54,3 +54,17 @@ export const deleteCategorySchema = {
     })
   }
 }
+export const editCategorySchema = {
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    200: CategorySchema,
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
