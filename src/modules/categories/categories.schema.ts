@@ -55,6 +55,9 @@ export const deleteCategorySchema = {
   }
 }
 export const editCategorySchema = {
+  body: Type.Object({
+    name: Type.String()
+  }),
   params: Type.Object({
     id: Type.String()
   }),

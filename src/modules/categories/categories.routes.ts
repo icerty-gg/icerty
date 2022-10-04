@@ -92,47 +92,40 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         return reply.code(500).send({ message: 'Something went wrong' })
       }
     })
-  // fastify
-  //   .withTypeProvider<TypeBoxTypeProvider>()
-  //   .put('/:id', { schema: editCategorySchema }, async (request, reply) => {
-  //     try {
-  //       const { id } = request.params
-  //       const category = await prisma.category.findFirst({
-  //         where: {
-  //           id
-  //         }
-  //       })
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .put('/:id', { schema: editCategorySchema }, async (request, reply) => {
+      try {
+        const { id } = request.params
+        const category = await prisma.category.findFirst({
+          where: {
+            id
+          }
+        })
 
-  //       const product = await prisma.product.findFirst({
-  //         where: {
-  //           categoryId: id
-  //         }
-  //       })
+        if (!category) {
+          return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+        }
 
-  //       if (product) {
-  //         return reply.code(403).send({ message: `Cannot delete category with id: ${id}!` })
-  //       }
+        const updatedCategory = await prisma.category.update({
+          where: {
+            id
+          },
+          data: {
+            name: request.body.name
+          }
+        })
 
-  //       if (!category) {
-  //         return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
-  //       }
-
-  //       const deletedCategory = await prisma.category.delete({
-  //         where: {
-  //           id
-  //         }
-  //       })
-
-  //       return reply.code(200).send({
-  //         ...deletedCategory,
-  //         updatedAt: deletedCategory.updatedAt.toISOString(),
-  //         createdAt: deletedCategory.createdAt.toISOString()
-  //       })
-  //     } catch (err) {
-  //       if (err instanceof PrismaClientKnownRequestError) {
-  //         return reply.code(500).send({ message: err.message })
-  //       }
-  //       return reply.code(500).send({ message: 'Something went wrong' })
-  //     }
-  //   })
+        return reply.code(200).send({
+          ...updatedCategory,
+          updatedAt: updatedCategory.updatedAt.toISOString(),
+          createdAt: updatedCategory.createdAt.toISOString()
+        })
+      } catch (err) {
+        if (err instanceof PrismaClientKnownRequestError) {
+          return reply.code(500).send({ message: err.message })
+        }
+        return reply.code(500).send({ message: 'Something went wrong' })
+      }
+    })
 }
