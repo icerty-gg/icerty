@@ -2,7 +2,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 
 import { prisma } from '../../utils/prisma'
 
-import { createProductSchema, deleteProductSchema, getProductsSchema } from './products.schema'
+import { createProductSchema, deleteProductSchema, editProductSchema, getProductsSchema } from './products.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -20,7 +20,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
         }))
       })
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
+      if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
       }
       return reply.code(500).send({ message: 'Something went wrong' })
@@ -47,7 +47,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
 
       return reply.code(404).send({ message: `Category with name: '${request.body.categoryName}' does not exist!` })
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
+      if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
       }
       return reply.code(500).send({ message: 'Something went wrong' })
@@ -81,10 +81,54 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
           createdAt: deletedProduct.createdAt.toISOString()
         })
       } catch (err) {
-        if (err instanceof PrismaClientKnownRequestError) {
+        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
           return reply.code(500).send({ message: err.message })
         }
         return reply.code(500).send({ message: 'Something went wrong' })
       }
     })
+
+  fastify.withTypeProvider<TypeBoxTypeProvider>().put('/:id', { schema: editProductSchema }, async (request, reply) => {
+    try {
+      const { id } = request.params
+
+      const product = await prisma.product.findFirst({
+        where: {
+          id
+        }
+      })
+
+      const foundCategory = await prisma.category.findFirst({
+        where: {
+          name: request.body.categoryName
+        }
+      })
+
+      if (!product) {
+        return reply.code(404).send({ message: `Product with id: ${id} doesn't exist!` })
+      }
+
+      if (!foundCategory) {
+        return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+      }
+
+      const editedProduct = await prisma.product.update({
+        where: {
+          id
+        },
+        data: { ...request.body, categoryId: foundCategory.id }
+      })
+
+      return reply.code(200).send({
+        ...editedProduct,
+        updatedAt: editedProduct.updatedAt.toISOString(),
+        createdAt: editedProduct.createdAt.toISOString()
+      })
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
+        return reply.code(500).send({ message: err.message })
+      }
+      return reply.code(500).send({ message: 'Something went wrong' })
+    }
+  })
 }

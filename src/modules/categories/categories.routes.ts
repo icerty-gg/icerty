@@ -24,7 +24,10 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         }))
       })
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
+      if (err instanceof PrismaClientKnownRequestError || err instanceof Error || err instanceof Error) {
+        return reply.code(500).send({ message: err.message })
+      }
+      if (err instanceof Error) {
         return reply.code(500).send({ message: err.message })
       }
       return reply.code(500).send({ message: 'Something went wrong' })
@@ -42,7 +45,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           createdAt: category.createdAt.toISOString()
         })
       } catch (err) {
-        if (err instanceof PrismaClientKnownRequestError) {
+        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
           return reply.code(500).send({ message: err.message })
         }
         return reply.code(500).send({ message: 'Something went wrong' })
@@ -86,7 +89,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           createdAt: deletedCategory.createdAt.toISOString()
         })
       } catch (err) {
-        if (err instanceof PrismaClientKnownRequestError) {
+        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
           return reply.code(500).send({ message: err.message })
         }
         return reply.code(500).send({ message: 'Something went wrong' })
@@ -122,7 +125,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           createdAt: updatedCategory.createdAt.toISOString()
         })
       } catch (err) {
-        if (err instanceof PrismaClientKnownRequestError) {
+        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
           return reply.code(500).send({ message: err.message })
         }
         return reply.code(500).send({ message: 'Something went wrong' })

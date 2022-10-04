@@ -37,7 +37,7 @@ export const createProductSchema = {
   }),
   response: {
     201: ProductSchema,
-    404: Type.Object({
+    '4xx': Type.Object({
       message: Type.String()
     }),
     500: Type.Object({
@@ -52,7 +52,31 @@ export const deleteProductSchema = {
   }),
   response: {
     200: ProductSchema,
-    404: Type.Object({
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
+
+export const editProductSchema = {
+  body: Type.Object({
+    name: Type.Optional(Type.String()),
+    categoryName: Type.Optional(Type.String()),
+    count: Type.Optional(Type.Number()),
+    price: Type.Optional(Type.Number()),
+    priceUnit: Type.Optional(
+      Type.Union([Type.Literal('USD'), Type.Literal('PLN'), Type.Literal('GBP'), Type.Literal('EUR')])
+    )
+  }),
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    200: ProductSchema,
+    '4xx': Type.Object({
       message: Type.String()
     }),
     500: Type.Object({
