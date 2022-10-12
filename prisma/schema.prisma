@@ -24,13 +24,13 @@ model product {
 }
 
 model category {
-  id        String    @id @default(uuid())
-  name      String    @unique
+  id        String    @default(uuid())
+  name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   product   product[]
 
-  @@unique([id, name])
+  @@id([id, name])
 }
 
 enum PriceU {
