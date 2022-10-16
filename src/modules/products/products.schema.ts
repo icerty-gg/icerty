@@ -1,8 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-import type { Static } from '@sinclair/typebox'
-
-export const ProductSchema = Type.Object({
+const ProductSchema = Type.Object({
   id: Type.String(),
   name: Type.String(),
   categoryName: Type.String(),
@@ -13,8 +11,6 @@ export const ProductSchema = Type.Object({
   updatedAt: Type.String(),
   createdAt: Type.String()
 })
-
-export type Product = Static<typeof ProductSchema>
 
 export const getProductsSchema = {
   response: {

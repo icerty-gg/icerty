@@ -10,6 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model user {
+  id       String @id @default(uuid())
+  name     String
+  surname  String
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+}
+
 model product {
   id           String   @id @default(uuid())
   name         String   @unique
@@ -24,13 +33,13 @@ model product {
 }
 
 model category {
-  id        String    @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   product   product[]
 
-  @@id([id, name])
+  @@unique([id, name])
 }
 
 enum PriceU {
@@ -38,4 +47,9 @@ enum PriceU {
   EUR
   PLN
   GBP
+}
+
+enum Role {
+  ADMIN
+  USER
 }
