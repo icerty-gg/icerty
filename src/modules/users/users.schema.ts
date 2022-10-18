@@ -27,3 +27,19 @@ export const createUserSchema = {
     })
   }
 }
+
+export const loginSchema = {
+  body: Type.Object({
+    email: Type.String(),
+    password: Type.String()
+  }),
+  response: {
+    201: UserSchema,
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
