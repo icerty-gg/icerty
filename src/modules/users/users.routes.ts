@@ -1,3 +1,5 @@
+import crypto from 'crypto'
+
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import bcrypt from 'bcrypt'
 
@@ -45,6 +47,16 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       if (!isPasswordCorrect) {
         return reply.code(404).send({ message: 'Incorrect email or password!' })
       }
+
+      crypto.randomBytes(48, async (_, buffer) => {
+        const token = buffer.toString('hex')
+
+        const expiry_date = new Date()
+
+        expiry_date.setTime(expiry_date.getTime() + 86400000)
+
+        await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
+      })
 
       return reply.code(201).send(user)
     } catch (err) {

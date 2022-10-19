@@ -1,3 +1,4 @@
+import cookie from '@fastify/cookie'
 import Fastify from 'fastify'
 
 import { categoriesRoutes } from './modules/categories/categories.routes'
@@ -10,6 +11,12 @@ fastify.get('/', () => {
   return { message: 'Hello from api!' }
 })
 
+// plugins
+
+void fastify.register(cookie, {
+  secret: 'my-secret' // for cookies signature
+})
+// routes
 void fastify.register(productsRoutes, { prefix: '/api/products' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 void fastify.register(userRoutes, { prefix: '/api/users' })
