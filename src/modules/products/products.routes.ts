@@ -29,23 +29,25 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/', { schema: createProductSchema }, async (request, reply) => {
     try {
+      const { categoryName, count, name, price, priceUnit } = request.body
+
       const foundCategory = await prisma.category.findFirst({
         where: {
-          name: request.body.categoryName
+          name: categoryName
         }
       })
 
-      if (foundCategory) {
-        const product = await prisma.product.create({
-          data: { ...request.body, categoryId: foundCategory.id, categoryName: foundCategory.name }
-        })
-
-        return reply
-          .code(201)
-          .send({ ...product, updatedAt: product.updatedAt.toISOString(), createdAt: product.createdAt.toISOString() })
+      if (!foundCategory) {
+        return reply.code(404).send({ message: `Category with name: '${request.body.categoryName}' does not exist!` })
       }
 
-      return reply.code(404).send({ message: `Category with name: '${request.body.categoryName}' does not exist!` })
+      const product = await prisma.product.create({
+        data: { count, name, price, priceUnit, categoryId: foundCategory.id, categoryName: foundCategory.name }
+      })
+
+      return reply
+        .code(201)
+        .send({ ...product, updatedAt: product.updatedAt.toISOString(), createdAt: product.createdAt.toISOString() })
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
@@ -91,6 +93,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().put('/:id', { schema: editProductSchema }, async (request, reply) => {
     try {
       const { id } = request.params
+      const { categoryName, count, name, price, priceUnit } = request.body
 
       const product = await prisma.product.findFirst({
         where: {
@@ -100,7 +103,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
 
       const foundCategory = await prisma.category.findFirst({
         where: {
-          name: request.body.categoryName
+          name: categoryName
         }
       })
 
@@ -116,7 +119,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
         where: {
           id
         },
-        data: { ...request.body, categoryId: foundCategory.id }
+        data: { count, name, price, priceUnit, categoryId: foundCategory.id }
       })
 
       return reply.code(200).send({

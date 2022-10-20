@@ -16,6 +16,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
     try {
       const categories = await prisma.category.findMany()
+
       return reply.code(200).send({
         categories: categories.map(c => ({
           ...c,
@@ -27,9 +28,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
       }
-      if (err instanceof Error) {
-        return reply.code(500).send({ message: err.message })
-      }
+
       return reply.code(500).send({ message: 'Something went wrong' })
     }
   })
@@ -38,7 +37,10 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createCategorySchema }, async (request, reply) => {
       try {
-        const category = await prisma.category.create({ data: request.body })
+        const { name } = request.body
+
+        const category = await prisma.category.create({ data: { name } })
+
         return reply.code(201).send({
           ...category,
           updatedAt: category.updatedAt.toISOString(),
@@ -100,6 +102,8 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     .put('/:id', { schema: editCategorySchema }, async (request, reply) => {
       try {
         const { id } = request.params
+        const { name } = request.body
+
         const category = await prisma.category.findFirst({
           where: {
             id
@@ -115,7 +119,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
             id
           },
           data: {
-            name: request.body.name
+            name
           }
         })
 

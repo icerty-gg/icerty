@@ -15,10 +15,18 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/register', { schema: createUserSchema }, async (request, reply) => {
       try {
-        const hashedPassword = await bcrypt.hash(request.body.password, 10)
+        const { email, name, password, role, surname } = request.body
+
+        const isUserRegistered = await prisma.user.findFirst({ where: { email } })
+
+        if (isUserRegistered) {
+          return reply.code(409).send({ message: 'This email is already taken!' })
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10)
 
         const user = await prisma.user.create({
-          data: { ...request.body, email: request.body.email.toLowerCase(), password: hashedPassword }
+          data: { name, role, surname, email: email.toLowerCase(), password: hashedPassword }
         })
 
         return reply.code(201).send(user)
@@ -30,35 +38,33 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       }
     })
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/sessions', { schema: loginSchema }, async (request, reply) => {
+  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
     try {
+      const { email, password } = request.body
+
       const user = await prisma.user.findFirst({
         where: {
-          email: request.body.email.toLowerCase()
+          email: email.toLowerCase()
         }
       })
 
-      if (!user) {
-        return reply.code(404).send({ message: 'Incorrect email or password!' })
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return reply.code(404).send({ message: 'Incorrect username or password!' })
       }
 
-      const isPasswordCorrect = await bcrypt.compare(request.body.password, user.password)
+      if (!('token' in request.cookies)) {
+        crypto.randomBytes(48, async (_, buffer) => {
+          const token = buffer.toString('hex')
 
-      if (!isPasswordCorrect) {
-        return reply.code(404).send({ message: 'Incorrect email or password!' })
+          const expiry_date = new Date()
+
+          expiry_date.setTime(expiry_date.getTime() + 86400000)
+
+          await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
+        })
+
+        return reply.code(200).send(user)
       }
-
-      crypto.randomBytes(48, async (_, buffer) => {
-        const token = buffer.toString('hex')
-
-        const expiry_date = new Date()
-
-        expiry_date.setTime(expiry_date.getTime() + 86400000)
-
-        await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
-      })
-
-      return reply.code(201).send(user)
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
