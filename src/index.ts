@@ -12,8 +12,8 @@ fastify.get('/', () => {
 })
 
 // plugins
-
 void fastify.register(cookie)
+
 // routes
 void fastify.register(productsRoutes, { prefix: '/api/products' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })

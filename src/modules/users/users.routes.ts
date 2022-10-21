@@ -39,6 +39,8 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
     })
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
+    console.log(request.cookies)
+
     try {
       const { email, password } = request.body
 
@@ -52,19 +54,23 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
         return reply.code(404).send({ message: 'Incorrect username or password!' })
       }
 
-      if (!('token' in request.cookies)) {
-        crypto.randomBytes(48, async (_, buffer) => {
-          const token = buffer.toString('hex')
-
-          const expiry_date = new Date()
-
-          expiry_date.setTime(expiry_date.getTime() + 86400000)
-
-          await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
+      const token = await new Promise<string>((resolve, reject) => {
+        crypto.randomBytes(48, (err, buffer) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(buffer.toString('base64'))
+          }
         })
+      })
 
-        return reply.code(200).send(user)
-      }
+      const expiry_date = new Date()
+
+      expiry_date.setTime(expiry_date.getTime() + 86400000)
+
+      await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
+
+      return reply.setCookie('token', token, { path: '/' }).code(200).send(user)
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })

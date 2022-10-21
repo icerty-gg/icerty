@@ -8,6 +8,17 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const productsRoutes: FastifyPluginAsync = async fastify => {
+  fastify.addHook('preHandler', (request, reply, done) => {
+    const { token } = request.cookies
+
+    console.log(request.cookies)
+
+    if (!token) {
+      return reply.code(404).send({ message: 'Unauthorized' })
+    }
+    done()
+  })
+
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getProductsSchema }, async (request, reply) => {
     try {
       const products = await prisma.product.findMany()
