@@ -39,8 +39,6 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
     })
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
-    console.log(request.cookies)
-
     try {
       const { email, password } = request.body
 
