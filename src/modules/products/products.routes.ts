@@ -1,5 +1,6 @@
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 
+import { isAuth } from '../../utils/IsAuth'
 import { prisma } from '../../utils/prisma'
 
 import { createProductSchema, deleteProductSchema, editProductSchema, getProductsSchema } from './products.schema'
@@ -8,6 +9,8 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const productsRoutes: FastifyPluginAsync = async fastify => {
+  fastify.addHook('preValidation', isAuth)
+
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getProductsSchema }, async (request, reply) => {
     try {
       const products = await prisma.product.findMany()
