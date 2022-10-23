@@ -21,10 +21,10 @@ model user {
 }
 
 model auth_tokens {
-  token       String   @id
-  expiry_date DateTime
-  userId      String
-  user        user     @relation(fields: [userId], references: [id])
+  token           String   @id
+  userId          String
+  expiration_date DateTime
+  user            user     @relation(fields: [userId], references: [id])
 }
 
 model product {

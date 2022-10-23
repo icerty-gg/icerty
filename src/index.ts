@@ -5,6 +5,7 @@ import { categoriesRoutes } from './modules/categories/categories.routes'
 import { productsRoutes } from './modules/products/products.routes'
 import { sessionRoutes } from './modules/sessions/sessions.routes'
 import { userRoutes } from './modules/users/users.routes'
+import { clearTokens } from './utils/clearTokens'
 
 const fastify = Fastify({ logger: true })
 
@@ -24,6 +25,7 @@ void fastify.register(sessionRoutes, { prefix: '/api/session' })
 const start = async () => {
   try {
     await fastify.listen({ port: 3000 })
+    clearTokens()
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)

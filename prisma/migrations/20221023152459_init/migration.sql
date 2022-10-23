@@ -19,8 +19,8 @@ CREATE TABLE "user" (
 -- CreateTable
 CREATE TABLE "auth_tokens" (
     "token" TEXT NOT NULL,
-    "expiry_date" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
+    "expiration_date" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "auth_tokens_pkey" PRIMARY KEY ("token")
 );

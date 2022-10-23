@@ -1,11 +1,17 @@
-import type { preHandlerAsyncHookHandler } from 'fastify'
+import { prisma } from './prisma'
 
-export const isAuth: preHandlerAsyncHookHandler = async (request, reply) => {
+import type { preValidationHookHandler } from 'fastify'
+
+export const isAuth: preValidationHookHandler = async (request, reply) => {
   const { token } = request.cookies
 
-  console.log(request.cookies)
-
   if (!token) {
-    return reply.code(404).send({ message: 'Unauthorized' })
+    return reply.code(403).send({ message: 'Forbidden!' })
+  }
+
+  const isAuthorized = await prisma.auth_tokens.findFirst({ where: { token } })
+
+  if (!isAuthorized) {
+    return reply.code(403).send({ message: 'Forbidden!' })
   }
 }

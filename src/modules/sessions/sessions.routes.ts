@@ -5,13 +5,14 @@ import bcrypt from 'bcrypt'
 
 import { prisma } from '../../utils/prisma'
 
-import { loginSchema } from './sessions.schema'
+import { isAuth } from './../../utils/IsAuth'
+import { loginSchema, logoutSchema } from './sessions.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const sessionRoutes: FastifyPluginAsync = async fastify => {
-  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/', { schema: loginSchema }, async (request, reply) => {
+  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
     try {
       const { email, password } = request.body
 
@@ -35,13 +36,16 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
         })
       })
 
-      const expiry_date = new Date()
+      const expiration_date = new Date()
 
-      expiry_date.setTime(expiry_date.getTime() + 86400000)
+      expiration_date.setTime(expiration_date.getTime() + 86400000)
 
-      await prisma.auth_tokens.create({ data: { token, userId: user.id, expiry_date } })
+      await prisma.auth_tokens.create({ data: { token, userId: user.id, expiration_date } })
 
-      return reply.setCookie('token', token, { path: '/' }).code(201).send({ token })
+      return reply
+        .setCookie('token', token, { path: '/', expires: expiration_date, sameSite: 'lax' })
+        .code(201)
+        .send({ token })
     } catch (err) {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
@@ -49,4 +53,21 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
       return reply.code(500).send({ message: 'Something went wrong' })
     }
   })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .post('/logout', { schema: logoutSchema, preValidation: isAuth }, async (request, reply) => {
+      try {
+        const { token } = request.cookies
+
+        await prisma.auth_tokens.delete({ where: { token } })
+
+        return reply.code(200).send({ message: 'Logged out!' })
+      } catch (err) {
+        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
+          return reply.code(500).send({ message: err.message })
+        }
+        return reply.code(500).send({ message: 'Something went wrong' })
+      }
+    })
 }

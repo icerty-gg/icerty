@@ -15,3 +15,12 @@ export const loginSchema = {
     })
   }
 }
+
+export const logoutSchema = {
+  response: {
+    200: Type.Object({ message: Type.String() }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
