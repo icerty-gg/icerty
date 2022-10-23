@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt'
 
 import { prisma } from '../../utils/prisma'
 
-import { createUserSchema } from './users.schema'
+import { isAuth } from './../../utils/IsAuth'
+import { createUserSchema, getCurrentUserSchema } from './users.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -34,5 +35,19 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
         }
         return reply.code(500).send({ message: 'Something went wrong' })
       }
+    })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/me', { schema: getCurrentUserSchema, preValidation: isAuth }, async (request, reply) => {
+      const { token } = request.cookies
+
+      const currentUser = await prisma.auth_tokens.findFirst({ where: { token }, include: { user: true } })
+
+      if (!currentUser) {
+        return reply.code(404).send({ message: 'User not found!' })
+      }
+
+      return reply.code(200).send({ ...currentUser.user })
     })
 }

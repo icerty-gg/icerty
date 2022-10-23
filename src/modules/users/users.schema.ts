@@ -27,3 +27,14 @@ export const createUserSchema = {
     })
   }
 }
+export const getCurrentUserSchema = {
+  response: {
+    200: UserSchema,
+    '4xx': Type.Object({
+      message: Type.String()
+    }),
+    500: Type.Object({
+      message: Type.String()
+    })
+  }
+}
