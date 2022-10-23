@@ -20,7 +20,7 @@ void fastify.register(cookie)
 void fastify.register(productsRoutes, { prefix: '/api/products' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 void fastify.register(userRoutes, { prefix: '/api/users' })
-void fastify.register(sessionRoutes, { prefix: '/api/session' })
+void fastify.register(sessionRoutes, { prefix: '/api/sessions' })
 
 const start = async () => {
   try {

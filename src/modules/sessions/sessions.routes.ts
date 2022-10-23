@@ -50,7 +50,7 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
       if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
         return reply.code(500).send({ message: err.message })
       }
-      return reply.code(500).send({ message: 'Something went wrong' })
+      return reply.code(500).send({ message: 'Something went wrong!' })
     }
   })
 
@@ -67,7 +67,7 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
         if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
           return reply.code(500).send({ message: err.message })
         }
-        return reply.code(500).send({ message: 'Something went wrong' })
+        return reply.code(500).send({ message: 'Something went wrong!' })
       }
     })
 }
