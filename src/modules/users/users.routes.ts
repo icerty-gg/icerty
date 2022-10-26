@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime'
 import bcrypt from 'bcrypt'
 
 import { prisma } from '../../utils/prisma'
@@ -13,28 +12,21 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/register', { schema: createUserSchema }, async (request, reply) => {
-      try {
-        const { email, name, password, role, surname } = request.body
+      const { email, name, password, role, surname } = request.body
 
-        const isUserRegistered = await prisma.user.findFirst({ where: { email } })
+      const isUserRegistered = await prisma.user.findFirst({ where: { email } })
 
-        if (isUserRegistered) {
-          return reply.code(409).send({ message: 'This email is already taken!' })
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 10)
-
-        const user = await prisma.user.create({
-          data: { name, role, surname, email: email.toLowerCase(), password: hashedPassword }
-        })
-
-        return reply.code(201).send(user)
-      } catch (err) {
-        if (err instanceof PrismaClientKnownRequestError || err instanceof Error) {
-          return reply.code(500).send({ message: err.message })
-        }
-        return reply.code(500).send({ message: 'Something went wrong!' })
+      if (isUserRegistered) {
+        return reply.code(409).send({ message: 'This email is already taken!' })
       }
+
+      const hashedPassword = await bcrypt.hash(password, 10)
+
+      const user = await prisma.user.create({
+        data: { name, role, surname, email: email.toLowerCase(), password: hashedPassword }
+      })
+
+      return reply.code(201).send(user)
     })
 
   fastify
