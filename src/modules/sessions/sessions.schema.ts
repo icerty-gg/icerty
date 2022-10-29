@@ -6,21 +6,12 @@ export const loginSchema = {
     password: Type.String()
   }),
   response: {
-    201: Type.Object({ token: Type.String() }),
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    201: Type.Object({ token: Type.String() })
   }
 }
 
 export const logoutSchema = {
   response: {
-    200: Type.Object({ message: Type.String() }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    200: Type.Object({ message: Type.String() })
   }
 }

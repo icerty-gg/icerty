@@ -32,13 +32,7 @@ export const createProductSchema = {
     )
   }),
   response: {
-    201: ProductSchema,
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    201: ProductSchema
   }
 }
 
@@ -47,13 +41,7 @@ export const deleteProductSchema = {
     id: Type.String()
   }),
   response: {
-    200: ProductSchema,
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    200: ProductSchema
   }
 }
 
@@ -71,12 +59,6 @@ export const editProductSchema = {
     id: Type.String()
   }),
   response: {
-    200: ProductSchema,
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    200: ProductSchema
   }
 }

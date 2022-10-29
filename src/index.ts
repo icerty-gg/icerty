@@ -1,4 +1,5 @@
 import cookie from '@fastify/cookie'
+import errors from '@fastify/sensible'
 import Fastify from 'fastify'
 
 import { categoriesRoutes } from './modules/categories/categories.routes'
@@ -15,6 +16,7 @@ fastify.get('/', () => {
 
 // plugins
 void fastify.register(cookie)
+void fastify.register(errors)
 
 // routes
 void fastify.register(productsRoutes, { prefix: '/api/products' })

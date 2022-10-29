@@ -17,7 +17,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const isUserRegistered = await prisma.user.findFirst({ where: { email } })
 
       if (isUserRegistered) {
-        return reply.code(409).send({ message: 'This email is already taken!' })
+        throw fastify.httpErrors.conflict('This email is already taken!')
       }
 
       const hashedPassword = await bcrypt.hash(password, 10)
@@ -37,7 +37,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const currentUser = await prisma.auth_tokens.findFirst({ where: { token }, include: { user: true } })
 
       if (!currentUser) {
-        return reply.code(404).send({ message: 'User not found!' })
+        throw fastify.httpErrors.notFound('User not found')
       }
 
       return reply.code(200).send({ ...currentUser.user })

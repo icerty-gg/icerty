@@ -57,11 +57,11 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (product) {
-        return reply.code(403).send({ message: `Cannot delete category with id: ${id}!` })
+        throw fastify.httpErrors.forbidden('This category is used in some products!')
       }
 
       if (!category) {
-        return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+        throw fastify.httpErrors.notFound('Category not found')
       }
 
       const deletedCategory = await prisma.category.delete({
@@ -89,7 +89,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!category) {
-        return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+        throw fastify.httpErrors.notFound('Category not found')
       }
 
       const updatedCategory = await prisma.category.update({

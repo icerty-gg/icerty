@@ -31,7 +31,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
     })
 
     if (!foundCategory) {
-      return reply.code(404).send({ message: `Category with name: '${request.body.categoryName}' does not exist!` })
+      throw fastify.httpErrors.notFound()
     }
 
     const product = await prisma.product.create({
@@ -54,7 +54,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!product) {
-        return reply.code(404).send({ message: `Product with id: ${id} doesn't exist!` })
+        throw fastify.httpErrors.notFound()
       }
 
       const deletedProduct = await prisma.product.delete({
@@ -87,11 +87,11 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
     })
 
     if (!product) {
-      return reply.code(404).send({ message: `Product with id: ${id} doesn't exist!` })
+      throw fastify.httpErrors.notFound('Product not found!')
     }
 
     if (!foundCategory) {
-      return reply.code(404).send({ message: `Category with id: ${id} doesn't exist!` })
+      throw fastify.httpErrors.notFound('Category not found')
     }
 
     const editedProduct = await prisma.product.update({

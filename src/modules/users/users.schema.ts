@@ -18,23 +18,11 @@ export const createUserSchema = {
     role: Type.Optional(Type.Union([Type.Literal('ADMIN'), Type.Literal('USER')]))
   }),
   response: {
-    201: UserSchema,
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    201: UserSchema
   }
 }
 export const getCurrentUserSchema = {
   response: {
-    200: UserSchema,
-    '4xx': Type.Object({
-      message: Type.String()
-    }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    200: UserSchema
   }
 }
