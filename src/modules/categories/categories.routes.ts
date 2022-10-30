@@ -1,6 +1,7 @@
+import { isAuth } from '../../hooks/IsAuth'
+import { isAdmin } from '../../hooks/isAdmin'
 import { prisma } from '../../utils/prisma'
 
-import { isAuth } from './../../utils/IsAuth'
 import {
   createCategorySchema,
   deleteCategorySchema,
@@ -28,7 +29,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema }, async (request, reply) => {
+    .post('/', { schema: createCategorySchema, preValidation: isAdmin }, async (request, reply) => {
       const { name } = request.body
 
       const category = await prisma.category.create({ data: { name } })
@@ -42,7 +43,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/:id', { schema: deleteCategorySchema }, async (request, reply) => {
+    .delete('/:id', { schema: deleteCategorySchema, preValidation: isAdmin }, async (request, reply) => {
       const { id } = request.params
       const category = await prisma.category.findFirst({
         where: {
@@ -61,7 +62,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       }
 
       if (!category) {
-        throw fastify.httpErrors.notFound('Category not found')
+        throw fastify.httpErrors.notFound('Category not found!')
       }
 
       const deletedCategory = await prisma.category.delete({
@@ -78,7 +79,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     })
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: editCategorySchema }, async (request, reply) => {
+    .put('/:id', { schema: editCategorySchema, preValidation: isAdmin }, async (request, reply) => {
       const { id } = request.params
       const { name } = request.body
 

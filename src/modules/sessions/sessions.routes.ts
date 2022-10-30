@@ -2,9 +2,9 @@ import crypto from 'crypto'
 
 import bcrypt from 'bcrypt'
 
+import { isAuth } from '../../hooks/IsAuth'
 import { prisma } from '../../utils/prisma'
 
-import { isAuth } from './../../utils/IsAuth'
 import { loginSchema, logoutSchema } from './sessions.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
@@ -21,7 +21,7 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
     })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw fastify.httpErrors.notFound('Invalid username or password')
+      throw fastify.httpErrors.notFound('Invalid username or password!')
     }
 
     const token = await new Promise<string>((resolve, reject) => {
@@ -53,6 +53,6 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
 
       await prisma.auth_tokens.delete({ where: { token } })
 
-      return reply.code(200).send({ message: 'Logged out!' })
+      return reply.code(200).send({ message: 'Logged out' })
     })
 }

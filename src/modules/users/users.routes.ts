@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 
+import { isAuth } from '../../hooks/IsAuth'
 import { prisma } from '../../utils/prisma'
 
-import { isAuth } from './../../utils/IsAuth'
 import { createUserSchema, getCurrentUserSchema } from './users.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
@@ -37,7 +37,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const currentUser = await prisma.auth_tokens.findFirst({ where: { token }, include: { user: true } })
 
       if (!currentUser) {
-        throw fastify.httpErrors.notFound('User not found')
+        throw fastify.httpErrors.notFound('User not found!')
       }
 
       return reply.code(200).send({ ...currentUser.user })
