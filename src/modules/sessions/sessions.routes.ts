@@ -21,7 +21,7 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
     })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw fastify.httpErrors.notFound('Invalid username or password!')
+      throw reply.notFound('Invalid username or password!')
     }
 
     const token = await new Promise<string>((resolve, reject) => {

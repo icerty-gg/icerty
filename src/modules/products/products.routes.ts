@@ -33,7 +33,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!foundCategory) {
-        throw fastify.httpErrors.notFound('Category not found!')
+        throw reply.notFound('Category not found!')
       }
 
       const product = await prisma.product.create({
@@ -56,7 +56,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!product) {
-        throw fastify.httpErrors.notFound('Product not found!')
+        throw reply.notFound('Product not found!')
       }
 
       const deletedProduct = await prisma.product.delete({
@@ -91,11 +91,11 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!product) {
-        throw fastify.httpErrors.notFound('Product not found!')
+        throw reply.notFound('Product not found!')
       }
 
       if (!foundCategory) {
-        throw fastify.httpErrors.notFound('Category not found')
+        throw reply.notFound('Category not found')
       }
 
       const editedProduct = await prisma.product.update({

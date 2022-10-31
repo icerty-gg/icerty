@@ -57,11 +57,11 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (product) {
-        throw fastify.httpErrors.forbidden('This category is used in some products!')
+        throw reply.forbidden('This category is used in some products!')
       }
 
       if (!category) {
-        throw fastify.httpErrors.notFound('Category not found!')
+        throw reply.notFound('Category not found!')
       }
 
       const deletedCategory = await prisma.category.delete({
@@ -89,7 +89,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
       })
 
       if (!category) {
-        throw fastify.httpErrors.notFound('Category not found')
+        throw reply.notFound('Category not found')
       }
 
       const updatedCategory = await prisma.category.update({

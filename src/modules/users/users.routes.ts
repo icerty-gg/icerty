@@ -17,7 +17,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const isUserRegistered = await prisma.user.findFirst({ where: { email } })
 
       if (isUserRegistered) {
-        throw fastify.httpErrors.conflict('This email is already taken!')
+        throw reply.conflict('This email is already taken!')
       }
 
       const hashedPassword = await bcrypt.hash(password, 10)
