@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import { isAuth } from '../../hooks/IsAuth'
 import { prisma } from '../../utils/prisma'
 
-import { createUserSchema, getCurrentUserSchema } from './users.schema'
+import { createUserSchema, deleteCurrentUserSchema, getCurrentUserSchema } from './users.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -32,13 +32,22 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .get('/me', { schema: getCurrentUserSchema, preValidation: isAuth }, async (request, reply) => {
+      return reply.code(200).send(request.user)
+    })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .delete('/me', { schema: deleteCurrentUserSchema, preValidation: isAuth }, async (request, reply) => {
       const { token } = request.cookies
 
       const currentUser = await prisma.auth_tokens.findFirst({ where: { token }, include: { user: true } })
 
       if (!currentUser) {
-        throw fastify.httpErrors.notFound('User not found!')
+        throw reply.notFound('User not found!')
       }
+
+      await prisma.user.delete({ where: { id: currentUser.user.id } })
+      await prisma.auth_tokens.deleteMany({ where: { userId: currentUser.user.id } })
 
       return reply.code(200).send({ ...currentUser.user })
     })

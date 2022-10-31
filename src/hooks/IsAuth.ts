@@ -9,9 +9,11 @@ export const isAuth: preValidationHookHandler = async (request, reply) => {
     throw reply.unauthorized('You need to be logged in!')
   }
 
-  const isAuthorized = await prisma.auth_tokens.findFirst({ where: { token } })
+  const isAuthorized = await prisma.auth_tokens.findFirst({ where: { token }, include: { user: true } })
 
   if (!isAuthorized) {
     throw reply.unauthorized('You need to be logged in!')
   }
+
+  request.user = isAuthorized.user
 }

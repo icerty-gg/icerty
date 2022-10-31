@@ -8,6 +8,14 @@ import { sessionRoutes } from './modules/sessions/sessions.routes'
 import { userRoutes } from './modules/users/users.routes'
 import { clearTokens } from './utils/clearTokens'
 
+import type { User } from './modules/users/users.schema'
+
+declare module 'fastify' {
+  interface FastifyRequest {
+    // eslint-disable-next-line -- Further mutation needed
+    user: User
+  }
+}
 const fastify = Fastify({ logger: true })
 
 fastify.get('/', () => {
@@ -21,7 +29,8 @@ void fastify.register(errors)
 // routes
 void fastify.register(productsRoutes, { prefix: '/api/products' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
-void fastify.register(userRoutes, { prefix: '/api/users' })
+void fastify.register(userRoutes, { prefix: '/api/users' }).decorateRequest('user', null)
+
 void fastify.register(sessionRoutes, { prefix: '/api/sessions' })
 
 const start = async () => {
