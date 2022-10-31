@@ -1,30 +1,29 @@
 import { isAuth } from '../../hooks/IsAuth'
 import { prisma } from '../../utils/prisma'
 
-import { isAdmin } from './../../hooks/isAdmin'
 import { createProductSchema, deleteProductSchema, editProductSchema, getProductsSchema } from './products.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const productsRoutes: FastifyPluginAsync = async fastify => {
-  fastify.addHook('preValidation', isAuth)
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/', { schema: getProductsSchema, preValidation: isAuth(['USER', 'ADMIN']) }, async (request, reply) => {
+      const products = await prisma.product.findMany()
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getProductsSchema }, async (request, reply) => {
-    const products = await prisma.product.findMany()
-
-    return reply.code(200).send({
-      products: products.map(p => ({
-        ...p,
-        createdAt: p.createdAt.toISOString(),
-        updatedAt: p.updatedAt.toISOString()
-      }))
+      return reply.code(200).send({
+        products: products.map(p => ({
+          ...p,
+          createdAt: p.createdAt.toISOString(),
+          updatedAt: p.updatedAt.toISOString()
+        }))
+      })
     })
-  })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createProductSchema, preValidation: isAdmin }, async (request, reply) => {
+    .post('/', { schema: createProductSchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { categoryName, count, name, price, priceUnit } = request.body
 
       const foundCategory = await prisma.category.findFirst({
@@ -48,7 +47,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/:id', { schema: deleteProductSchema, preValidation: isAdmin }, async (request, reply) => {
+    .delete('/:id', { schema: deleteProductSchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
       const product = await prisma.product.findFirst({
         where: {
@@ -75,7 +74,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: editProductSchema, preValidation: isAdmin }, async (request, reply) => {
+    .put('/:id', { schema: editProductSchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
       const { categoryName, count, name, price, priceUnit } = request.body
 

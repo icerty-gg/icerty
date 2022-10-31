@@ -37,3 +37,12 @@ export const deleteCurrentUserSchema = {
     200: UserSchema
   }
 }
+
+export const deleteUserByIdSchema = {
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    200: UserSchema
+  }
+}

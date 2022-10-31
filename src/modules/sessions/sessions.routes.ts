@@ -48,7 +48,7 @@ export const sessionRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/logout', { schema: logoutSchema, preValidation: isAuth }, async (request, reply) => {
+    .post('/logout', { schema: logoutSchema, preValidation: isAuth(['USER', 'ADMIN']) }, async (request, reply) => {
       const { token } = request.cookies
 
       await prisma.auth_tokens.delete({ where: { token } })

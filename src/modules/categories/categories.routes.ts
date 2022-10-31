@@ -1,5 +1,4 @@
 import { isAuth } from '../../hooks/IsAuth'
-import { isAdmin } from '../../hooks/isAdmin'
 import { prisma } from '../../utils/prisma'
 
 import {
@@ -13,23 +12,23 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const categoriesRoutes: FastifyPluginAsync = async fastify => {
-  fastify.addHook('preValidation', isAuth)
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/', { schema: getCategoriesSchema, preValidation: isAuth(['USER', 'ADMIN']) }, async (request, reply) => {
+      const categories = await prisma.category.findMany()
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
-    const categories = await prisma.category.findMany()
-
-    return reply.code(200).send({
-      categories: categories.map(c => ({
-        ...c,
-        updatedAt: c.updatedAt.toISOString(),
-        createdAt: c.createdAt.toISOString()
-      }))
+      return reply.code(200).send({
+        categories: categories.map(c => ({
+          ...c,
+          updatedAt: c.updatedAt.toISOString(),
+          createdAt: c.createdAt.toISOString()
+        }))
+      })
     })
-  })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema, preValidation: isAdmin }, async (request, reply) => {
+    .post('/', { schema: createCategorySchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { name } = request.body
 
       const category = await prisma.category.create({ data: { name } })
@@ -43,7 +42,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/:id', { schema: deleteCategorySchema, preValidation: isAdmin }, async (request, reply) => {
+    .delete('/:id', { schema: deleteCategorySchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
       const category = await prisma.category.findFirst({
         where: {
@@ -79,7 +78,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     })
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: editCategorySchema, preValidation: isAdmin }, async (request, reply) => {
+    .put('/:id', { schema: editCategorySchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
       const { name } = request.body
 
