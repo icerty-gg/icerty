@@ -1,9 +1,8 @@
 import bcrypt from 'bcrypt'
 
-import { isAuth } from '../../hooks/IsAuth'
 import { prisma } from '../../utils/prisma'
 
-import { createUserSchema, deleteCurrentUserSchema, deleteUserByIdSchema, getCurrentUserSchema } from './users.schema'
+import { createUserSchema, deleteCurrentUserSchema, deleteUserByIdSchema } from './users.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -31,37 +30,33 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .get('/me', { schema: getCurrentUserSchema, preValidation: isAuth(['USER', 'ADMIN']) }, async (request, reply) => {
-      return reply.code(200).send(request.user)
+    .delete('/me', { schema: deleteCurrentUserSchema }, async (request, reply) => {
+      if (!request.session.userId) {
+        throw reply.unauthorized('You need to be logged in!')
+      }
+
+      const deletedUser = await prisma.user.delete({ where: { id: request.user.id } })
+
+      return reply.code(200).send(deletedUser)
     })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete(
-      '/me',
-      { schema: deleteCurrentUserSchema, preValidation: isAuth(['USER', 'ADMIN']) },
+      '/:id',
+      { schema: deleteUserByIdSchema, preValidation: fastify.auth(['ADMIN']) },
       async (request, reply) => {
-        await prisma.auth_tokens.deleteMany({ where: { userId: request.user.id } })
-        await prisma.user.delete({ where: { id: request.user.id } })
+        const { id } = request.params
 
-        return reply.code(200).send(request.user)
+        const deletedUser = await prisma.user.findFirst({ where: { id } })
+
+        if (!deletedUser) {
+          throw reply.notFound('User not found!')
+        }
+
+        await prisma.user.delete({ where: { id } })
+
+        return reply.code(200).send(deletedUser)
       }
     )
-
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/:id', { schema: deleteUserByIdSchema, preValidation: isAuth(['ADMIN']) }, async (request, reply) => {
-      const { id } = request.params
-
-      const deletedUser = await prisma.user.findFirst({ where: { id } })
-
-      if (!deletedUser) {
-        throw reply.notFound('User not found!')
-      }
-
-      await prisma.auth_tokens.deleteMany({ where: { userId: id } })
-      await prisma.user.delete({ where: { id } })
-
-      return reply.code(200).send(deletedUser)
-    })
 }

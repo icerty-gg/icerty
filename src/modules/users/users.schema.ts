@@ -2,7 +2,7 @@ import { Type } from '@sinclair/typebox'
 
 import type { Static } from '@sinclair/typebox'
 
-const UserSchema = Type.Object({
+export const UserSchema = Type.Object({
   id: Type.String(),
   name: Type.String(),
   surname: Type.String(),
@@ -23,12 +23,6 @@ export const createUserSchema = {
   }),
   response: {
     201: UserSchema
-  }
-}
-
-export const getCurrentUserSchema = {
-  response: {
-    200: UserSchema
   }
 }
 

@@ -17,12 +17,12 @@ CREATE TABLE "user" (
 );
 
 -- CreateTable
-CREATE TABLE "auth_tokens" (
-    "token" TEXT NOT NULL,
+CREATE TABLE "session" (
+    "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "expiration_date" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "auth_tokens_pkey" PRIMARY KEY ("token")
+    CONSTRAINT "session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -60,7 +60,7 @@ CREATE UNIQUE INDEX "product_name_key" ON "product"("name");
 CREATE UNIQUE INDEX "category_id_name_key" ON "category"("id", "name");
 
 -- AddForeignKey
-ALTER TABLE "auth_tokens" ADD CONSTRAINT "auth_tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "product" ADD CONSTRAINT "product_categoryId_categoryName_fkey" FOREIGN KEY ("categoryId", "categoryName") REFERENCES "category"("id", "name") ON DELETE RESTRICT ON UPDATE CASCADE;

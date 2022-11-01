@@ -92,6 +92,14 @@
     type-is "^1.6.18"
     vary "^1.1.2"
 
+"@fastify/session@^10.0.2":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@fastify/session/-/session-10.0.2.tgz#6d99231dbc54ae54c590fc0a7e1a07eb878b9daa"
+  integrity sha512-MLwNJ1VRXK7Fkn6Q8lBLaI4vLRp8dSrUOT6ca/uQCwMI2ZwfNA9WJN2Rq60kph0Cuxg/7XqRsxofE8QpxRBfag==
+  dependencies:
+    fastify-plugin "^4.0.0"
+    safe-stable-stringify "^2.3.1"
+
 "@fastify/type-provider-typebox@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@fastify/type-provider-typebox/-/type-provider-typebox-2.3.0.tgz#4adb4a9cd3ccdbc5b2506852f3cec9554d678425"
@@ -233,6 +241,11 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
+
+"@types/ms@^0.7.31":
+  version "0.7.31"
+  resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
+  integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
 "@types/node-cron@^3.0.4":
   version "3.0.4"
@@ -1081,7 +1094,7 @@ fast-uri@^2.0.0, fast-uri@^2.1.0:
   resolved "https://registry.yarnpkg.com/fast-uri/-/fast-uri-2.1.0.tgz#9279432d6b53675c90116b947ed2bbba582d6fb5"
   integrity sha512-qKRta6N7BWEFVlyonVY/V+BMLgFqktCUV0QjT259ekAIlbVrMaFnFLxJ4s/JPl4tou56S1BzPufI60bLe29fHA==
 
-fastify-plugin@^4.0.0:
+fastify-plugin@^4.0.0, fastify-plugin@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-4.3.0.tgz#c6eaa87a7a0d6d1d16129e43e31d6bc1d8868e53"
   integrity sha512-M3+i368lV0OYTJ5TfClIoPKEKSOF7112iiPdwgfSR0gN98BjA1Nk+c6oBHtfcVt9KiMxl+EQKHC1QNWo3ZOpYQ==
