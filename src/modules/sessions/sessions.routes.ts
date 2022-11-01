@@ -11,7 +11,7 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
     const { email, password } = request.body
 
-    if (request.session.userId) {
+    if (request.session.user) {
       return reply.notAcceptable('You are already logged in!')
     }
 
@@ -25,23 +25,23 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
       throw reply.notFound('Invalid username or password!')
     }
 
-    request.session.userId = user.id
+    request.session.user = user
 
     return reply.code(201).send(user)
   })
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/logout', { schema: logoutSchema }, async (request, reply) => {
-    if (!request.session.userId) {
+    if (!request.session.user) {
       throw reply.unauthorized('You need to be logged in!')
     }
 
-    request.session.destroy(() => {
-      return reply.code(200).send({ message: 'Logged out' })
-    })
+    await request.session.destroy()
+
+    return reply.code(200).send({ message: 'Logged out' })
   })
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/me', { schema: getSessionShema }, async (request, reply) => {
-    if (!request.session.userId) {
+    if (!request.session.user) {
       throw reply.unauthorized('You need to be logged in!')
     }
 

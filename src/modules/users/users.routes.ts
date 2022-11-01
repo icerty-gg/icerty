@@ -31,7 +31,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete('/me', { schema: deleteCurrentUserSchema }, async (request, reply) => {
-      if (!request.session.userId) {
+      if (!request.session.user) {
         throw reply.unauthorized('You need to be logged in!')
       }
 
