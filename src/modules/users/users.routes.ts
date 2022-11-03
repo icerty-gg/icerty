@@ -35,7 +35,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
         throw reply.unauthorized('You need to be logged in!')
       }
 
-      const deletedUser = await prisma.user.delete({ where: { id: request.user.id } })
+      const deletedUser = await prisma.user.delete({ where: { id: request.session.user.id } })
 
       return reply.code(200).send(deletedUser)
     })
