@@ -17,7 +17,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/register', { schema: createUserSchema }, async (request, reply) => {
-      const { email, name, password, role, surname } = request.body
+      const { email, name, password, surname } = request.body
 
       const isUserRegistered = await prisma.user.findFirst({ where: { email } })
 
@@ -28,7 +28,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const hashedPassword = await bcrypt.hash(password, 10)
 
       const user = await prisma.user.create({
-        data: { name, role, surname, email: email.toLowerCase(), password: hashedPassword }
+        data: { name, surname, email: email.toLowerCase(), password: hashedPassword }
       })
 
       return reply.code(201).send(user)

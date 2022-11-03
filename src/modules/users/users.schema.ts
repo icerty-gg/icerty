@@ -18,8 +18,7 @@ export const createUserSchema = {
     name: Type.String({ minLength: 4, maxLength: 16 }),
     surname: Type.String({ minLength: 4, maxLength: 20 }),
     email: Type.String({ format: 'email' }),
-    password: Type.String({ minLength: 8, maxLength: 20 }),
-    role: Type.Union([Type.Literal('ADMIN'), Type.Literal('USER')])
+    password: Type.String({ minLength: 8, maxLength: 20 })
   }),
   response: {
     201: UserSchema
