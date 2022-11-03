@@ -12,7 +12,7 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
     const { email, password } = request.body
 
     if (request.session.user) {
-      return reply.notAcceptable('You are already logged in!')
+      return reply.forbidden('You are already logged in!')
     }
 
     const user = await prisma.user.findFirst({

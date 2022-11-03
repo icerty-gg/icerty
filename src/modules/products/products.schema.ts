@@ -14,10 +14,7 @@ const ProductSchema = Type.Object({
 
 export const getProductsSchema = {
   response: {
-    200: Type.Object({ products: Type.Array(ProductSchema) }),
-    500: Type.Object({
-      message: Type.String()
-    })
+    200: Type.Object({ products: Type.Array(ProductSchema) })
   }
 }
 

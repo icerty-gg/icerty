@@ -40,3 +40,16 @@ export const deleteUserByIdSchema = {
     200: UserSchema
   }
 }
+
+export const updatePasswordSchema = {
+  body: Type.Object({
+    oldPassword: Type.String(),
+    newPassword: Type.String()
+  })
+}
+
+export const updateEmailSchema = {
+  body: Type.Object({
+    email: Type.String({ format: 'email' })
+  })
+}
