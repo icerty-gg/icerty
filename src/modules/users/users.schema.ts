@@ -43,7 +43,7 @@ export const deleteUserByIdSchema = {
 
 export const updatePasswordSchema = {
   body: Type.Object({
-    oldPassword: Type.String({ minLength: 8, maxLength: 20 }),
+    oldPassword: Type.String(),
     newPassword: Type.String({ minLength: 8, maxLength: 20 })
   })
 }

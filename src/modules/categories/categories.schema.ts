@@ -2,7 +2,7 @@ import { Type } from '@sinclair/typebox'
 
 const CategorySchema = Type.Object({
   id: Type.String(),
-  name: Type.String(),
+  name: Type.String({ minLength: 3 }),
   updatedAt: Type.String(),
   createdAt: Type.String()
 })
@@ -17,7 +17,7 @@ export const getCategoriesSchema = {
 
 export const createCategorySchema = {
   body: Type.Object({
-    name: Type.String()
+    name: Type.String({ minLength: 3 })
   }),
   response: {
     201: CategorySchema
@@ -29,12 +29,12 @@ export const deleteCategorySchema = {
     id: Type.String()
   }),
   response: {
-    200: CategorySchema,
+    200: CategorySchema
   }
 }
 export const editCategorySchema = {
   body: Type.Object({
-    name: Type.String()
+    name: Type.String({ minLength: 3 })
   }),
   params: Type.Object({
     id: Type.String()
