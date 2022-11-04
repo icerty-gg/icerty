@@ -19,15 +19,7 @@ export const getProductsSchema = {
 }
 
 export const createProductSchema = {
-  body: Type.Object({
-    name: Type.String({ minLength: 3 }),
-    categoryName: Type.String(),
-    count: Type.Optional(Type.Number({ minimum: 1 })),
-    price: Type.Number({ minimum: 1 }),
-    priceUnit: Type.Optional(
-      Type.Union([Type.Literal('USD'), Type.Literal('PLN'), Type.Literal('GBP'), Type.Literal('EUR')])
-    )
-  }),
+  body: Type.Omit(ProductSchema, ['id', 'categoryId', 'updatedAt', 'createdAt']),
   response: {
     201: ProductSchema
   }
@@ -43,15 +35,7 @@ export const deleteProductSchema = {
 }
 
 export const editProductSchema = {
-  body: Type.Object({
-    name: Type.Optional(Type.String({ minLength: 3 })),
-    categoryName: Type.Optional(Type.String()),
-    count: Type.Optional(Type.Number({ minimum: 1 })),
-    price: Type.Optional(Type.Number({ minimum: 1 })),
-    priceUnit: Type.Optional(
-      Type.Union([Type.Literal('USD'), Type.Literal('PLN'), Type.Literal('GBP'), Type.Literal('EUR')])
-    )
-  }),
+  body: Type.Optional(Type.Omit(ProductSchema, ['id', 'categoryId', 'updatedAt', 'createdAt'])),
   params: Type.Object({
     id: Type.String()
   }),
