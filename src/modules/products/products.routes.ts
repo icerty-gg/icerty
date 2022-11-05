@@ -6,19 +6,21 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
 export const productsRoutes: FastifyPluginAsync = async fastify => {
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .get('/', { schema: getProductsSchema, preValidation: fastify.auth(['USER', 'ADMIN']) }, async (request, reply) => {
-      const products = await prisma.product.findMany()
+  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getProductsSchema }, async (request, reply) => {
+    if (!request.session.user) {
+      throw reply.unauthorized('You need to be logged in!')
+    }
+    
+    const products = await prisma.product.findMany()
 
-      return reply.code(200).send({
-        products: products.map(p => ({
-          ...p,
-          createdAt: p.createdAt.toISOString(),
-          updatedAt: p.updatedAt.toISOString()
-        }))
-      })
+    return reply.code(200).send({
+      products: products.map(p => ({
+        ...p,
+        createdAt: p.createdAt.toISOString(),
+        updatedAt: p.updatedAt.toISOString()
+      }))
     })
+  })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
