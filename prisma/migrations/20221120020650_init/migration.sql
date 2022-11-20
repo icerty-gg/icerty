@@ -17,20 +17,12 @@ CREATE TABLE "user" (
 );
 
 -- CreateTable
-CREATE TABLE "session" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "expiration_date" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "session_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "categoryId" TEXT NOT NULL,
     "categoryName" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "count" INTEGER NOT NULL DEFAULT 1,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "price" INTEGER NOT NULL,
@@ -57,10 +49,10 @@ CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 CREATE UNIQUE INDEX "product_name_key" ON "product"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "category_id_name_key" ON "category"("id", "name");
+CREATE UNIQUE INDEX "category_name_key" ON "category"("name");
 
--- AddForeignKey
-ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "category_id_name_key" ON "category"("id", "name");
 
 -- AddForeignKey
 ALTER TABLE "product" ADD CONSTRAINT "product_categoryId_categoryName_fkey" FOREIGN KEY ("categoryId", "categoryName") REFERENCES "category"("id", "name") ON DELETE RESTRICT ON UPDATE CASCADE;

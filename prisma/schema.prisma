@@ -25,6 +25,7 @@ model product {
   category     category @relation(fields: [categoryId, categoryName], references: [id, name])
   categoryId   String
   categoryName String
+  description  String
   count        Int      @default(1)
   createdAt    DateTime @default(now())
   price        Int
@@ -34,7 +35,7 @@ model product {
 
 model category {
   id        String    @id @default(uuid())
-  name      String
+  name      String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   product   product[]

@@ -3,6 +3,7 @@ import { Type } from '@sinclair/typebox'
 const ProductSchema = Type.Object({
   id: Type.String(),
   name: Type.String(),
+  description: Type.String(),
   categoryName: Type.String(),
   categoryId: Type.String(),
   count: Type.Number(),
@@ -19,7 +20,7 @@ export const getProductsSchema = {
 }
 
 export const createProductSchema = {
-  body: Type.Omit(ProductSchema, ['id', 'categoryId', 'updatedAt', 'createdAt']),
+  body: Type.Omit(ProductSchema, ['id', 'categoryName', 'updatedAt', 'createdAt']),
   response: {
     201: ProductSchema
   }
@@ -35,7 +36,7 @@ export const deleteProductSchema = {
 }
 
 export const editProductSchema = {
-  body: Type.Optional(Type.Omit(ProductSchema, ['id', 'categoryId', 'updatedAt', 'createdAt'])),
+  body: Type.Optional(Type.Omit(ProductSchema, ['id', 'categoryId', 'categoryName', 'updatedAt', 'createdAt'])),
   params: Type.Object({
     id: Type.String()
   }),

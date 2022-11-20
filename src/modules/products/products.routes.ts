@@ -10,7 +10,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
     if (!request.session.user) {
       throw reply.unauthorized('You need to be logged in!')
     }
-    
+
     const products = await prisma.product.findMany()
 
     return reply.code(200).send({
@@ -25,11 +25,11 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createProductSchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
-      const { categoryName, count, name, price, priceUnit } = request.body
+      const { categoryId, count, description, name, price, priceUnit } = request.body
 
       const foundCategory = await prisma.category.findFirst({
         where: {
-          name: categoryName
+          id: categoryId
         }
       })
 
@@ -38,7 +38,15 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
       }
 
       const product = await prisma.product.create({
-        data: { count, name, price, priceUnit, categoryId: foundCategory.id, categoryName: foundCategory.name }
+        data: {
+          count,
+          name,
+          price,
+          priceUnit,
+          categoryId: foundCategory.id,
+          categoryName: foundCategory.name,
+          description
+        }
       })
 
       return reply
@@ -77,7 +85,7 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .put('/:id', { schema: editProductSchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
-      const { categoryName, count, name, price, priceUnit } = request.body
+      const { count, description, name, price, priceUnit } = request.body
 
       const product = await prisma.product.findFirst({
         where: {
@@ -85,25 +93,15 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
         }
       })
 
-      const foundCategory = await prisma.category.findFirst({
-        where: {
-          name: categoryName
-        }
-      })
-
       if (!product) {
         throw reply.notFound('Product not found!')
-      }
-
-      if (!foundCategory) {
-        throw reply.notFound('Category not found')
       }
 
       const editedProduct = await prisma.product.update({
         where: {
           id
         },
-        data: { count, name, price, priceUnit, categoryId: foundCategory.id }
+        data: { count, name, price, priceUnit, description }
       })
 
       return reply.code(200).send({
