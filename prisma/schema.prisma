@@ -16,6 +16,7 @@ model user {
   surname  String
   email    String @unique
   password String
+  img      String @default("Path to placeholder img")
   role     Role   @default(USER)
 }
 
@@ -26,6 +27,7 @@ model product {
   categoryId   String
   categoryName String
   description  String
+  img          String
   count        Int      @default(1)
   createdAt    DateTime @default(now())
   price        Int

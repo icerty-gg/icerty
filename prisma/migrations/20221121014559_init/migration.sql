@@ -11,6 +11,7 @@ CREATE TABLE "user" (
     "surname" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "img" TEXT NOT NULL DEFAULT 'Path to placeholder img',
     "role" "Role" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
@@ -23,6 +24,7 @@ CREATE TABLE "product" (
     "categoryId" TEXT NOT NULL,
     "categoryName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "img" TEXT NOT NULL,
     "count" INTEGER NOT NULL DEFAULT 1,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "price" INTEGER NOT NULL,

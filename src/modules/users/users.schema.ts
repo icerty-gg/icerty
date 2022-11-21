@@ -8,6 +8,7 @@ export const UserSchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 4, maxLength: 16 }),
   surname: Type.String({ minLength: 4, maxLength: 20 }),
+  img: Type.String(),
   email: Type.String({ format: 'email' }),
   password: PasswordSchema,
   role: Type.Union([Type.Literal('ADMIN'), Type.Literal('USER')])
