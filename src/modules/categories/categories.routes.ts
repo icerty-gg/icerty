@@ -12,10 +12,6 @@ import type { FastifyPluginAsync } from 'fastify'
 
 export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
-    if (!request.session.user) {
-      throw reply.unauthorized('You need to be logged in!')
-    }
-    
     const categories = await prisma.category.findMany()
 
     return reply.code(200).send({
