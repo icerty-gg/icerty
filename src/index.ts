@@ -14,7 +14,6 @@ void fastify.register(productsRoutes, { prefix: '/api/products' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 void fastify.register(userRoutes, { prefix: '/api/users' })
 
-
 fastify.get('/', () => {
   return { message: 'Hello from api!' }
 })

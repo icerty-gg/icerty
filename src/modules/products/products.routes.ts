@@ -19,57 +19,54 @@ export const productsRoutes: FastifyPluginAsync = async fastify => {
     })
   })
 
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  /// add admin handler vvvvvvvvvvvvvv
-  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/', async (request, reply) => {
-    // const { categoryId, count, description, name, price, priceUnit } = request.body
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .post('/', { schema: createProductSchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+      const { categoryId, count, description, name, price, priceUnit } = request.body
 
-    const file = await request.file()
+      const files = await request.saveRequestFiles()
 
-    if (!file) {
-      throw reply.badRequest('Upload an image!')
-    }
+      if (!files.length) {
+        throw reply.badRequest('Upload an image!')
+      }
 
-    if (!['image/png', 'image/jpeg'].includes(file.mimetype)) {
-      throw reply.badRequest('Invalid file type! Supported types: png, jpg, jpeg')
-    }
+      if (files.length > 1) {
+        throw reply.badRequest('Single file expected!')
+      }
 
-    const uploadedImg = cloudinary.uploader.upload_stream(file.file)
+      if (!['image/png', 'image/jpeg'].includes(files[0].mimetype)) {
+        throw reply.badRequest('Invalid file type! Supported types: png, jpg, jpeg')
+      }
 
-    console.log(uploadedImg)
+      const uploadedImg = await cloudinary.uploader.upload(files[0].filepath)
 
-    // const foundCategory = await prisma.category.findFirst({
-    //   where: {
-    //     id: categoryId
-    //   }
-    // })
+      const foundCategory = await prisma.category.findFirst({
+        where: {
+          id: categoryId
+        }
+      })
 
-    // if (!foundCategory) {
-    //   throw reply.notFound('Category not found!')
-    // }
+      if (!foundCategory) {
+        throw reply.notFound('Category not found!')
+      }
 
-    // const product = await prisma.product.create({
-    //   data: {
-    //     count,
-    //     name,
-    //     price,
-    //     priceUnit,
-    //     categoryId: foundCategory.id,
-    //     categoryName: foundCategory.name,
-    //     description,
-    //     img: ''
-    //   }
-    // })
+      const product = await prisma.product.create({
+        data: {
+          count,
+          name,
+          price,
+          priceUnit,
+          categoryId: foundCategory.id,
+          categoryName: foundCategory.name,
+          description,
+          img: uploadedImg.secure_url
+        }
+      })
 
-    // return reply
-    //   .code(201)
-    //   .send({ ...product, updatedAt: product.updatedAt.toISOString(), createdAt: product.createdAt.toISOString() })
-  })
+      return reply
+        .code(201)
+        .send({ ...product, updatedAt: product.updatedAt.toISOString(), createdAt: product.createdAt.toISOString() })
+    })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
