@@ -70,5 +70,5 @@ module.exports = {
     'typescript-sort-keys/string-enum': 'error',
     '@typescript-eslint/require-await': 'off'
   },
-  ignorePatterns: ['.eslintrc.js']
+  ignorePatterns: ['.eslintrc.js', 'dist']
 }
