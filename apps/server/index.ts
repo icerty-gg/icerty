@@ -1,5 +1,6 @@
 import Fastify from 'fastify'
 
+import { getPort } from './config'
 import { categoriesRoutes } from './modules/categories/categories.routes'
 import { productsRoutes } from './modules/products/products.routes'
 import sessionsPlugin from './modules/sessions/sessions'
@@ -20,7 +21,7 @@ fastify.get('/', () => {
 
 const start = async () => {
   try {
-    await fastify.listen({ port: 3001 })
+    await fastify.listen({ port: getPort() })
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)
