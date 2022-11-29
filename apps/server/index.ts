@@ -1,3 +1,4 @@
+import dotenv from 'dotenv'
 import Fastify from 'fastify'
 
 import { getPort } from './config'
@@ -5,6 +6,8 @@ import { categoriesRoutes } from './modules/categories/categories.routes'
 import { productsRoutes } from './modules/products/products.routes'
 import sessionsPlugin from './modules/sessions/sessions'
 import { userRoutes } from './modules/users/users.routes'
+
+dotenv.config()
 
 const fastify = Fastify({ logger: true })
 
