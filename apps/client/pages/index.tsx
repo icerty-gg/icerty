@@ -1,7 +1,12 @@
-export default function Web() {
+import Seo from '../components/seo/Seo'
+
+const Home = () => {
   return (
     <div>
-      <h1>Web</h1>
+      <Seo />
+      <h1>essa</h1>
     </div>
   )
 }
+
+export default Home
