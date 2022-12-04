@@ -1,11 +1,13 @@
 {
   "name": "client",
   "version": "0.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --dir .",
+    "lint:fix": "next lint --dir . --fix"
   },
   "dependencies": {
     "next": "13.0.0",

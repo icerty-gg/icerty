@@ -82,5 +82,5 @@ module.exports = {
     ],
     'react/no-unescaped-entities': 'off'
   },
-  ignorePatterns: ['.eslintrc.js']
+  ignorePatterns: ['.eslintrc.js', '*.config.js']
 }
