@@ -15,7 +15,7 @@ const session: FastifyPluginAsync = async fastify => {
     cookie: {
       sameSite: 'lax',
       httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge: ms('7 days')
     }
   })
