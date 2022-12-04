@@ -18,7 +18,7 @@ export const logoutSchema = {
   }
 }
 
-export const getSessionShema = {
+export const getSessionSchema = {
   response: {
     200: UserSchema
   }

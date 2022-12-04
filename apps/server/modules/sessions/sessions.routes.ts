@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 
 import { prisma } from '../../utils/prisma'
 
-import { getSessionShema, loginSchema, logoutSchema } from './sessions.schema'
+import { getSessionSchema, loginSchema, logoutSchema } from './sessions.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -40,12 +40,12 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
     return reply.code(200).send({ message: 'Logged out' })
   })
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/me', { schema: getSessionShema }, async (request, reply) => {
+  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/me', { schema: getSessionSchema }, async (request, reply) => {
     if (!request.session.user) {
       throw reply.unauthorized('You need to be logged in!')
     }
 
-    return reply.code(200).send(request.user)
+    return reply.code(200).send(request.session.user)
   })
 }
 
