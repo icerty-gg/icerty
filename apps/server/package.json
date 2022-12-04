@@ -1,6 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
     "dev": "npx prisma db seed && nodemon --exec ts-node index.ts",
     "build": "tsc",
