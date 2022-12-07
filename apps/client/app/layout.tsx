@@ -1,6 +1,9 @@
 import '../styles/globals.css'
 import { Inter } from '@next/font/google'
 
+import { Navbar } from '../components/navbar/navbar'
+import { Wrapper } from '../components/ui/Wrapper'
+
 const inter = Inter({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -10,7 +13,10 @@ const inter = Inter({
 const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
   return (
     <html className={`${inter.variable} font-sans`} lang='en'>
-      <body>{children}</body>
+      <body className='bg-gray-800'>
+        <Navbar />
+        <Wrapper>{children}</Wrapper>
+      </body>
     </html>
   )
 }
