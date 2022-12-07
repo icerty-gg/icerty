@@ -4,6 +4,7 @@ module.exports = {
   reactStrictMode: true,
   experimental: {
     appDir: true,
-    transpilePackages: []
+    transpilePackages: [],
+    fontLoaders: [{ loader: '@next/font/google', options: { subsets: ['latin'] } }]
   }
 }
