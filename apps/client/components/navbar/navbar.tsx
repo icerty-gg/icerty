@@ -1,30 +1,23 @@
-import Image from 'next/image'
-import Link from 'next/link'
+import { PrimaryButton } from '../ui/primaryButton'
+import { SecondaryButton } from '../ui/secondaryButton'
 
-import Logo from '../../img/logo.svg'
+import { Logo } from './logo'
+import { NavLink } from './navLink'
 
 export const Navbar = () => {
   return (
-    <nav className='bg-gray-900 w-full h-20 flex items-center backdrop-blur-md'>
+    <nav className='fixed bg-gray-900 w-full h-20 flex items-center backdrop-blur-md border-b border-slate-300/10'>
       <div className='max-w-screen-2xl w-full my-0 mx-auto px-8 flex items-center justify-between'>
-        <Link className='text-white text-lg font-bold flex items-center gap-4' href='/'>
-          <Logo className='w-12' />
-          Icerty
-        </Link>
+        <Logo />
+        <div className='flex gap-8'>
+          <NavLink title='Strona główna' href='/' />
+          <NavLink title='Ogłoszenia' href='/announcements' />
+          <NavLink title='Obserwowane' href='/observed' />
+        </div>
 
         <div className='flex gap-3 items-center text-sm'>
-          <Link
-            className='text-white border border-slate-800 hover:bg-slate-800  hover:border-sky-500 transition-all px-6 py-2 rounded-lg'
-            href='/dodaj-ogłoszenie'
-          >
-            Dodaj ogłoszenie
-          </Link>
-          <Link
-            className='text-white border-transparent bg-sky-500  hover:bg-sky-400 px-6 py-2 rounded-lg transition-all'
-            href='/zaloguj'
-          >
-            Zaloguj
-          </Link>
+          <SecondaryButton title='Dodaj ogłoszenie' href='/add-announcement' />
+          <PrimaryButton title='Zaloguj' href='/sign-in' />
         </div>
       </div>
     </nav>
