@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from 'react'
 import { BiMenu } from 'react-icons/bi'
 
@@ -40,6 +41,7 @@ export const Navbar = () => {
       </nav>
 
       <MobileNavbar isOpened={isOpenedNav} onOpenNav={toggleOpenNav} />
+
       {isOpenedNav && <Backdrop onHideNav={toggleOpenNav} />}
     </>
   )
