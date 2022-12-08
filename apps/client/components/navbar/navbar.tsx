@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { BiCategory } from 'react-icons/bi'
+import { BiMenu } from 'react-icons/bi'
 
 import { Backdrop } from '../ui/backdrop'
 import { PrimaryButton } from '../ui/primaryButton'
@@ -30,7 +30,7 @@ export const Navbar = () => {
             className='hidden max-lg:flex p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors'
             onClick={toggleOpenNav}
           >
-            <BiCategory className='text-white text-2xl' />
+            <BiMenu className='text-white text-2xl' />
           </button>
 
           <div className='flex gap-3 items-center text-sm max-lg:hidden'>

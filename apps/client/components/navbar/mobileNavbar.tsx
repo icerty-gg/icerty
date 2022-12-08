@@ -2,7 +2,7 @@ import { BiX } from 'react-icons/bi'
 
 import { PrimaryButton } from '../ui/primaryButton'
 
-import { NavLink } from './navLink'
+import { NavLink } from './NavLink'
 
 interface Props {
   readonly isOpened: boolean
