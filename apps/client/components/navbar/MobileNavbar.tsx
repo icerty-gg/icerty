@@ -1,6 +1,6 @@
 import { BiX } from 'react-icons/bi'
 
-import { PrimaryButton } from '../ui/primaryButton'
+import { PrimaryButton } from '../ui/PrimaryButton'
 
 import { NavLink } from './NavLink'
 

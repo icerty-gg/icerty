@@ -2,12 +2,12 @@
 import { useState } from 'react'
 import { BiMenu } from 'react-icons/bi'
 
-import { Backdrop } from '../ui/backdrop'
-import { PrimaryButton } from '../ui/primaryButton'
+import { Backdrop } from '../ui/Backdrop'
+import { PrimaryButton } from '../ui/PrimaryButton'
 
-import { Logo } from './logo'
-import { MobileNavbar } from './mobileNavbar'
-import { NavLink } from './navLink'
+import { Logo } from './Logo'
+import { MobileNavbar } from './MobileNavbar'
+import { NavLink } from './NavLink'
 
 export const Navbar = () => {
   const [isOpenedNav, setIsOpenedNav] = useState(false)
