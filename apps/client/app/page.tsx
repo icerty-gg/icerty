@@ -1,8 +1,12 @@
+import { CategoryList } from '../components/categories/CategoryList'
+import { Wrapper } from '../components/ui/Wrapper'
+
 const Home = () => {
   return (
-    <div className='flex items-center justify-center w-full h-full'>
-      <h1 className='text-3xl text-left'>essa</h1>
-    </div>
+    <Wrapper>
+      <h1>Kategorie główne</h1>
+      <CategoryList />
+    </Wrapper>
   )
 }
 

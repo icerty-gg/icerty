@@ -2,6 +2,9 @@
 
 module.exports = {
   reactStrictMode: true,
+  images: {
+    domains: ['categories.olxcdn.com', 'localhost', 'olx.pl']
+  },
   experimental: {
     appDir: true,
     transpilePackages: [],
