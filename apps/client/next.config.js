@@ -3,7 +3,14 @@
 module.exports = {
   reactStrictMode: true,
   images: {
-    domains: ['categories.olxcdn.com', 'localhost', 'olx.pl']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'categories.olxcdn.com',
+        port: '',
+        pathname: '/assets/categories/olxpl/**'
+      }
+    ]
   },
   experimental: {
     appDir: true,
