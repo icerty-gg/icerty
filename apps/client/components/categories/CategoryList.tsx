@@ -1,8 +1,8 @@
 import ky from 'ky-universal'
 
-import { api } from '../../constants/api'
+// import { api } from '../../constants/api'
 
-import { CategoryItem } from './CategoryItem'
+// import { CategoryItem } from './CategoryItem'
 
 export const CategoryList = () => {
   const getCategories = async () => {
