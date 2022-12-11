@@ -1,6 +1,5 @@
 import { Type } from '@sinclair/typebox'
-
-import { UserSchema } from '../users/users.schema'
+import { UserSchema } from '../users'
 
 export const loginSchema = {
   body: Type.Object({

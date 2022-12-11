@@ -1,7 +1,7 @@
+import { createProductSchema, deleteProductSchema, editProductSchema, getProductsSchema } from 'common'
+
 import { cloudinary } from '../../utils/cloudinary'
 import { prisma } from '../../utils/prisma'
-
-import { createProductSchema, deleteProductSchema, editProductSchema, getProductsSchema } from './products.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'

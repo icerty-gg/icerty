@@ -1,4 +1,4 @@
-import { Type } from '@sinclair/typebox'
+import { Static, Type } from '@sinclair/typebox'
 
 const CategorySchema = Type.Object({
   id: Type.String(),
@@ -7,6 +7,8 @@ const CategorySchema = Type.Object({
   createdAt: Type.String(),
   img: Type.String()
 })
+
+export type Category = Static<typeof CategorySchema>
 
 export const getCategoriesSchema = {
   response: {
