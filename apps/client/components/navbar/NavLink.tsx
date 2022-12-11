@@ -17,8 +17,8 @@ export const NavLink = ({ href, isMobile, title }: Props) => {
   return !isMobile ? (
     <Link
       className={`${
-        p ? 'text-sky-600' : ''
-      } hover:text-sky-500 text-slate-200 relative font-bold  last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
+        p ? 'text-sky-600' : 'text-slate-200'
+      } hover:text-sky-500  relative font-bold  last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
       href={href}
     >
       {title}
@@ -32,8 +32,8 @@ export const NavLink = ({ href, isMobile, title }: Props) => {
   ) : (
     <Link
       className={`${
-        p ? 'text-sky-600' : ''
-      } hover:text-sky-500 text-slate-200 relative font-bold last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
+        p ? 'text-sky-600' : 'text-slate-200'
+      } hover:text-sky-500  relative font-bold last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
       href={href}
     >
       {title}

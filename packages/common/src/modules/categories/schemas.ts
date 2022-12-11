@@ -4,7 +4,8 @@ const CategorySchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3 }),
   updatedAt: Type.String(),
-  createdAt: Type.String()
+  createdAt: Type.String(),
+  img: Type.String()
 })
 
 export const getCategoriesSchema = {
@@ -30,6 +31,7 @@ export const deleteCategorySchema = {
     200: CategorySchema
   }
 }
+
 export const editCategorySchema = {
   body: Type.Pick(CategorySchema, ['name']),
   params: Type.Object({

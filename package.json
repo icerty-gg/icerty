@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "apps/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -20,6 +21,5 @@
   },
   "engines": {
     "node": ">=14.0.0"
-  },
-  "packageManager": "yarn@1.22.18"
+  }
 }

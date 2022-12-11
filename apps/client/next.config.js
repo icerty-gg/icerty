@@ -2,6 +2,16 @@
 
 module.exports = {
   reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'categories.olxcdn.com',
+        port: '',
+        pathname: '/assets/categories/olxpl/**'
+      }
+    ]
+  },
   experimental: {
     appDir: true,
     transpilePackages: [],
