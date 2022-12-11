@@ -1,6 +1,6 @@
 import { ValueError } from '@sinclair/typebox/errors'
 import { Value } from '@sinclair/typebox/value'
-import { TSchema } from '@sinclair/typebox'
+import { Static, TSchema } from '@sinclair/typebox'
 
 class TypeboxValidationError extends Error {
   constructor(private errors: ValueError[]) {
@@ -21,4 +21,6 @@ export const validateSchema = <T extends TSchema>(schema: T, value: unknown) => 
   if (errors.length > 0) {
     throw new TypeboxValidationError(errors)
   }
+
+  return value as Static<typeof schema>
 }
