@@ -19,7 +19,6 @@
     "@fastify/session": "^10.0.2",
     "@fastify/type-provider-typebox": "^2.3.0",
     "@prisma/client": "^4.6.1",
-    "@sinclair/typebox": "^0.25.12",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.32.0",
     "dotenv": "^16.0.3",

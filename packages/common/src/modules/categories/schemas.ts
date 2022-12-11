@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 
-const CategorySchema = Type.Object({
+export const CategorySchema = Type.Object({
   id: Type.String(),
   name: Type.String({ minLength: 3 }),
   updatedAt: Type.String(),

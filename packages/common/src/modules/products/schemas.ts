@@ -1,6 +1,6 @@
 import { Static, Type } from '@sinclair/typebox'
 
-const ProductSchema = Type.Object({
+export const ProductSchema = Type.Object({
   id: Type.String(),
   name: Type.String(),
   description: Type.String(),

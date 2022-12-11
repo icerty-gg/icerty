@@ -1,5 +1,5 @@
 import { ValueError } from '@sinclair/typebox/errors'
-import { Value } from '@sinclair/typebox/Value'
+import { Value } from '@sinclair/typebox/value'
 import { TSchema } from '@sinclair/typebox'
 
 class TypeboxValidationError extends Error {

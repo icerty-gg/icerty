@@ -1,14 +1,21 @@
-import ky from 'ky-universal'
+import { getCategoriesSchema, validateSchema } from 'common'
 
-// import { api } from '../../constants/api'
+import { api } from '../../constants/api'
 
-// import { CategoryItem } from './CategoryItem'
+import type { Static } from '@sinclair/typebox'
 
-export const CategoryList = () => {
-  const getCategories = async () => {
-    return await ky('categories').json<readonly any[]>()
-  }
-  const categories = getCategories()
+const getCategories = async () => {
+  const schema = getCategoriesSchema['response'][200]
+
+  const categories = await api('categories').json<Static<typeof schema>>()
+
+  validateSchema(schema, categories)
+
+  return categories
+}
+
+export const CategoryList = async () => {
+  const categories = await getCategories()
   console.log(categories)
 
   return (
@@ -16,7 +23,6 @@ export const CategoryList = () => {
       {/* {categories.map((c, i) => (
         <CategoryItem image={c.name} name={c.name} key={i} />
       ))} */}
-      <h1>esa</h1>
     </ul>
   )
 }

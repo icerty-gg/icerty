@@ -18,12 +18,13 @@ module.exports = {
     fontLoaders: [{ loader: '@next/font/google', options: { subsets: ['latin'] } }]
   },
 
-  webpack(config) {
+  webpack: config => {
     config.module.rules.push({
       test: /\.svg$/i,
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack']
-    })
+    }),
+      (config.experiments = { ...config.experiments, ...{ topLevelAwait: true } })
     return config
   }
 }
