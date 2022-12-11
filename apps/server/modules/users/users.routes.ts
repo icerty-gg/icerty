@@ -1,14 +1,13 @@
 import bcrypt from 'bcryptjs'
-
-import { prisma } from '../../utils/prisma'
-
 import {
   createUserSchema,
   deleteCurrentUserSchema,
   deleteUserByIdSchema,
   updateEmailSchema,
   updatePasswordSchema
-} from './users.schema'
+} from 'common'
+
+import { prisma } from '../../utils/prisma'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'

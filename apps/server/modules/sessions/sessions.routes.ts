@@ -1,8 +1,7 @@
 import bcrypt from 'bcryptjs'
+import { getSessionSchema, loginSchema, logoutSchema } from 'common'
 
 import { prisma } from '../../utils/prisma'
-
-import { getSessionSchema, loginSchema, logoutSchema } from './sessions.schema'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'

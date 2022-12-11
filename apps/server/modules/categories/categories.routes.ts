@@ -1,11 +1,6 @@
-import { prisma } from '../../utils/prisma'
+import { createCategorySchema, deleteCategorySchema, editCategorySchema, getCategoriesSchema } from 'common'
 
-import {
-  createCategorySchema,
-  deleteCategorySchema,
-  editCategorySchema,
-  getCategoriesSchema
-} from './categories.schema'
+import { prisma } from '../../utils/prisma'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
