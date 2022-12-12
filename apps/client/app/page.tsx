@@ -1,27 +1,11 @@
-import { getCategoriesSchema, validateSchema } from 'common'
-
+import { CategoryList } from '../components/categories/CategoryList'
 import { Wrapper } from '../components/ui/Wrapper'
-import { api } from '../constants/api'
 
-const getCategories = async () => {
-  const schema = getCategoriesSchema['response'][200]
-
-  const { data } = await api.get('/categories')
-
-  const { categories } = validateSchema(schema, data)
-
-  return categories
-}
-
-const Home = async () => {
-  const categories = await getCategories()
-
+const Home = () => {
   return (
     <Wrapper>
-      {categories.map(c => (
-        <div key={c.id}>{c.name}</div>
-      ))}
       <h1>Kategorie główne</h1>
+      <CategoryList />
     </Wrapper>
   )
 }
