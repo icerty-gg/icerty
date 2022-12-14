@@ -24,7 +24,7 @@ const Home = async () => {
   return (
     <Wrapper>
       <div className='relative'>
-        <div className='grid grid-cols-2 gap-4'>
+        <div className='grid grid-cols-2 gap-4 max-lg:grid-cols-1'>
           <div className='rounded-2xl px-4 pt-6 bg-gray-900/75 backdrop-blur border-slate-300/10 border'>
             <Heading title='Kategorie główne' className='pb-6' />
             <ul className='sticky grid grid-cols-3 gap-4 max-md:grid-cols-1  backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll'>
