@@ -14,7 +14,7 @@ const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
     <html className={`${inter.variable} font-sans`} lang='en'>
       <body className='bg-gray-900'>
         <Navbar />
-        <div className='pt-36'>{children}</div>
+        <div className='pt-24'>{children}</div>
       </body>
     </html>
   )

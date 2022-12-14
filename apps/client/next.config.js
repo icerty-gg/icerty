@@ -9,6 +9,12 @@ module.exports = {
         hostname: 'categories.olxcdn.com',
         port: '',
         pathname: '/assets/categories/olxpl/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ireland.apollo.olxcdn.com',
+        port: '',
+        pathname: '/v1/files/**'
       }
     ]
   },
