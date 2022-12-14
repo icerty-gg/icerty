@@ -1,3 +1,5 @@
+import { CategorySchema } from './../categories/schemas'
+import { UserSchema } from './../users/schemas'
 import { Static, Type } from '@sinclair/typebox'
 
 export const OfferSchema = Type.Object({
@@ -16,7 +18,21 @@ export type Offer = Static<typeof OfferSchema>
 
 export const getAllOffersSchema = {
   response: {
-    200: Type.Array(OfferSchema)
+    200: Type.Array(
+      Type.Intersect([
+        OfferSchema,
+        Type.Object({
+          user: UserSchema,
+          offerImage: Type.Array(
+            Type.Object({
+              id: Type.String(),
+              img: Type.String()
+            })
+          ),
+          category: CategorySchema
+        })
+      ])
+    )
   }
 }
 
@@ -36,7 +52,6 @@ export const createOfferSchema = {
   }
 }
 export const updateOffersImagesSchema = {
-  consumes: ['multipart/form-data'],
   params: Type.Object({
     id: Type.String()
   })

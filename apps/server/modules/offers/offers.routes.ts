@@ -17,9 +17,14 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
     const offers = await prisma.offer.findMany({
       include: {
+        offerImage: {
+          select: {
+            id: true,
+            img: true
+          }
+        },
         category: true,
-        user: true,
-        offerImage: true
+        user: true
       }
     })
 
@@ -27,7 +32,12 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
       offers.map(o => ({
         ...o,
         createdAt: o.createdAt.toISOString(),
-        updatedAt: o.updatedAt.toISOString()
+        updatedAt: o.updatedAt.toISOString(),
+        category: {
+          ...o.category,
+          createdAt: o.category.createdAt.toISOString(),
+          updatedAt: o.category.updatedAt.toISOString()
+        }
       }))
     )
   })
