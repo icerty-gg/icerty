@@ -12,13 +12,15 @@ import { NavLink } from './NavLink'
 
 export const Navbar = () => {
   const [isOpenedNav, setIsOpenedNav] = useState(false)
+  const [isLower, setIsLower] = useState(false)
   const navbarRef: any = useRef()
 
   const toggleOpenNav = () => setIsOpenedNav(p => !p)
 
   useEffect(() => {
     const activeNav = () => {
-      // navbarRef.current.classList.toggle('xd', window.scrollY > 200)
+      if (window.scrollY > 80) setIsLower(true)
+      else setIsLower(false)
     }
 
     window.addEventListener('scroll', activeNav)
@@ -33,7 +35,7 @@ export const Navbar = () => {
         className='sticky text-center bg-gray-900/75 backdrop-blur w-full h-20 flex items-center  border-b border-slate-300/10 z-10 supports-backdrop-blur:bg-white/95'
       >
         <div className='max-w-screen-2xl w-full my-0 mx-auto px-8 flex items-center justify-between'>
-          <Logo />
+          <Logo isSmall={false} />
           <div className='flex gap-2 max-lg:hidden'>
             <NavLink title='Strona główna' href='/' />
             <NavLink title='Ogłoszenia' href='/announcements' />
@@ -57,6 +59,20 @@ export const Navbar = () => {
       <MobileNavbar isOpened={isOpenedNav} onOpenNav={toggleOpenNav} />
 
       {isOpenedNav && <Backdrop onHideNav={toggleOpenNav} />}
+
+      <nav
+        className={`fixed w-full flex duration-300 text-center justify-center items-center z-50 transition-transform ${
+          isLower ? 'translate-y-[-3.7rem]' : 'translate-y-[-10rem]'
+        }`}
+      >
+        <div className='flex gap-2 items-center bg-gray-900/75 backdrop-blur p-2 rounded-full border-slate-300/10 border'>
+          <Logo isSmall={true} className='mr-4' />
+          <NavLink isMobile={true} title='Strona główna' href='/' />
+          <NavLink isMobile={true} title='Ogłoszenia' href='/announcements' />
+          <NavLink isMobile={true} title='Obserwowane' href='/observed' />
+          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-announcement' />
+        </div>
+      </nav>
     </>
   )
 }
