@@ -11,7 +11,7 @@ dotenv.config()
 
 const fastify = Fastify({ logger: true })
 
-void fastify.register(import('@fastify/multipart'))
+void fastify.register(import('@fastify/multipart'), { addToBody: true })
 void fastify.register(import('@fastify/sensible'))
 void fastify.register(sessionsPlugin)
 void fastify.register(offersRoutes, { prefix: '/api/offers' })

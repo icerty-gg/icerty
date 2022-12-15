@@ -1,11 +1,5 @@
-import {
-  createOfferSchema,
-  deleteOfferSchema,
-  updateOfferSchema,
-  getAllOffersSchema,
-  getOfferSchema,
-  updateOfferImagesSchema
-} from 'common'
+import { createOfferSchema, deleteOfferSchema, updateOfferSchema, getAllOffersSchema, getOfferSchema } from 'common'
+import streamifier from 'streamifier'
 
 import { cloudinary } from '../../utils/cloudinary'
 import { prisma } from '../../utils/prisma'
@@ -59,7 +53,28 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
-      const { categoryId, count, description, name, price } = request.body
+      const { categoryId, count, description, images, name, price } = request.body
+
+      if (images.some(img => !['image/png', 'image/jpeg'].includes(img.mimetype))) {
+        throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
+      }
+
+      const urls: { img: string }[] = []
+      images.forEach(file => {
+        const cld_upload_stream = cloudinary.uploader.upload_stream((err, result) => {
+          if (!result) {
+            throw reply.internalServerError('Failed to upload image!')
+          }
+
+          urls.push({ img: result.secure_url })
+        })
+
+        // eslint-disable-next-line -- buffer typed as any for now
+        streamifier.createReadStream(file.data).pipe(cld_upload_stream)
+      })
+
+      // to fix urls are empty array!
+      console.log(urls)
 
       const offer = await prisma.offer.create({
         data: {
@@ -68,48 +83,18 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
           price,
           description,
           categoryId,
-          userId: request.session.user.id
+          userId: request.session.user.id,
+          offerImage: {
+            createMany: {
+              data: urls
+            }
+          }
         }
       })
       return reply
         .code(201)
         .send({ ...offer, updatedAt: offer.updatedAt.toISOString(), createdAt: offer.createdAt.toISOString() })
     })
-
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .put(
-      '/photo/:id',
-      { schema: updateOfferImagesSchema, preValidation: fastify.auth(['USER']) },
-      async (request, reply) => {
-        const { id } = request.params
-
-        const files = await request.saveRequestFiles()
-
-        if (!files.length) {
-          throw reply.badRequest('File not found!')
-        }
-
-        const offer = await prisma.offer.findFirst({
-          where: { id }
-        })
-
-        if (!offer) {
-          throw reply.notFound('Offer not found!')
-        }
-
-        const urls = await Promise.all(files.map(file => cloudinary.uploader.upload(file.filepath)))
-
-        await prisma.offerImage.createMany({
-          data: files.map((_, i) => ({
-            offerId: id,
-            img: urls[i].secure_url
-          }))
-        })
-
-        return reply.code(204).send()
-      }
-    )
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()

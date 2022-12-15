@@ -47,15 +47,23 @@ export const getOfferSchema = {
 }
 
 export const createOfferSchema = {
-  body: Type.Optional(Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId'])),
+  body: Type.Intersect([
+    Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId']),
+    Type.Object({
+      images: Type.Array(
+        Type.Object({
+          data: Type.Any(),
+          filename: Type.String(),
+          encoding: Type.String(),
+          mimetype: Type.String(),
+          limit: Type.Boolean()
+        })
+      )
+    })
+  ]),
   response: {
     201: OfferSchema
   }
-}
-export const updateOfferImagesSchema = {
-  params: Type.Object({
-    id: Type.String()
-  })
 }
 
 export const deleteOfferSchema = {
