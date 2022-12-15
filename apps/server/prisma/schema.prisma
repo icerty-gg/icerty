@@ -33,6 +33,7 @@ model offer {
   createdAt   DateTime     @default(now())
   price       Int
   updatedAt   DateTime     @updatedAt
+  isPromoted  Boolean      @default(false)
   offerImage  offerImage[]
 }
 

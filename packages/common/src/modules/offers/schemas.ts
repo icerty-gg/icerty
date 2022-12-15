@@ -10,6 +10,7 @@ export const OfferSchema = Type.Object({
   userId: Type.String(),
   count: Type.Number(),
   price: Type.Number(),
+  isPromoted: Type.Boolean(),
   updatedAt: Type.String(),
   createdAt: Type.String()
 })
@@ -51,7 +52,7 @@ export const createOfferSchema = {
     201: OfferSchema
   }
 }
-export const updateOffersImagesSchema = {
+export const updateOfferImagesSchema = {
   params: Type.Object({
     id: Type.String()
   })
@@ -64,7 +65,7 @@ export const deleteOfferSchema = {
 }
 
 export const updateOfferSchema = {
-  body: Type.Optional(Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId'])),
+  body: Type.Optional(Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId', 'isPromoted'])),
   params: Type.Object({
     id: Type.String()
   })

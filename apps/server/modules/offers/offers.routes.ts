@@ -4,7 +4,7 @@ import {
   updateOfferSchema,
   getAllOffersSchema,
   getOfferSchema,
-  updateOffersImagesSchema
+  updateOfferImagesSchema
 } from 'common'
 
 import { cloudinary } from '../../utils/cloudinary'
@@ -80,7 +80,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .put(
       '/photo/:id',
-      { schema: updateOffersImagesSchema, preValidation: fastify.auth(['USER']) },
+      { schema: updateOfferImagesSchema, preValidation: fastify.auth(['USER']) },
       async (request, reply) => {
         const { id } = request.params
 
@@ -140,7 +140,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
     .put('/:id', { schema: updateOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
       const { id } = request.params
 
-      const { categoryId, count, description, name, price } = request.body
+      const { categoryId, count, description, isPromoted, name, price } = request.body
 
       const offer = await prisma.offer.findFirst({
         where: { id }
@@ -156,7 +156,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
       await prisma.offer.update({
         where: { id },
-        data: { count, name, price, categoryId, description }
+        data: { count, name, price, categoryId, description, isPromoted }
       })
 
       return reply.code(204).send()
