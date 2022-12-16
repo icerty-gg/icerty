@@ -41,7 +41,7 @@ model category {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   product   product[]
-  img       String    @default("Path to placeholder img")
+  img       String
 
   @@unique([id, name])
 }

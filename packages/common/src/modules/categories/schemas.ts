@@ -19,7 +19,7 @@ export const getCategoriesSchema = {
 }
 
 export const createCategorySchema = {
-  body: Type.Pick(CategorySchema, ['name']),
+  body: Type.Pick(CategorySchema, ['name', 'img']),
   response: {
     201: CategorySchema
   }
@@ -35,7 +35,7 @@ export const deleteCategorySchema = {
 }
 
 export const editCategorySchema = {
-  body: Type.Pick(CategorySchema, ['name']),
+  body: Type.Optional(Type.Pick(CategorySchema, ['name', 'img'])),
   params: Type.Object({
     id: Type.String()
   }),
