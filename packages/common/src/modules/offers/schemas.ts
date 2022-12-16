@@ -49,7 +49,7 @@ export const getOfferSchema = {
 
 Custom.Set('buffer', (schema, value) => value instanceof Buffer)
 
-const BufferType = Type.Unsafe<string>({ [Kind]: 'buffer' })
+const BufferType = Type.Unsafe<Buffer>({ [Kind]: 'buffer' })
 
 export const createOfferSchema = {
   body: Type.Intersect([
