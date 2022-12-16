@@ -69,7 +69,6 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
           urls.push({ img: result.secure_url })
         })
 
-        // eslint-disable-next-line -- buffer typed as any for now
         streamifier.createReadStream(file.data).pipe(cld_upload_stream)
       })
 

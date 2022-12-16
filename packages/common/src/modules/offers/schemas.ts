@@ -1,6 +1,7 @@
 import { CategorySchema } from './../categories/schemas'
 import { UserSchema } from './../users/schemas'
-import { Static, Type } from '@sinclair/typebox'
+import { Static, Type, Kind } from '@sinclair/typebox'
+import { Custom } from '@sinclair/typebox/custom'
 
 export const OfferSchema = Type.Object({
   id: Type.String(),
@@ -46,13 +47,17 @@ export const getOfferSchema = {
   }
 }
 
+Custom.Set('buffer', (schema, value) => value instanceof Buffer)
+
+const BufferType = Type.Unsafe<string>({ [Kind]: 'buffer' })
+
 export const createOfferSchema = {
   body: Type.Intersect([
     Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId']),
     Type.Object({
       images: Type.Array(
         Type.Object({
-          data: Type.Any(),
+          data: BufferType,
           filename: Type.String(),
           encoding: Type.String(),
           mimetype: Type.String(),
