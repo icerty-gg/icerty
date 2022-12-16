@@ -1,4 +1,4 @@
-export * from './products'
+export * from './offers'
 export * from './categories'
 export * from './sessions'
 export * from './users'

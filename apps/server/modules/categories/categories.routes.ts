@@ -45,7 +45,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           }
         })
 
-        const product = await prisma.product.findFirst({
+        const product = await prisma.offer.findFirst({
           where: {
             categoryId: id
           }
