@@ -32,7 +32,8 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
           ...o.category,
           createdAt: o.category.createdAt.toISOString(),
           updatedAt: o.category.updatedAt.toISOString()
-        }
+        },
+        images: o.offerImage
       }))
     )
   })
@@ -104,7 +105,8 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
           ...offer.category,
           createdAt: offer.category.createdAt.toISOString(),
           updatedAt: offer.category.updatedAt.toISOString()
-        }
+        },
+        images: offer.offerImage
       })
     })
 

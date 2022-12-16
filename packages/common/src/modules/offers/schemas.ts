@@ -25,7 +25,7 @@ export const getAllOffersSchema = {
         OfferSchema,
         Type.Object({
           user: UserSchema,
-          offerImage: Type.Array(
+          images: Type.Array(
             Type.Object({
               id: Type.String(),
               img: Type.String()
@@ -71,7 +71,7 @@ export const createOfferSchema = {
       OfferSchema,
       Type.Object({
         user: UserSchema,
-        offerImage: Type.Array(
+        images: Type.Array(
           Type.Object({
             id: Type.String(),
             img: Type.String()
