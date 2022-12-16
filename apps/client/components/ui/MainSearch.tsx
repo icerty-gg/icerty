@@ -1,6 +1,6 @@
 import { BiSearchAlt2, BiLocationPlus } from 'react-icons/bi'
 
-import { PrimaryButton } from '../ui/PrimaryButton'
+import { PrimaryButton } from './PrimaryButton'
 
 export const MainSearch = () => {
   return (
@@ -20,7 +20,7 @@ export const MainSearch = () => {
           className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-6 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full'
         />
         <BiLocationPlus className='absolute left-4 text-white text-xl' />
-        <PrimaryButton title='Szukaj' href='/announcements' />
+        <PrimaryButton href='/announcements'>Szukaj</PrimaryButton>
       </div>
     </div>
   )

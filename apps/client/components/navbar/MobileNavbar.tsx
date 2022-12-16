@@ -29,7 +29,7 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
           <NavLink isMobile={true} title='Ogłoszenia' href='/announcements' />
           <NavLink isMobile={true} title='Obserwowane' href='/observed' />
           <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-announcement' />
-          <PrimaryButton title='Zaloguj się' href='/sign-in' />
+          <PrimaryButton href='/sign-in'>Zaloguj się</PrimaryButton>
         </div>
       </div>
     </nav>

@@ -1,21 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
 
+import { useCheckScroll } from '../../hooks/useCheckScroll'
+
 export const BackToTopButton = () => {
-  const [isVisible, setIsVisible] = useState(false)
+  const isVisible = useCheckScroll(800)
 
-  useEffect(() => {
-    const activeButton = () => {
-      if (window.scrollY > 800) setIsVisible(true)
-      else setIsVisible(false)
-    }
-
-    window.addEventListener('scroll', activeButton)
-
-    return () => window.removeEventListener('scroll', activeButton)
-  }, [])
+  console.log(isVisible)
 
   const scrollToTopHandler = () => {
     document.documentElement.scrollTop = 0

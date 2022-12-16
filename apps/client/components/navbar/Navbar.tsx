@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { BiMenu } from 'react-icons/bi'
 
+import { useCheckScroll } from '../../hooks/useCheckScroll'
+import { useToggle } from '../../hooks/useToggle'
 import { Backdrop } from '../ui/Backdrop'
 import { PrimaryButton } from '../ui/PrimaryButton'
 
@@ -11,22 +13,9 @@ import { MobileNavbar } from './MobileNavbar'
 import { NavLink } from './NavLink'
 
 export const Navbar = () => {
-  const [isOpenedNav, setIsOpenedNav] = useState(false)
-  const [isLower, setIsLower] = useState(false)
-  const navbarRef: any = useRef()
-
-  const toggleOpenNav = () => setIsOpenedNav(p => !p)
-
-  useEffect(() => {
-    const activeNav = () => {
-      if (window.scrollY > 80) setIsLower(true)
-      else setIsLower(false)
-    }
-
-    window.addEventListener('scroll', activeNav)
-
-    return () => window.removeEventListener('scroll', activeNav)
-  }, [])
+  const isOpenMiniNav = useCheckScroll(80)
+  const [isOpenNav, toggleOpenNav] = useToggle()
+  const navbarRef = useRef<HTMLElement | null>(null)
 
   return (
     <>
@@ -51,18 +40,18 @@ export const Navbar = () => {
           </button>
 
           <div className='flex gap-3 items-center text-sm max-lg:hidden'>
-            <PrimaryButton title='Zaloguj się' href='/sign-in' />
+            <PrimaryButton href='/sign-in'>Zaloguj się</PrimaryButton>
           </div>
         </div>
       </nav>
 
-      <MobileNavbar isOpened={isOpenedNav} onOpenNav={toggleOpenNav} />
+      <MobileNavbar isOpened={isOpenNav} onOpenNav={toggleOpenNav} />
 
-      {isOpenedNav && <Backdrop onHideNav={toggleOpenNav} />}
+      {isOpenNav && <Backdrop onHideNav={toggleOpenNav} />}
 
       <nav
-        className={`fixed w-full flex duration-300 text-center justify-center items-center z-50 transition-transform ${
-          isLower ? 'translate-y-[-3.7rem]' : 'translate-y-[-10rem]'
+        className={`fixed w-full flex duration-300 text-center justify-center items-center z-50 transition-transform max-lg:hidden ${
+          isOpenMiniNav ? 'translate-y-[-3.7rem]' : 'translate-y-[-10rem]'
         }`}
       >
         <div className='flex gap-2 items-center bg-gray-900/75 backdrop-blur p-2 rounded-full border-slate-300/10 border'>
