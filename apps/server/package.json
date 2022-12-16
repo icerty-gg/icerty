@@ -19,6 +19,7 @@
     "@fastify/session": "^10.0.2",
     "@fastify/type-provider-typebox": "^2.3.0",
     "@prisma/client": "^4.6.1",
+    "@supabase/supabase-js": "^2.2.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.32.0",
     "common": "*",

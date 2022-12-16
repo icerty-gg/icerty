@@ -67,7 +67,19 @@ export const createOfferSchema = {
     })
   ]),
   response: {
-    201: OfferSchema
+    201: Type.Intersect([
+      OfferSchema,
+      Type.Object({
+        user: UserSchema,
+        offerImage: Type.Array(
+          Type.Object({
+            id: Type.String(),
+            img: Type.String()
+          })
+        ),
+        category: CategorySchema
+      })
+    ])
   }
 }
 

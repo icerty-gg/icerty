@@ -1,8 +1,9 @@
-import { createOfferSchema, deleteOfferSchema, updateOfferSchema, getAllOffersSchema, getOfferSchema } from 'common'
-import streamifier from 'streamifier'
+import { randomUUID } from 'crypto'
 
-import { cloudinary } from '../../utils/cloudinary'
+import { createOfferSchema, deleteOfferSchema, updateOfferSchema, getAllOffersSchema, getOfferSchema } from 'common'
+
 import { prisma } from '../../utils/prisma'
+import { supabase } from '../../utils/supabase'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -59,21 +60,21 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
       }
 
-      const urls: { img: string }[] = []
-      images.forEach(file => {
-        const cld_upload_stream = cloudinary.uploader.upload_stream((err, result) => {
-          if (!result) {
-            throw reply.internalServerError('Failed to upload image!')
-          }
-
-          urls.push({ img: result.secure_url })
+      const promises = images.map(async file => {
+        const { data, error } = await supabase.storage.from('offers').upload(randomUUID(), file.data, {
+          contentType: file.mimetype
         })
 
-        streamifier.createReadStream(file.data).pipe(cld_upload_stream)
+        if (error) {
+          throw reply.internalServerError(error.message)
+        }
+
+        const { data: url } = supabase.storage.from('offers').getPublicUrl(data.path)
+
+        return { img: url.publicUrl }
       })
 
-      // to fix urls are empty array!
-      console.log(urls)
+      const urls = await Promise.all(promises)
 
       const offer = await prisma.offer.create({
         data: {
@@ -88,11 +89,23 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
               data: urls
             }
           }
+        },
+        include: {
+          category: true,
+          offerImage: true,
+          user: true
         }
       })
-      return reply
-        .code(201)
-        .send({ ...offer, updatedAt: offer.updatedAt.toISOString(), createdAt: offer.createdAt.toISOString() })
+      return reply.code(201).send({
+        ...offer,
+        updatedAt: offer.updatedAt.toISOString(),
+        createdAt: offer.createdAt.toISOString(),
+        category: {
+          ...offer.category,
+          createdAt: offer.category.createdAt.toISOString(),
+          updatedAt: offer.category.updatedAt.toISOString()
+        }
+      })
     })
 
   fastify
