@@ -57,7 +57,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
     .post('/', { schema: createOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
       const { categoryId, count, description, images, name, price } = request.body
 
-      if (images.some(img => !['image/png', 'image/jpeg'].includes(img.mimetype))) {
+      if (images.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
         throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
       }
 
