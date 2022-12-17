@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import Logotype from '../../img/logo.svg'
+import Logotype from '../../public/logo.svg'
 
 interface Props {
   readonly className?: string
