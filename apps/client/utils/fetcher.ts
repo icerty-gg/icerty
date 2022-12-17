@@ -136,10 +136,7 @@ const endpoints = makeApi([
           img: z.string(),
           email: z.string().email(),
           password: z.string().min(8).max(20),
-          role: z.union([
-            z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-            z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-          ])
+          role: z.enum(['ADMIN', 'USER'])
         }),
         images: z.array(z.object({ id: z.string(), img: z.string() })),
         category: z.object({
@@ -181,10 +178,7 @@ const endpoints = makeApi([
         img: z.string(),
         email: z.string().email(),
         password: z.string().min(8).max(20),
-        role: z.union([
-          z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-          z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-        ])
+        role: z.enum(['ADMIN', 'USER'])
       }),
       images: z.array(z.object({ id: z.string(), img: z.string() })),
       category: z.object({
@@ -269,10 +263,7 @@ const endpoints = makeApi([
       img: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(20),
-      role: z.union([
-        z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-        z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-      ])
+      role: z.enum(['ADMIN', 'USER'])
     })
   },
   {
@@ -292,10 +283,7 @@ const endpoints = makeApi([
       img: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(20),
-      role: z.union([
-        z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-        z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-      ])
+      role: z.enum(['ADMIN', 'USER'])
     })
   },
   {
@@ -316,10 +304,7 @@ const endpoints = makeApi([
       img: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(20),
-      role: z.union([
-        z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-        z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-      ])
+      role: z.enum(['ADMIN', 'USER'])
     })
   },
   {
@@ -346,10 +331,7 @@ const endpoints = makeApi([
       img: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(20),
-      role: z.union([
-        z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-        z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-      ])
+      role: z.enum(['ADMIN', 'USER'])
     })
   },
   {
@@ -383,10 +365,7 @@ const endpoints = makeApi([
       img: z.string(),
       email: z.string().email(),
       password: z.string().min(8).max(20),
-      role: z.union([
-        z.union([z.enum(['ADMIN']), z.enum(['USER'])]),
-        z.array(z.union([z.enum(['ADMIN']), z.enum(['USER'])]))
-      ])
+      role: z.enum(['ADMIN', 'USER'])
     })
   }
 ])
