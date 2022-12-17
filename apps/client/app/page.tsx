@@ -1,4 +1,3 @@
-import { getCategoriesSchema, validateSchema } from 'common'
 import { BiLockAlt } from 'react-icons/bi'
 
 import { Announcement } from '../components/announcements/Announcement'
@@ -10,16 +9,14 @@ import { PrimaryButton } from '../components/ui/PrimaryButton'
 import { SecondaryButton } from '../components/ui/SecondaryButton'
 import { Wrapper } from '../components/ui/Wrapper'
 import { UserStats } from '../components/userStats/UserStats'
-import { api } from '../constants/api'
+import { fetcher } from '../utils/fetcher'
 
 const getCategories = async () => {
-  const schema = getCategoriesSchema['response'][200]
+  const getCategories = fetcher.path('/api/categories/').method('get').create()
 
-  const { data } = await api.get('/categories')
+  const { data } = await getCategories({})
 
-  const { categories } = validateSchema(schema, data)
-
-  return categories
+  return data.categories
 }
 
 const Home = async () => {

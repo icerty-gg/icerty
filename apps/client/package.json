@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint --dir .",
-    "lint:fix": "next lint --dir . --fix"
+    "lint:fix": "next lint --dir . --fix",
+    "generateApiTypes": "npx openapi-typescript http://localhost:3001/docs/json --output apiTypes.ts"
   },
   "dependencies": {
     "@next/font": "^13.0.6",
@@ -16,6 +17,7 @@
     "common": "*",
     "framer-motion": "^7.6.19",
     "next": "13.0.6",
+    "openapi-typescript-fetch": "^1.1.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1"

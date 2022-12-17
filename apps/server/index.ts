@@ -17,7 +17,7 @@ void fastify.register(import('@fastify/multipart'), { addToBody: true, limits: {
 void fastify.register(import('@fastify/sensible'))
 void fastify.register(import('@fastify/swagger'), {
   mode: 'dynamic',
-  swagger: {
+  openapi: {
     info: {
       title: `Icerty API`,
       version: '1.0.0'
@@ -27,6 +27,7 @@ void fastify.register(import('@fastify/swagger'), {
 void fastify.register(import('@fastify/swagger-ui'), {
   routePrefix: '/docs'
 })
+void fastify.register(import('@fastify/cors'), { origin: true })
 void fastify.register(sessionsPlugin)
 void fastify.register(offersRoutes, { prefix: '/api/offers' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
