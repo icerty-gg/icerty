@@ -11,11 +11,11 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
 dotenv.config()
 
-const fastify = Fastify({ logger: true, }).withTypeProvider<TypeBoxTypeProvider>()
+const fastify = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>()
 
-void fastify.register(import('@fastify/multipart'), { addToBody: true, limits: { files: 5 } })
-void fastify.register(import('@fastify/sensible'))
-void fastify.register(import('@fastify/swagger'), {
+await fastify.register(import('@fastify/multipart'), { addToBody: true, limits: { files: 5 } })
+await fastify.register(import('@fastify/sensible'))
+await fastify.register(import('@fastify/swagger'), {
   mode: 'dynamic',
   openapi: {
     info: {
@@ -24,14 +24,14 @@ void fastify.register(import('@fastify/swagger'), {
     }
   }
 })
-void fastify.register(import('@fastify/swagger-ui'), {
+await fastify.register(import('@fastify/swagger-ui'), {
   routePrefix: '/docs'
 })
-void fastify.register(import('@fastify/cors'), { origin: true })
-void fastify.register(sessionsPlugin)
-void fastify.register(offersRoutes, { prefix: '/api/offers' })
-void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
-void fastify.register(userRoutes, { prefix: '/api/users' })
+await fastify.register(import('@fastify/cors'), { origin: true })
+await fastify.register(sessionsPlugin)
+await fastify.register(offersRoutes, { prefix: '/api/offers' })
+await fastify.register(categoriesRoutes, { prefix: '/api/categories' })
+await fastify.register(userRoutes, { prefix: '/api/users' })
 
 fastify.get('/', () => {
   return { message: 'Hello from api!' }
@@ -46,4 +46,4 @@ const start = async () => {
   }
 }
 
-void start()
+await start()
