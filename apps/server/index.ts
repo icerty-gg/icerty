@@ -3,18 +3,32 @@ import Fastify from 'fastify'
 
 import { getPort } from './config'
 import { categoriesRoutes } from './modules/categories/categories.routes'
-import { productsRoutes } from './modules/products/products.routes'
+import { offersRoutes } from './modules/offers/offers.routes'
 import sessionsPlugin from './modules/sessions/sessions'
 import { userRoutes } from './modules/users/users.routes'
 
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+
 dotenv.config()
 
-const fastify = Fastify({ logger: true })
+const fastify = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>()
 
-void fastify.register(import('@fastify/multipart'))
+void fastify.register(import('@fastify/multipart'), { addToBody: true, limits: { files: 5 } })
 void fastify.register(import('@fastify/sensible'))
+void fastify.register(import('@fastify/swagger'), {
+  mode: 'dynamic',
+  swagger: {
+    info: {
+      title: `Icerty API`,
+      version: '1.0.0'
+    }
+  }
+})
+void fastify.register(import('@fastify/swagger-ui'), {
+  routePrefix: '/docs'
+})
 void fastify.register(sessionsPlugin)
-void fastify.register(productsRoutes, { prefix: '/api/products' })
+void fastify.register(offersRoutes, { prefix: '/api/offers' })
 void fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 void fastify.register(userRoutes, { prefix: '/api/users' })
 

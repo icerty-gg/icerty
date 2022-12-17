@@ -1,11 +1,6 @@
-import { prisma } from '../../utils/prisma'
+import { createCategorySchema, deleteCategorySchema, updateCategorySchema, getCategoriesSchema } from 'common'
 
-import {
-  createCategorySchema,
-  deleteCategorySchema,
-  editCategorySchema,
-  getCategoriesSchema
-} from './categories.schema'
+import { prisma } from '../../utils/prisma'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -26,9 +21,9 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
-      const { name } = request.body
+      const { img, name } = request.body
 
-      const category = await prisma.category.create({ data: { name } })
+      const category = await prisma.category.create({ data: { name, img } })
 
       return reply.code(201).send({
         ...category,
@@ -50,7 +45,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           }
         })
 
-        const product = await prisma.product.findFirst({
+        const product = await prisma.offer.findFirst({
           where: {
             categoryId: id
           }
@@ -79,9 +74,9 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     )
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: editCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
-      const { name } = request.body
+      const { img, name } = request.body
 
       const category = await prisma.category.findFirst({
         where: {
@@ -98,7 +93,8 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           id
         },
         data: {
-          name
+          name,
+          img
         }
       })
 
