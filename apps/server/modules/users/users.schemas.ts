@@ -4,11 +4,6 @@ import type { Static } from '@sinclair/typebox'
 
 const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
 
-enum RoleEnum {
-  ADMIN = 'ADMIN',
-  USER = 'USER'
-}
-
 function StringEnum<T extends string[]>(values: [...T]) {
   return Type.Unsafe<T[number]>({ type: 'string', enum: values })
 }
