@@ -25,21 +25,23 @@ export const getAllOffersSchema = {
   tags: ['offers'],
   summary: 'Get all offers',
   response: {
-    200: Type.Array(
-      Type.Intersect([
-        OfferSchema,
-        Type.Object({
-          user: UserSchema,
-          images: Type.Array(
-            Type.Object({
-              id: Type.String(),
-              img: Type.String()
-            })
-          ),
-          category: CategorySchema
-        })
-      ])
-    )
+    200: Type.Object({
+      data: Type.Array(
+        Type.Intersect([
+          OfferSchema,
+          Type.Object({
+            user: UserSchema,
+            images: Type.Array(
+              Type.Object({
+                id: Type.String(),
+                img: Type.String()
+              })
+            ),
+            category: CategorySchema
+          })
+        ])
+      )
+    })
   }
 }
 

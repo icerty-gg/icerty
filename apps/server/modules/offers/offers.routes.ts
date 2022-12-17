@@ -29,8 +29,8 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
       }
     })
 
-    return reply.code(200).send(
-      offers.map(o => ({
+    return reply.code(200).send({
+      data: offers.map(o => ({
         ...o,
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
@@ -41,7 +41,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         },
         images: o.offerImage
       }))
-    )
+    })
   })
 
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/:id', { schema: getOfferSchema }, async (request, reply) => {

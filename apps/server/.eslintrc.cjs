@@ -13,12 +13,7 @@ module.exports = {
     'sort-destructure-keys',
     'typescript-sort-keys'
   ],
-  extends: [
-    'prettier',
-    'plugin:import/errors',
-    'plugin:import/typescript',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking'
-  ],
+  extends: ['prettier', 'plugin:import/errors', 'plugin:import/typescript', 'plugin:@typescript-eslint/recommended'],
   rules: {
     '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
     '@typescript-eslint/consistent-type-imports': ['error', { disallowTypeAnnotations: false }],
@@ -70,5 +65,5 @@ module.exports = {
     'typescript-sort-keys/string-enum': 'error',
     '@typescript-eslint/require-await': 'off'
   },
-  ignorePatterns: ['.eslintrc.js', 'dist']
+  ignorePatterns: ['.eslintrc.cjs', 'dist']
 }
