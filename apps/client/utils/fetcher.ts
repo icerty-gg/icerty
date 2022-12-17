@@ -39,7 +39,7 @@ const putApiuserspassword_Body = z.object({ oldPassword: z.string(), newPassword
 const endpoints = makeApi([
   {
     method: 'get',
-    path: '/api/categories/',
+    path: '/categories/',
     requestFormat: 'json',
     response: z.array(
       z.object({
@@ -53,7 +53,7 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
-    path: '/api/categories/',
+    path: '/categories/',
     requestFormat: 'json',
     parameters: [
       {
@@ -72,7 +72,7 @@ const endpoints = makeApi([
   },
   {
     method: 'delete',
-    path: '/api/categories/:id',
+    path: '/categories/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -91,7 +91,7 @@ const endpoints = makeApi([
   },
   {
     method: 'put',
-    path: '/api/categories/:id',
+    path: '/categories/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -115,7 +115,7 @@ const endpoints = makeApi([
   },
   {
     method: 'get',
-    path: '/api/offers/',
+    path: '/offers/',
     requestFormat: 'json',
     response: z.array(
       z.object({
@@ -154,7 +154,7 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
-    path: '/api/offers/',
+    path: '/offers/',
     requestFormat: 'json',
     parameters: [
       {
@@ -198,7 +198,7 @@ const endpoints = makeApi([
   },
   {
     method: 'get',
-    path: '/api/offers/:id',
+    path: '/offers/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -222,7 +222,7 @@ const endpoints = makeApi([
   },
   {
     method: 'delete',
-    path: '/api/offers/:id',
+    path: '/offers/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -235,7 +235,7 @@ const endpoints = makeApi([
   },
   {
     method: 'put',
-    path: '/api/offers/:id',
+    path: '/offers/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -253,7 +253,7 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
-    path: '/api/sessions/login',
+    path: '/sessions/login',
     requestFormat: 'json',
     parameters: [
       {
@@ -277,13 +277,13 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
-    path: '/api/sessions/logout',
+    path: '/sessions/logout',
     requestFormat: 'json',
     response: z.object({ message: z.string() })
   },
   {
     method: 'get',
-    path: '/api/sessions/me',
+    path: '/sessions/me',
     requestFormat: 'json',
     response: z.object({
       id: z.string(),
@@ -300,7 +300,7 @@ const endpoints = makeApi([
   },
   {
     method: 'delete',
-    path: '/api/users/:id',
+    path: '/users/:id',
     requestFormat: 'json',
     parameters: [
       {
@@ -324,7 +324,7 @@ const endpoints = makeApi([
   },
   {
     method: 'put',
-    path: '/api/users/email',
+    path: '/users/email',
     requestFormat: 'json',
     parameters: [
       {
@@ -337,7 +337,7 @@ const endpoints = makeApi([
   },
   {
     method: 'delete',
-    path: '/api/users/me',
+    path: '/users/me',
     requestFormat: 'json',
     response: z.object({
       id: z.string(),
@@ -354,7 +354,7 @@ const endpoints = makeApi([
   },
   {
     method: 'put',
-    path: '/api/users/password',
+    path: '/users/password',
     requestFormat: 'json',
     parameters: [
       {
@@ -367,7 +367,7 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
-    path: '/api/users/register',
+    path: '/users/register',
     requestFormat: 'json',
     parameters: [
       {

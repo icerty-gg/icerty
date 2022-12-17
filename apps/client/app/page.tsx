@@ -12,7 +12,7 @@ import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
 const Home = async () => {
-  const categories = await api.get('/api/categories/')
+  const categories = await api.get('/categories/')
 
   return (
     <Wrapper>
