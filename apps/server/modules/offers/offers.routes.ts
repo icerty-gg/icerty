@@ -150,7 +150,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
       }
 
       if (offer.userId !== request.session.user.id) {
-        throw reply.forbidden('You can only edit your own offers!')
+        throw reply.forbidden('You can only update your own offers!')
       }
 
       await prisma.offer.update({

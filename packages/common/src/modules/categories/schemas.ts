@@ -11,6 +11,8 @@ export const CategorySchema = Type.Object({
 export type Category = Static<typeof CategorySchema>
 
 export const getCategoriesSchema = {
+  tags: ['categories'],
+  summary: 'Get all categories',
   response: {
     200: Type.Object({
       categories: Type.Array(CategorySchema)
@@ -19,6 +21,8 @@ export const getCategoriesSchema = {
 }
 
 export const createCategorySchema = {
+  tags: ['categories'],
+  summary: 'Create category',
   body: Type.Pick(CategorySchema, ['name', 'img']),
   response: {
     201: CategorySchema
@@ -26,6 +30,8 @@ export const createCategorySchema = {
 }
 
 export const deleteCategorySchema = {
+  tags: ['categories'],
+  summary: 'Delete category by id',
   params: Type.Object({
     id: Type.String()
   }),
@@ -34,7 +40,9 @@ export const deleteCategorySchema = {
   }
 }
 
-export const editCategorySchema = {
+export const updateCategorySchema = {
+  tags: ['categories'],
+  summary: 'Update category by id',
   body: Type.Optional(Type.Pick(CategorySchema, ['name', 'img'])),
   params: Type.Object({
     id: Type.String()

@@ -1,4 +1,4 @@
-import { createCategorySchema, deleteCategorySchema, editCategorySchema, getCategoriesSchema } from 'common'
+import { createCategorySchema, deleteCategorySchema, updateCategorySchema, getCategoriesSchema } from 'common'
 
 import { prisma } from '../../utils/prisma'
 
@@ -74,7 +74,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     )
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: editCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
       const { id } = request.params
       const { img, name } = request.body
 

@@ -17,6 +17,8 @@ export const UserSchema = Type.Object({
 export type User = Static<typeof UserSchema>
 
 export const createUserSchema = {
+  tags: ['users'],
+  summary: 'Create user',
   body: Type.Omit(UserSchema, ['id', 'role']),
   response: {
     201: UserSchema
@@ -24,12 +26,16 @@ export const createUserSchema = {
 }
 
 export const deleteCurrentUserSchema = {
+  tags: ['users'],
+  summary: 'Delete current user',
   response: {
     200: UserSchema
   }
 }
 
 export const deleteUserByIdSchema = {
+  tags: ['users'],
+  summary: 'Delete user by id',
   params: Type.Object({
     id: Type.String()
   }),
@@ -39,6 +45,8 @@ export const deleteUserByIdSchema = {
 }
 
 export const updatePasswordSchema = {
+  tags: ['users'],
+  summary: 'Update password',
   body: Type.Object({
     oldPassword: Type.String(),
     newPassword: PasswordSchema
@@ -46,6 +54,8 @@ export const updatePasswordSchema = {
 }
 
 export const updateEmailSchema = {
+  tags: ['users'],
+  summary: 'Update email',
   body: Type.Object({
     email: Type.String({ format: 'email' })
   })

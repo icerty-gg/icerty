@@ -19,6 +19,8 @@ export const OfferSchema = Type.Object({
 export type Offer = Static<typeof OfferSchema>
 
 export const getAllOffersSchema = {
+  tags: ['offers'],
+  summary: 'Get all offers',
   response: {
     200: Type.Array(
       Type.Intersect([
@@ -39,6 +41,8 @@ export const getAllOffersSchema = {
 }
 
 export const getOfferSchema = {
+  tags: ['offers'],
+  summary: 'Get offer by id',
   params: Type.Object({
     id: Type.String()
   }),
@@ -52,6 +56,8 @@ Custom.Set('buffer', (schema, value) => value instanceof Buffer)
 const BufferType = Type.Unsafe<Buffer>({ [Kind]: 'buffer' })
 
 export const createOfferSchema = {
+  tags: ['offers'],
+  summary: 'Create offer',
   body: Type.Intersect([
     Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId']),
     Type.Object({
@@ -84,12 +90,16 @@ export const createOfferSchema = {
 }
 
 export const deleteOfferSchema = {
+  tags: ['offers'],
+  summary: 'Delete offer by id',
   params: Type.Object({
     id: Type.String()
   })
 }
 
 export const updateOfferSchema = {
+  tags: ['offers'],
+  summary: 'Update offer by id',
   body: Type.Optional(Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId', 'isPromoted'])),
   params: Type.Object({
     id: Type.String()
