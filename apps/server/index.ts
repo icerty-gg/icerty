@@ -11,7 +11,7 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
 dotenv.config()
 
-const fastify = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>()
+const fastify = Fastify({ logger: true, }).withTypeProvider<TypeBoxTypeProvider>()
 
 void fastify.register(import('@fastify/multipart'), { addToBody: true, limits: { files: 5 } })
 void fastify.register(import('@fastify/sensible'))

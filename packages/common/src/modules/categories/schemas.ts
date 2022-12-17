@@ -14,9 +14,7 @@ export const getCategoriesSchema = {
   tags: ['categories'],
   summary: 'Get all categories',
   response: {
-    200: Type.Object({
-      categories: Type.Array(CategorySchema)
-    })
+    200: Type.Array(CategorySchema)
   }
 }
 

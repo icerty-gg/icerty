@@ -9,13 +9,13 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
     const categories = await prisma.category.findMany()
 
-    return reply.code(200).send({
-      categories: categories.map(c => ({
+    return reply.code(200).send(
+      categories.map(c => ({
         ...c,
         updatedAt: c.updatedAt.toISOString(),
         createdAt: c.createdAt.toISOString()
       }))
-    })
+    )
   })
 
   fastify
