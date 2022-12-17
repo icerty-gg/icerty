@@ -1,6 +1,11 @@
-import { createCategorySchema, deleteCategorySchema, updateCategorySchema, getCategoriesSchema } from 'common'
-
 import { prisma } from '../../utils/prisma'
+
+import {
+  createCategorySchema,
+  deleteCategorySchema,
+  updateCategorySchema,
+  getCategoriesSchema
+} from './categories.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
@@ -9,13 +14,13 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
     const categories = await prisma.category.findMany()
 
-    return reply.code(200).send({
-      categories: categories.map(c => ({
+    return reply.code(200).send(
+      categories.map(c => ({
         ...c,
         updatedAt: c.updatedAt.toISOString(),
         createdAt: c.createdAt.toISOString()
       }))
-    })
+    )
   })
 
   fastify

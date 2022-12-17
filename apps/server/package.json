@@ -24,7 +24,6 @@
     "@prisma/client": "^4.6.1",
     "@supabase/supabase-js": "^2.2.0",
     "bcryptjs": "^2.4.3",
-    "common": "*",
     "dotenv": "^16.0.3",
     "fastify": "^4.9.2",
     "fastify-plugin": "^4.3.0",

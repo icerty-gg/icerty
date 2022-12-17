@@ -1,7 +1,10 @@
-import { CategorySchema } from './../categories/schemas'
-import { UserSchema } from './../users/schemas'
-import { Static, Type, Kind } from '@sinclair/typebox'
+import { Type, Kind } from '@sinclair/typebox'
 import { Custom } from '@sinclair/typebox/custom'
+
+import { CategorySchema } from '../categories/categories.schemas'
+import { UserSchema } from '../users/users.schemas'
+
+import type { Static } from '@sinclair/typebox'
 
 export const OfferSchema = Type.Object({
   id: Type.String(),

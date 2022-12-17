@@ -1,4 +1,6 @@
-import { Static, Type } from '@sinclair/typebox'
+import { Type } from '@sinclair/typebox'
+
+import type { Static } from '@sinclair/typebox'
 
 export const CategorySchema = Type.Object({
   id: Type.String(),
@@ -14,9 +16,7 @@ export const getCategoriesSchema = {
   tags: ['categories'],
   summary: 'Get all categories',
   response: {
-    200: Type.Object({
-      categories: Type.Array(CategorySchema)
-    })
+    200: Type.Array(CategorySchema)
   }
 }
 

@@ -9,18 +9,10 @@ import { PrimaryButton } from '../components/ui/PrimaryButton'
 import { SecondaryButton } from '../components/ui/SecondaryButton'
 import { Wrapper } from '../components/ui/Wrapper'
 import { UserStats } from '../components/userStats/UserStats'
-import { fetcher } from '../utils/fetcher'
-
-const getCategories = async () => {
-  const getCategories = fetcher.path('/api/categories/').method('get').create()
-
-  const { data } = await getCategories({})
-
-  return data.categories
-}
+import { api } from '../utils/fetcher'
 
 const Home = async () => {
-  const categories = await getCategories()
+  const categories = await api.get('/categories/')
 
   return (
     <Wrapper>

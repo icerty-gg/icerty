@@ -1,7 +1,7 @@
 import fp from 'fastify-plugin'
 
+import type { User } from '../users/users.schemas'
 import type { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
-import type { User } from 'common'
 import type { preValidationHookHandler } from 'fastify'
 
 declare module 'fastify' {

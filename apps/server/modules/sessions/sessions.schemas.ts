@@ -1,5 +1,6 @@
 import { Type } from '@sinclair/typebox'
-import { UserSchema } from '../users'
+
+import { UserSchema } from '../users/users.schemas'
 
 export const loginSchema = {
   tags: ['session'],

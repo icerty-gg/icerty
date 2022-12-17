@@ -12,6 +12,7 @@ coverage
 .next/
 out/
 build
+zodApiSchema.ts
 
 # misc
 .DS_Store

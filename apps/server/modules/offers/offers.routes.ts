@@ -1,9 +1,15 @@
 import { randomUUID } from 'crypto'
 
-import { createOfferSchema, deleteOfferSchema, updateOfferSchema, getAllOffersSchema, getOfferSchema } from 'common'
-
 import { prisma } from '../../utils/prisma'
 import { supabase } from '../../utils/supabase'
+
+import {
+  createOfferSchema,
+  deleteOfferSchema,
+  updateOfferSchema,
+  getAllOffersSchema,
+  getOfferSchema
+} from './offers.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
