@@ -35,7 +35,7 @@ export const deleteCurrentUserSchema = {
   tags: ['users'],
   summary: 'Delete current user',
   response: {
-    200: UserSchema
+    204: Type.Null()
   }
 }
 
@@ -46,7 +46,7 @@ export const deleteUserByIdSchema = {
     id: Type.String()
   }),
   response: {
-    200: UserSchema
+    204: Type.Null()
   }
 }
 
@@ -56,7 +56,10 @@ export const updatePasswordSchema = {
   body: Type.Object({
     oldPassword: Type.String(),
     newPassword: PasswordSchema
-  })
+  }),
+  response: {
+    204: Type.Null()
+  }
 }
 
 export const updateEmailSchema = {
@@ -64,5 +67,8 @@ export const updateEmailSchema = {
   summary: 'Update email',
   body: Type.Object({
     email: Type.String({ format: 'email' })
-  })
+  }),
+  response: {
+    204: Type.Null()
+  }
 }

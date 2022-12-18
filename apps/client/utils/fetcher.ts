@@ -39,17 +39,25 @@ const putApiuserspassword_Body = z.object({ oldPassword: z.string(), newPassword
 const endpoints = makeApi([
   {
     method: 'get',
+    path: '/',
+    requestFormat: 'json',
+    response: z.string()
+  },
+  {
+    method: 'get',
     path: '/categories/',
     requestFormat: 'json',
-    response: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string().min(3),
-        updatedAt: z.string(),
-        createdAt: z.string(),
-        img: z.string()
-      })
-    )
+    response: z.object({
+      data: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string().min(3),
+          updatedAt: z.string(),
+          createdAt: z.string(),
+          img: z.string()
+        })
+      )
+    })
   },
   {
     method: 'post',
@@ -81,13 +89,7 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(3),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      img: z.string()
-    })
+    response: z.void()
   },
   {
     method: 'put',
@@ -105,49 +107,45 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(3),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      img: z.string()
-    })
+    response: z.void()
   },
   {
     method: 'get',
     path: '/offers/',
     requestFormat: 'json',
-    response: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        description: z.string(),
-        categoryId: z.string(),
-        userId: z.string(),
-        count: z.number(),
-        price: z.number(),
-        isPromoted: z.boolean(),
-        updatedAt: z.string(),
-        createdAt: z.string(),
-        user: z.object({
+    response: z.object({
+      data: z.array(
+        z.object({
           id: z.string(),
-          name: z.string().min(4).max(16),
-          surname: z.string().min(4).max(20),
-          img: z.string(),
-          email: z.string().email(),
-          password: z.string().min(8).max(20),
-          role: z.enum(['ADMIN', 'USER'])
-        }),
-        images: z.array(z.object({ id: z.string(), img: z.string() })),
-        category: z.object({
-          id: z.string(),
-          name: z.string().min(3),
+          name: z.string(),
+          description: z.string(),
+          categoryId: z.string(),
+          userId: z.string(),
+          count: z.number(),
+          price: z.number(),
+          isPromoted: z.boolean(),
           updatedAt: z.string(),
           createdAt: z.string(),
-          img: z.string()
+          user: z.object({
+            id: z.string(),
+            name: z.string().min(4).max(16),
+            surname: z.string().min(4).max(20),
+            img: z.string(),
+            email: z.string().email(),
+            password: z.string().min(8).max(20),
+            role: z.enum(['ADMIN', 'USER'])
+          }),
+          images: z.array(z.object({ id: z.string(), img: z.string() })),
+          category: z.object({
+            id: z.string(),
+            name: z.string().min(3),
+            updatedAt: z.string(),
+            createdAt: z.string(),
+            img: z.string()
+          })
         })
-      })
-    )
+      )
+    })
   },
   {
     method: 'post',
@@ -270,7 +268,7 @@ const endpoints = makeApi([
     method: 'post',
     path: '/sessions/logout',
     requestFormat: 'json',
-    response: z.object({ message: z.string() })
+    response: z.void()
   },
   {
     method: 'get',
@@ -297,15 +295,7 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
-      img: z.string(),
-      email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
-    })
+    response: z.void()
   },
   {
     method: 'put',
@@ -324,15 +314,7 @@ const endpoints = makeApi([
     method: 'delete',
     path: '/users/me',
     requestFormat: 'json',
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
-      img: z.string(),
-      email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
-    })
+    response: z.void()
   },
   {
     method: 'put',

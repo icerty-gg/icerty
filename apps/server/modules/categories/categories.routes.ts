@@ -14,13 +14,13 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
     const categories = await prisma.category.findMany()
 
-    return reply.code(200).send(
-      categories.map(c => ({
+    return reply.code(200).send({
+      data: categories.map(c => ({
         ...c,
         updatedAt: c.updatedAt.toISOString(),
         createdAt: c.createdAt.toISOString()
       }))
-    )
+    })
   })
 
   fastify
@@ -64,17 +64,13 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           throw reply.notFound('Category not found!')
         }
 
-        const deletedCategory = await prisma.category.delete({
+        await prisma.category.delete({
           where: {
             id
           }
         })
 
-        return reply.code(200).send({
-          ...deletedCategory,
-          updatedAt: deletedCategory.updatedAt.toISOString(),
-          createdAt: deletedCategory.createdAt.toISOString()
-        })
+        return reply.code(200).send()
       }
     )
   fastify
@@ -93,7 +89,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         throw reply.notFound('Category not found!')
       }
 
-      const updatedCategory = await prisma.category.update({
+      await prisma.category.update({
         where: {
           id
         },
@@ -103,10 +99,6 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         }
       })
 
-      return reply.code(200).send({
-        ...updatedCategory,
-        updatedAt: updatedCategory.updatedAt.toISOString(),
-        createdAt: updatedCategory.createdAt.toISOString()
-      })
+      return reply.code(200).send()
     })
 }

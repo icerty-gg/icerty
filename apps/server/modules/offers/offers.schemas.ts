@@ -99,7 +99,10 @@ export const deleteOfferSchema = {
   summary: 'Delete offer by id',
   params: Type.Object({
     id: Type.String()
-  })
+  }),
+  response: {
+    204: Type.Null()
+  }
 }
 
 export const updateOfferSchema = {
@@ -108,5 +111,8 @@ export const updateOfferSchema = {
   body: Type.Optional(Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId', 'isPromoted'])),
   params: Type.Object({
     id: Type.String()
-  })
+  }),
+  response: {
+    204: Type.Null()
+  }
 }

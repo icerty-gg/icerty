@@ -18,7 +18,7 @@ export const logoutSchema = {
   tags: ['session'],
   summary: 'Logout',
   response: {
-    200: Type.Object({ message: Type.String() })
+    204: Type.Null()
   }
 }
 

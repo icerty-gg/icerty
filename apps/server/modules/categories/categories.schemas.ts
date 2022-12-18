@@ -16,7 +16,9 @@ export const getCategoriesSchema = {
   tags: ['categories'],
   summary: 'Get all categories',
   response: {
-    200: Type.Array(CategorySchema)
+    200: Type.Object({
+      data: Type.Array(CategorySchema)
+    })
   }
 }
 
@@ -36,7 +38,7 @@ export const deleteCategorySchema = {
     id: Type.String()
   }),
   response: {
-    200: CategorySchema
+    204: Type.Null()
   }
 }
 
@@ -48,6 +50,6 @@ export const updateCategorySchema = {
     id: Type.String()
   }),
   response: {
-    200: CategorySchema
+    204: Type.Null()
   }
 }

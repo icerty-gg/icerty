@@ -30,23 +30,19 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
     return reply.code(201).send(user)
   })
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/logout', { schema: logoutSchema }, async (request, reply) => {
-    if (!request.session.user) {
-      throw reply.unauthorized('You need to be logged in!')
-    }
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .post('/logout', { schema: logoutSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      await request.session.destroy()
 
-    await request.session.destroy()
+      return reply.code(204).send()
+    })
 
-    return reply.code(200).send({ message: 'Logged out' })
-  })
-
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/me', { schema: getSessionSchema }, async (request, reply) => {
-    if (!request.session.user) {
-      throw reply.unauthorized('You need to be logged in!')
-    }
-
-    return reply.code(200).send(request.session.user)
-  })
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/me', { schema: getSessionSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      return reply.code(200).send(request.session.user)
+    })
 }
 
 export default sessionRoutes

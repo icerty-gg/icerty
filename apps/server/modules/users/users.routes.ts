@@ -36,14 +36,10 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/me', { schema: deleteCurrentUserSchema }, async (request, reply) => {
-      if (!request.session.user) {
-        throw reply.unauthorized('You need to be logged in!')
-      }
+    .delete('/me', { schema: deleteCurrentUserSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      await prisma.user.delete({ where: { id: request.session.user.id } })
 
-      const deletedUser = await prisma.user.delete({ where: { id: request.session.user.id } })
-
-      return reply.code(200).send(deletedUser)
+      return reply.code(204).send()
     })
 
   fastify
@@ -62,19 +58,15 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
         await prisma.user.delete({ where: { id } })
 
-        return reply.code(200).send(deletedUser)
+        return reply.code(204).send()
       }
     )
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/password', { schema: updatePasswordSchema }, async (request, reply) => {
+    .put('/password', { schema: updatePasswordSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { newPassword, oldPassword } = request.body
       const { user } = request.session
-
-      if (!user) {
-        throw reply.unauthorized('You need to be logged in!')
-      }
 
       if (!(await bcrypt.compare(oldPassword, user.password))) {
         throw reply.conflict('Invalid old password provided!')
@@ -83,7 +75,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       const hashedPassword = await bcrypt.hash(newPassword, 10)
 
       await prisma.user.update({
-        where: { id: request.session.user.id },
+        where: { id: user.id },
         data: {
           password: hashedPassword
         }
@@ -94,12 +86,8 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/email', { schema: updateEmailSchema }, async (request, reply) => {
+    .put('/email', { schema: updateEmailSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { email } = request.body
-
-      if (!request.session.user) {
-        throw reply.unauthorized('You need to be logged in!')
-      }
 
       await prisma.user.update({
         where: { id: request.session.user.id },

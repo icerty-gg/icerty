@@ -60,7 +60,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
+    .post('/', { schema: createOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { categoryId, count, description, images, name, price } = request.body
 
       if (images.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
@@ -118,7 +118,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .delete('/:id', { schema: deleteOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
+    .delete('/:id', { schema: deleteOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { id } = request.params
 
       const offer = await prisma.offer.findFirst({
@@ -142,7 +142,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: updateOfferSchema, preValidation: fastify.auth(['USER']) }, async (request, reply) => {
+    .put('/:id', { schema: updateOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { id } = request.params
 
       const { categoryId, count, description, isPromoted, name, price } = request.body

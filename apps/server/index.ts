@@ -1,3 +1,4 @@
+import { Type } from '@sinclair/typebox'
 import dotenv from 'dotenv'
 import Fastify from 'fastify'
 
@@ -33,9 +34,17 @@ await fastify.register(offersRoutes, { prefix: '/api/offers' })
 await fastify.register(categoriesRoutes, { prefix: '/api/categories' })
 await fastify.register(userRoutes, { prefix: '/api/users' })
 
-fastify.get('/', () => {
-  return { message: 'Hello from api!' }
-})
+fastify.get(
+  '/',
+  {
+    schema: {
+      response: {
+        200: Type.String()
+      }
+    }
+  },
+  () => 'Hello from api!'
+)
 
 const start = async () => {
   try {
