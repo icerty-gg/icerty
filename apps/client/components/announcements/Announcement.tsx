@@ -10,12 +10,12 @@ export const Announcement = () => {
           height='100'
           src='https://ireland.apollo.olxcdn.com/v1/files/tce2tlc02s1o1-PL/image;s=1000x700'
           alt='Ogłoszenie'
-          className='rounded-md'
+          className='rounded-md max-md:w-[70px]'
         />
 
         <div className='text-white flex flex-col gap-2'>
           <p className='text-xs'>Dodane dzisiaj o 19:24</p>
-          <h3>Sprzedam e46 330ci h/k 19" full opcja</h3>
+          <h3 className='line-clamp-none md:line-clamp-2'>Sprzedam e46 330ci h/k 19" full opcja</h3>
           <p className='text-sky-500 text-xl font-bold'>37 500 zł</p>
         </div>
       </li>
