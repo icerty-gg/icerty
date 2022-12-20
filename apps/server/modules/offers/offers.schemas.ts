@@ -69,6 +69,7 @@ export const getOfferSchema = {
 export const createOfferSchema = {
   tags: ['offers'],
   summary: 'Create offer',
+  consumes: ['multipart/form-data'],
   body: Type.Intersect([
     Type.Pick(OfferSchema, ['name', 'description', 'count', 'price', 'categoryId', 'city', 'condition']),
     Type.Object({

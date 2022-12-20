@@ -27,6 +27,7 @@ export const getCategoriesSchema = {
 export const createCategorySchema = {
   tags: ['categories'],
   summary: 'Create category',
+  consumes: ['multipart/form-data'],
   body: Type.Intersect([
     Type.Pick(CategorySchema, ['name']),
     Type.Object({
