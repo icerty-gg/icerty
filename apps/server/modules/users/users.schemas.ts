@@ -16,7 +16,7 @@ export const UserSchema = Type.Object({
   surname: Type.String({ minLength: 4, maxLength: 20 }),
   img: Type.String(),
   email: Type.String({ format: 'email' }),
-  password: PasswordSchema,
+  password: Type.String(),
   role: Role
 })
 
@@ -25,7 +25,7 @@ export type User = Static<typeof UserSchema>
 export const createUserSchema = {
   tags: ['users'],
   summary: 'Create user',
-  body: Type.Omit(UserSchema, ['id', 'role']),
+  body: Type.Intersect([Type.Omit(UserSchema, ['id', 'role', 'password']), Type.Object({ password: PasswordSchema })]),
   response: {
     201: UserSchema
   }
@@ -54,7 +54,7 @@ export const updatePasswordSchema = {
   tags: ['users'],
   summary: 'Update password',
   body: Type.Object({
-    oldPassword: Type.String(),
+    oldPassword: PasswordSchema,
     newPassword: PasswordSchema
   }),
   response: {

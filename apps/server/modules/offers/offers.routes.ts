@@ -24,8 +24,21 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
             img: true
           }
         },
-        category: true,
-        user: true
+        category: {
+          select: {
+            id: true,
+            name: true,
+            img: true
+          }
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            img: true
+          }
+        }
       }
     })
 
@@ -34,11 +47,6 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         ...o,
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
-        category: {
-          ...o.category,
-          createdAt: o.category.createdAt.toISOString(),
-          updatedAt: o.category.updatedAt.toISOString()
-        },
         images: o.offerImage
       }))
     })

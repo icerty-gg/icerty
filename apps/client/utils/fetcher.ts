@@ -34,7 +34,10 @@ const postApiusersregister_Body = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(20)
 })
-const putApiuserspassword_Body = z.object({ oldPassword: z.string(), newPassword: z.string().min(8).max(20) })
+const putApiuserspassword_Body = z.object({
+  oldPassword: z.string().min(8).max(20),
+  newPassword: z.string().min(8).max(20)
+})
 
 const endpoints = makeApi([
   {
@@ -130,19 +133,10 @@ const endpoints = makeApi([
             id: z.string(),
             name: z.string().min(4).max(16),
             surname: z.string().min(4).max(20),
-            img: z.string(),
-            email: z.string().email(),
-            password: z.string().min(8).max(20),
-            role: z.enum(['ADMIN', 'USER'])
+            img: z.string()
           }),
           images: z.array(z.object({ id: z.string(), img: z.string() })),
-          category: z.object({
-            id: z.string(),
-            name: z.string().min(3),
-            updatedAt: z.string(),
-            createdAt: z.string(),
-            img: z.string()
-          })
+          category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() })
         })
       )
     })
@@ -175,7 +169,7 @@ const endpoints = makeApi([
         surname: z.string().min(4).max(20),
         img: z.string(),
         email: z.string().email(),
-        password: z.string().min(8).max(20),
+        password: z.string(),
         role: z.enum(['ADMIN', 'USER'])
       }),
       images: z.array(z.object({ id: z.string(), img: z.string() })),
@@ -260,7 +254,7 @@ const endpoints = makeApi([
       surname: z.string().min(4).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
+      password: z.string(),
       role: z.enum(['ADMIN', 'USER'])
     })
   },
@@ -280,7 +274,7 @@ const endpoints = makeApi([
       surname: z.string().min(4).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
+      password: z.string(),
       role: z.enum(['ADMIN', 'USER'])
     })
   },
@@ -346,7 +340,7 @@ const endpoints = makeApi([
       surname: z.string().min(4).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
+      password: z.string(),
       role: z.enum(['ADMIN', 'USER'])
     })
   }

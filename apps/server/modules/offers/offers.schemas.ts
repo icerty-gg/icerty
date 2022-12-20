@@ -30,14 +30,14 @@ export const getAllOffersSchema = {
         Type.Intersect([
           OfferSchema,
           Type.Object({
-            user: UserSchema,
+            user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
             images: Type.Array(
               Type.Object({
                 id: Type.String(),
                 img: Type.String()
               })
             ),
-            category: CategorySchema
+            category: Type.Pick(CategorySchema, ['id', 'name', 'img'])
           })
         ])
       )
