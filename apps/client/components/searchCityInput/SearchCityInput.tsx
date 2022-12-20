@@ -9,22 +9,10 @@ import { SearchItem } from './SearchItem'
 import { cities } from './cities'
 
 export const SearchCityInput = () => {
-  const [isOpenDropdown, setIsOpenDropdown] = useState(false)
   const [inputValue, setInputValue] = useState('')
+  const [isOpenDropdown, setIsOpenDropdown] = useState(!!inputValue)
 
-  const changeInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-
-    inputValue ? setIsOpenDropdown(true) : setIsOpenDropdown(false)
-  }
-
-  const filteredCities = inputValue
-    ? cities.filter(c => {
-        return c.name.trim().toLowerCase().includes(inputValue.toLowerCase())
-      })
-    : cities
-
-  console.log(!!inputValue)
+  const filteredCities = cities.filter(c => c.name.trim().toLowerCase().includes(inputValue.toLowerCase()))
 
   const searchValueHandler = (city: string) => {
     setInputValue(city)
@@ -37,7 +25,7 @@ export const SearchCityInput = () => {
         type='search'
         placeholder='Cała Polska'
         className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full'
-        onChange={changeInputHandler}
+        onChange={e => setInputValue(e.target.value)}
         onFocus={() => setIsOpenDropdown(true)}
         onBlur={() => setTimeout(() => setIsOpenDropdown(false), 100)}
         value={inputValue}
