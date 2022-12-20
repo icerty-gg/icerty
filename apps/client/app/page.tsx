@@ -13,9 +13,9 @@ import { api } from '../utils/fetcher'
 
 const Home = async () => {
   const { data: categories } = await api.get('/categories/')
-  // const { data: offers } = await api.get('/offers/')
+  const { data: offers } = await api.get('/offers/')
 
-  // const promotedOffers = offers.filter(f => f.isPromoted === true).slice(0, 10)
+  const promotedOffers = offers.filter(f => f.isPromoted).slice(0, 10)
 
   return (
     <Wrapper>
@@ -42,18 +42,19 @@ const Home = async () => {
             </div>
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
-              {/* {promotedOffers.map(o => {
+              {promotedOffers.map(o => {
                 return (
                   <Announcement
-                  key={o.id}
-                  id={o.id}
-                  image={o.images}
-                  name={o.name}
-                  price={o.price}
-                  createdAt={o.createdAt}
+                    key={o.id}
+                    id={o.id}
+                    image={o.images}
+                    name={o.name}
+                    price={o.price}
+                    createdAt={o.createdAt}
                   />
                 )
-              })} */}
+              })}
+              {/* <Announcement />
               <Announcement />
               <Announcement />
               <Announcement />
@@ -62,8 +63,7 @@ const Home = async () => {
               <Announcement />
               <Announcement />
               <Announcement />
-              <Announcement />
-              <Announcement />
+              <Announcement /> */}
             </ul>
           </Container>
 
