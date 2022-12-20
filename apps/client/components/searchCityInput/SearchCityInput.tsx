@@ -3,8 +3,6 @@
 import React, { useState } from 'react'
 import { BiLocationPlus } from 'react-icons/bi'
 
-import { Container } from '../ui/Container'
-
 import { SearchItem } from './SearchItem'
 import { cities } from './cities'
 
@@ -32,14 +30,14 @@ export const SearchCityInput = () => {
       />
       <BiLocationPlus className='absolute left-4 text-white text-xl' />
 
-      <Container className={`absolute w-full top-[100%] left-0 ${isOpenDropdown ? 'grid' : 'hidden'}`}>
+      <div className={`absolute bg-gray-800 w-full top-[100%] left-0 ${isOpenDropdown ? 'grid' : 'hidden'}`}>
         <ul className={`grid grid-cols-1 max-h-[20rem] overflow-y-scroll overflow-hidden text-white`}>
           {filteredCities.map(c => (
             <SearchItem onAddCity={searchValueHandler} key={c.id} name={c.name} />
           ))}
         </ul>
         <button onClick={() => setIsOpenDropdown(false)}>Hide</button>
-      </Container>
+      </div>
     </div>
   )
 }

@@ -22,5 +22,17 @@ export const cities = [
   {
     id: 'c6',
     name: 'Szczecin'
+  },
+  {
+    id: 'c7',
+    name: 'Sopot'
+  },
+  {
+    id: 'c8',
+    name: 'Zakopane'
+  },
+  {
+    id: 'c9',
+    name: 'Rzeszów'
   }
 ]
