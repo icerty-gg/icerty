@@ -2,7 +2,7 @@ import { BiLockAlt } from 'react-icons/bi'
 
 import { Announcement } from '../components/announcements/Announcement'
 import { CategoryItem } from '../components/categories/CategoryItem'
-import { BluredCircle } from '../components/ui/BluredCircle'
+import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
 import { MainSearch } from '../components/ui/MainSearch'
 import { PrimaryButton } from '../components/ui/PrimaryButton'
@@ -13,31 +13,50 @@ import { api } from '../utils/fetcher'
 
 const Home = async () => {
   const { data: categories } = await api.get('/categories/')
+  // const { data: offers } = await api.get('/offers/')
+
+  // const promotedOffers = offers.filter(f => f.isPromoted === true).slice(0, 10)
 
   return (
     <Wrapper>
       <div className='relative'>
         <div className='grid grid-cols-2 gap-4'>
-          <div className='rounded-2xl p-8 bg-gray-900/75 backdrop-blur border-slate-300/10 border col-span-2'>
+          <Container className='col-span-2 z-20'>
             <Heading title='Wyszukaj ogłoszenie' className='pb-6' />
             <MainSearch />
-          </div>
+          </Container>
 
-          <div className='rounded-2xl max-lg:col-span-2 px-4 pt-6 bg-gray-900/75 backdrop-blur border-slate-300/10 border'>
+          <Container className='max-lg:col-span-2'>
             <Heading title='Kategorie główne' className='pb-6' />
-            <ul className='sticky grid grid-cols-3 max-lg:grid-cols-2 gap-4 max-md:grid-cols-1  backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll'>
+            <ul className='sticky grid grid-cols-3 max-lg:grid-cols-2 gap-4 max-md:grid-cols-1 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll'>
               {categories.map(c => (
-                <CategoryItem href={`categories/${c.name.toLowerCase()}`} key={c.id} name={c.name} image={c.img} />
+                <CategoryItem href={c.name} key={c.id} name={c.name} image={c.img} />
               ))}
             </ul>
-          </div>
+          </Container>
 
-          <div className='rounded-2xl max-lg:col-span-2 px-4 pt-6 bg-gray-900/75 backdrop-blur border-slate-300/10 border'>
+          <Container className='max-lg:col-span-2'>
             <div className='flex items-center justify-center gap-4 pb-6'>
               <Heading title='Promowane Ogłoszenia' />
               <SecondaryButton href='/announcements'>Pokaż wszystkie</SecondaryButton>
             </div>
+
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
+              {/* {promotedOffers.map(o => {
+                return (
+                  <Announcement
+                  key={o.id}
+                  id={o.id}
+                  image={o.images}
+                  name={o.name}
+                  price={o.price}
+                  createdAt={o.createdAt}
+                  />
+                )
+              })} */}
+              <Announcement />
+              <Announcement />
+              <Announcement />
               <Announcement />
               <Announcement />
               <Announcement />
@@ -46,9 +65,9 @@ const Home = async () => {
               <Announcement />
               <Announcement />
             </ul>
-          </div>
+          </Container>
 
-          <div className='rounded-2xl p-8 bg-gray-900/75 border-slate-300/10 border col-span-2'>
+          <Container className='col-span-2'>
             <Heading title='Twoje ogłoszenia' className='pb-6' />
             <div className='relative'>
               <UserStats />
@@ -60,9 +79,8 @@ const Home = async () => {
                 <PrimaryButton href='/sign-in'>Zaloguj</PrimaryButton>
               </div>
             </div>
-          </div>
+          </Container>
         </div>
-        <BluredCircle />
       </div>
     </Wrapper>
   )
