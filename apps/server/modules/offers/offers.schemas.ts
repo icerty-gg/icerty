@@ -1,7 +1,6 @@
-import { Type, Kind } from '@sinclair/typebox'
-import { Custom } from '@sinclair/typebox/custom'
+import { Type } from '@sinclair/typebox'
 
-import { StringEnum } from '../../utils/schema'
+import { BufferType, StringEnum } from '../../utils/schema'
 import { CategorySchema } from '../categories/categories.schemas'
 import { UserSchema } from '../users/users.schemas'
 
@@ -66,10 +65,6 @@ export const getOfferSchema = {
     200: OfferSchema
   }
 }
-
-Custom.Set('buffer', (schema, value) => value instanceof Buffer)
-
-const BufferType = Type.Unsafe<Buffer>({ [Kind]: 'buffer' })
 
 export const createOfferSchema = {
   tags: ['offers'],
