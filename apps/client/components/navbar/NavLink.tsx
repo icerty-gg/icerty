@@ -12,31 +12,34 @@ interface Props {
 
 export const NavLink = ({ href, isMobile, title }: Props) => {
   const pathname = usePathname()
-  const p = pathname === href
 
-  return !isMobile ? (
+  if (isMobile) {
+    return (
+      <Link
+        className={`${
+          pathname === href ? 'text-sky-600' : 'text-slate-200'
+        } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
+        href={href}
+      >
+        {title}
+      </Link>
+    )
+  }
+
+  return (
     <Link
       className={`${
-        p ? 'text-sky-600' : 'text-slate-200'
+        pathname === href ? 'text-sky-600' : 'text-slate-200'
       } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
       href={href}
     >
       {title}
-      {p && (
+      {pathname === href && (
         <motion.span
           layoutId='rect'
           className='absolute w-full h-full bottom-0 left-0 rounded-full bg-sky-400/10 border border-slate-800 shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500'
         />
       )}
-    </Link>
-  ) : (
-    <Link
-      className={`${
-        p ? 'text-sky-600' : 'text-slate-200'
-      } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
-      href={href}
-    >
-      {title}
     </Link>
   )
 }

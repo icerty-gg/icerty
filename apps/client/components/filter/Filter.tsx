@@ -10,7 +10,7 @@ import { CheckboxInput } from './CheckboxInput'
 import { PriceInput } from './PriceInput'
 import { SmallHeading } from './SmallHeading'
 
-export const Filter = async (): Promise<JSX.Element> => {
+export const Filter = async () => {
   const { data: categories } = await api.get('/categories/')
 
   return (

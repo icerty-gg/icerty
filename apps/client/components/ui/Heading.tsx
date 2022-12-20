@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const Heading = ({ className, title }: Props) => (
-  <h2 className={`text-2xl text-white font-bold text-center ${clsx(className && className)}`}>{title}</h2>
+  <h2 className={clsx('text-2xl text-white font-bold text-center', className)}>{title}</h2>
 )
