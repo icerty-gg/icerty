@@ -29,9 +29,9 @@ export const getAllOffersSchema = {
   querystring: Type.Object({
     city: Type.Optional(Type.String()),
     name: Type.Optional(Type.String()),
-    page: Type.Optional(Type.Number({ minimum: 1 })),
-    order_direction: Type.Optional(StringEnum(['asc', 'desc'])),
-    order_by: Type.Optional(StringEnum(['price', 'createdAt']))
+    page: Type.Number({ minimum: 1, default: 1 }),
+    order_direction: Type.Optional(StringEnum(['asc', 'desc'], 'asc')),
+    order_by: Type.Optional(StringEnum(['price', 'createdAt'], 'createdAt'))
   }),
   response: {
     200: Type.Object({
