@@ -4,6 +4,7 @@ import { Inter } from '@next/font/google'
 import { Navbar } from '../components/navbar/Navbar'
 import { BackToTopButton } from '../components/ui/BackToTopButton'
 import { BluredCircle } from '../components/ui/BluredCircle'
+import { Wrapper } from '../components/ui/Wrapper'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,10 +17,12 @@ const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
     <html className={`${inter.variable} font-sans`} lang='en'>
       <body className='bg-gray-900 relative'>
         <Navbar />
-        <div className='py-24'>
-          {children}
-          <BluredCircle />
-        </div>
+        <Wrapper>
+          <div className='py-24'>
+            {children}
+            <BluredCircle />
+          </div>
+        </Wrapper>
         <BackToTopButton />
       </body>
     </html>

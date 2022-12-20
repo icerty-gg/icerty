@@ -13,6 +13,6 @@ export const Logo = ({ className, isSmall }: Props) => (
     href='/'
   >
     <Logotype className={`${isSmall ? 'w-10' : 'w-12'}`} />
-    Icerty
+    <h1>Icerty</h1>
   </Link>
 )
