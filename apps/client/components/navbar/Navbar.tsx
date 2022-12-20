@@ -21,15 +21,15 @@ export const Navbar = () => {
     <>
       <nav
         ref={navbarRef}
-        className='sticky text-center bg-gray-900/75 backdrop-blur w-full h-20 flex items-center  border-b border-slate-300/10 z-10 supports-backdrop-blur:bg-white/95'
+        className='sticky max-lg:fixed text-center bg-gray-900/75 backdrop-blur w-full h-20 flex items-center  border-b border-slate-300/10 z-10 supports-backdrop-blur:bg-white/95'
       >
         <div className='max-w-screen-2xl w-full my-0 mx-auto px-8 flex items-center justify-between'>
           <Logo isSmall={false} />
           <div className='flex gap-2 max-lg:hidden'>
             <NavLink title='Strona główna' href='/' />
-            <NavLink title='Ogłoszenia' href='/announcements' />
+            <NavLink title='Ogłoszenia' href='/offers' />
             <NavLink title='Obserwowane' href='/observed' />
-            <NavLink title='Dodaj ogłoszenie' href='/add-announcement' />
+            <NavLink title='Dodaj ogłoszenie' href='/add-offer' />
           </div>
 
           <button
@@ -57,9 +57,9 @@ export const Navbar = () => {
         <div className='flex gap-2 items-center bg-gray-900/75 backdrop-blur p-2 rounded-full border-slate-300/10 border'>
           <Logo isSmall={true} className='mr-4' />
           <NavLink isMobile={true} title='Strona główna' href='/' />
-          <NavLink isMobile={true} title='Ogłoszenia' href='/announcements' />
+          <NavLink isMobile={true} title='Ogłoszenia' href='/Offers' />
           <NavLink isMobile={true} title='Obserwowane' href='/observed' />
-          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-announcement' />
+          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-Offer' />
         </div>
       </nav>
     </>

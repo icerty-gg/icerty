@@ -16,7 +16,26 @@ import type { FastifyPluginAsync } from 'fastify'
 
 export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
+    const { city, name, order_by = 'createdAt', order_direction = 'asc', page = 1 } = request.query
+
+    const OFFERS_SHOWN = 20
+
     const offers = await prisma.offer.findMany({
+      skip: (page - 1) * OFFERS_SHOWN,
+      take: OFFERS_SHOWN,
+      orderBy: {
+        [order_by]: order_direction
+      },
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive'
+        },
+        city: {
+          contains: city,
+          mode: 'insensitive'
+        }
+      },
       include: {
         offerImage: {
           select: {
@@ -24,8 +43,21 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
             img: true
           }
         },
-        category: true,
-        user: true
+        category: {
+          select: {
+            id: true,
+            name: true,
+            img: true
+          }
+        },
+        user: {
+          select: {
+            id: true,
+            name: true,
+            surname: true,
+            img: true
+          }
+        }
       }
     })
 
@@ -34,13 +66,9 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         ...o,
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
-        category: {
-          ...o.category,
-          createdAt: o.category.createdAt.toISOString(),
-          updatedAt: o.category.updatedAt.toISOString()
-        },
         images: o.offerImage
-      }))
+      })),
+      maxPage: Math.ceil(offers.length / OFFERS_SHOWN)
     })
   })
 
@@ -61,7 +89,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/', { schema: createOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
-      const { categoryId, count, description, images, name, price } = request.body
+      const { categoryId, city, condition, count, description, images, name, price } = request.body
 
       if (images.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
         throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
@@ -90,6 +118,8 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
           price,
           description,
           categoryId,
+          city,
+          condition,
           userId: request.session.user.id,
           offerImage: {
             createMany: {
@@ -145,7 +175,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
     .put('/:id', { schema: updateOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { id } = request.params
 
-      const { categoryId, count, description, isPromoted, name, price } = request.body
+      const { categoryId, city, condition, count, description, isPromoted, name, price } = request.body
 
       const offer = await prisma.offer.findFirst({
         where: { id }
@@ -161,7 +191,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
       await prisma.offer.update({
         where: { id },
-        data: { count, name, price, categoryId, description, isPromoted }
+        data: { count, name, price, categoryId, description, isPromoted, city, condition }
       })
 
       return reply.code(204).send()

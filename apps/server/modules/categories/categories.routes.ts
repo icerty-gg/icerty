@@ -1,4 +1,7 @@
+import { randomUUID } from 'crypto'
+
 import { prisma } from '../../utils/prisma'
+import { supabase } from '../../utils/supabase'
 
 import {
   createCategorySchema,
@@ -25,23 +28,39 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { img, name } = request.body
 
-      const category = await prisma.category.create({ data: { name, img } })
+      if (img.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
+        throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
+      }
 
-      return reply.code(201).send({
-        ...category,
-        updatedAt: category.updatedAt.toISOString(),
-        createdAt: category.createdAt.toISOString()
+      if (img.length > 1 || !img[0]) {
+        throw reply.badRequest('Image must be a single file!')
+      }
+
+      console.log(img)
+
+      const { data, error } = await supabase.storage.from('categories').upload(randomUUID(), img[0].data, {
+        contentType: img[0].mimetype
       })
+
+      if (error) {
+        throw reply.internalServerError(error.message)
+      }
+
+      const { data: url } = supabase.storage.from('categories').getPublicUrl(data.path)
+
+      await prisma.category.create({ data: { name, img: url.publicUrl } })
+
+      return reply.code(204).send()
     })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete(
       '/:id',
-      { schema: deleteCategorySchema, preValidation: fastify.auth(['ADMIN']) },
+      { schema: deleteCategorySchema, preValidation: fastify.auth(['admin']) },
       async (request, reply) => {
         const { id } = request.params
         const category = await prisma.category.findFirst({
@@ -75,7 +94,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     )
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { id } = request.params
       const { img, name } = request.body
 
@@ -99,6 +118,6 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         }
       })
 
-      return reply.code(200).send()
+      return reply.code(204).send()
     })
 }

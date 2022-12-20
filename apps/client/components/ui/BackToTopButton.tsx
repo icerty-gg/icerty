@@ -7,8 +7,6 @@ import { useCheckScroll } from '../../hooks/useCheckScroll'
 export const BackToTopButton = () => {
   const isVisible = useCheckScroll(800)
 
-  console.log(isVisible)
-
   const scrollToTopHandler = () => {
     document.documentElement.scrollTop = 0
   }

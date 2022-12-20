@@ -1,5 +1,7 @@
 import { Type } from '@sinclair/typebox'
 
+import { BufferType } from '../../utils/schema'
+
 import type { Static } from '@sinclair/typebox'
 
 export const CategorySchema = Type.Object({
@@ -25,9 +27,23 @@ export const getCategoriesSchema = {
 export const createCategorySchema = {
   tags: ['categories'],
   summary: 'Create category',
-  body: Type.Pick(CategorySchema, ['name', 'img']),
+  consumes: ['multipart/form-data'],
+  body: Type.Intersect([
+    Type.Pick(CategorySchema, ['name']),
+    Type.Object({
+      img: Type.Array(
+        Type.Object({
+          data: BufferType,
+          filename: Type.String(),
+          encoding: Type.String(),
+          mimetype: Type.String(),
+          limit: Type.Boolean()
+        })
+      )
+    })
+  ]),
   response: {
-    201: CategorySchema
+    204: Type.Null()
   }
 }
 

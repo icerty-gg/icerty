@@ -10,7 +10,7 @@ async function main() {
       email: 'admin@example.com',
       name: 'Admin',
       password: '$2a$10$Hg15umuK5xrHsD6KoTxh.uX5qQmyXJslrEnA9S0shpxOhVprUWfGm',
-      role: 'ADMIN',
+      role: 'admin',
       surname: 'Admin'
     }
   })
