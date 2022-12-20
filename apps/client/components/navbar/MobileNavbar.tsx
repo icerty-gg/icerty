@@ -11,7 +11,7 @@ interface Props {
 
 export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
   return (
-    <nav
+    <div
       className={`${
         isOpened ? 'translate-x-[0]' : 'translate-x-[100%]'
       } fixed top-0 z-30 right-0 h-full w-96 bg-gray-900 transition-transform backdrop-blur-md border-l border-slate-300/10`}
@@ -32,6 +32,6 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
           <PrimaryButton href='/sign-in'>Zaloguj się</PrimaryButton>
         </div>
       </div>
-    </nav>
+    </div>
   )
 }
