@@ -21,7 +21,7 @@ export const Navbar = () => {
     <>
       <nav
         ref={navbarRef}
-        className='sticky text-center bg-gray-900/75 backdrop-blur w-full h-20 flex items-center  border-b border-slate-300/10 z-10 supports-backdrop-blur:bg-white/95'
+        className='sticky max-lg:fixed text-center bg-gray-900/75 backdrop-blur w-full h-20 flex items-center  border-b border-slate-300/10 z-10 supports-backdrop-blur:bg-white/95'
       >
         <div className='max-w-screen-2xl w-full my-0 mx-auto px-8 flex items-center justify-between'>
           <Logo isSmall={false} />
