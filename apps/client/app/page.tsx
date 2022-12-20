@@ -1,7 +1,7 @@
 import { BiLockAlt } from 'react-icons/bi'
 
-import { Announcement } from '../components/announcements/Announcement'
 import { CategoryItem } from '../components/categories/CategoryItem'
+import { Offer } from '../components/offers/Offer'
 import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
 import { MainSearch } from '../components/ui/MainSearch'
@@ -38,32 +38,15 @@ const Home = async () => {
           <Container className='max-lg:col-span-2'>
             <div className='flex items-center justify-center gap-4 pb-6'>
               <Heading title='Promowane Ogłoszenia' />
-              <SecondaryButton href='/announcements'>Pokaż wszystkie</SecondaryButton>
+              <SecondaryButton href='/offers'>Pokaż wszystkie</SecondaryButton>
             </div>
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
               {promotedOffers.map(o => {
                 return (
-                  <Announcement
-                    key={o.id}
-                    id={o.id}
-                    image={o.images}
-                    name={o.name}
-                    price={o.price}
-                    createdAt={o.createdAt}
-                  />
+                  <Offer key={o.id} id={o.id} image={o.images} name={o.name} price={o.price} createdAt={o.createdAt} />
                 )
               })}
-              {/* <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement />
-              <Announcement /> */}
             </ul>
           </Container>
 

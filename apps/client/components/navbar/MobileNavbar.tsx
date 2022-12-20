@@ -26,9 +26,9 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
 
         <div className='flex flex-col gap-2 mt-12'>
           <NavLink isMobile={true} title='Strona główna' href='/' />
-          <NavLink isMobile={true} title='Ogłoszenia' href='/announcements' />
+          <NavLink isMobile={true} title='Ogłoszenia' href='/offers' />
           <NavLink isMobile={true} title='Obserwowane' href='/observed' />
-          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-announcement' />
+          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-offers' />
           <PrimaryButton href='/sign-in'>Zaloguj się</PrimaryButton>
         </div>
       </div>

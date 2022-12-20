@@ -15,6 +15,12 @@ module.exports = {
         hostname: 'ireland.apollo.olxcdn.com',
         port: '',
         pathname: '/v1/files/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ajvfiitmeqcfguupmscm.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/offers/**'
       }
     ]
   },

@@ -18,7 +18,7 @@ export const Filter = async (): Promise<JSX.Element> => {
       <Container className='sticky top-[6rem] max-lg:col-span-2'>
         <div className='flex items-center justify-center gap-4 pb-6'>
           <Heading title='Filtry' />
-          <SecondaryButton href='/announcements'>Wyczyść</SecondaryButton>
+          <SecondaryButton href='/offers'>Wyczyść</SecondaryButton>
         </div>
 
         <div className='grid grid-cols-1 gap-6 max-h-[40rem] overflow-y-scroll overflow-hidden'>
