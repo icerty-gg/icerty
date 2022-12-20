@@ -25,7 +25,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { img, name } = request.body
 
       const category = await prisma.category.create({ data: { name, img } })
@@ -41,7 +41,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete(
       '/:id',
-      { schema: deleteCategorySchema, preValidation: fastify.auth(['ADMIN']) },
+      { schema: deleteCategorySchema, preValidation: fastify.auth(['admin']) },
       async (request, reply) => {
         const { id } = request.params
         const category = await prisma.category.findFirst({
@@ -75,7 +75,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
     )
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { id } = request.params
       const { img, name } = request.body
 

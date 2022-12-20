@@ -1,14 +1,10 @@
 import { Type } from '@sinclair/typebox'
 
+import { StringEnum } from '../../utils/schema'
+
 import type { Static } from '@sinclair/typebox'
 
 const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
-
-function StringEnum<T extends string[]>(values: [...T]) {
-  return Type.Unsafe<T[number]>({ type: 'string', enum: values })
-}
-
-const Role = StringEnum(['ADMIN', 'USER'])
 
 export const UserSchema = Type.Object({
   id: Type.String(),
@@ -17,7 +13,7 @@ export const UserSchema = Type.Object({
   img: Type.String(),
   email: Type.String({ format: 'email' }),
   password: Type.String(),
-  role: Role
+  role: StringEnum(['admin', 'user'])
 })
 
 export type User = Static<typeof UserSchema>

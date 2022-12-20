@@ -17,7 +17,7 @@ model user {
   email    String  @unique
   password String
   img      String  @default("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
-  role     Role    @default(USER)
+  role     Role    @default(user)
   offer    offer[]
 }
 
@@ -34,6 +34,8 @@ model offer {
   price       Int
   updatedAt   DateTime     @updatedAt
   isPromoted  Boolean      @default(false)
+  city        String
+  condition   Condition
   offerImage  offerImage[]
 }
 
@@ -56,6 +58,11 @@ model offerImage {
 }
 
 enum Role {
-  ADMIN
-  USER
+  admin
+  user
+}
+
+enum Condition {
+  new
+  used
 }

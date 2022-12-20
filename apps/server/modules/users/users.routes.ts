@@ -46,7 +46,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete(
       '/:id',
-      { schema: deleteUserByIdSchema, preValidation: fastify.auth(['ADMIN']) },
+      { schema: deleteUserByIdSchema, preValidation: fastify.auth(['admin']) },
       async (request, reply) => {
         const { id } = request.params
 
