@@ -21,6 +21,12 @@ module.exports = {
         hostname: 'ajvfiitmeqcfguupmscm.supabase.co',
         port: '',
         pathname: '/storage/v1/object/public/offers/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'ajvfiitmeqcfguupmscm.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/categories/**'
       }
     ]
   },
