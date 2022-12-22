@@ -20,12 +20,12 @@ const Home = async () => {
     <div className='relative'>
       <div className='grid grid-cols-2 gap-4'>
         <Container className='col-span-2 z-20'>
-          <Heading title='Wyszukaj ogłoszenie' className='pb-6' />
+          <Heading title='Find offers' className='pb-6' />
           <MainSearch />
         </Container>
 
         <Container className='max-lg:col-span-2'>
-          <Heading title='Kategorie główne' className='pb-6' />
+          <Heading title='Categories' className='pb-6' />
           <ul className='sticky grid grid-cols-3 max-lg:grid-cols-2 gap-4 max-md:grid-cols-1 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll'>
             {categories.map(c => (
               <CategoryItem href={c.name} key={c.id} name={c.name} image={c.img} />
@@ -35,8 +35,8 @@ const Home = async () => {
 
         <Container className='max-lg:col-span-2'>
           <div className='flex items-center justify-center gap-4 pb-6'>
-            <Heading title='Promowane Ogłoszenia' />
-            <SecondaryButton href='/offers'>Pokaż wszystkie</SecondaryButton>
+            <Heading title='Promoted offers' />
+            <SecondaryButton href='/offers'>Check all</SecondaryButton>
           </div>
 
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
@@ -49,15 +49,15 @@ const Home = async () => {
         </Container>
 
         <Container className='col-span-2'>
-          <Heading title='Twoje ogłoszenia' className='pb-6' />
+          <Heading title='Your offers' className='pb-6' />
           <div className='relative'>
             <UserStats />
 
             <div className='absolute top-0 left-0 w-full h-full flex items-center flex-col gap-6 justify-center'>
               <p className='flex items-center text-center font-bold text-white text-xl gap-4'>
-                <BiLockAlt className='text-2xl' /> Musisz być zalogowany!
+                <BiLockAlt className='text-2xl' /> You need to login!
               </p>
-              <PrimaryButton href='/sign-in'>Zaloguj</PrimaryButton>
+              <PrimaryButton href='/login'>Login</PrimaryButton>
             </div>
           </div>
         </Container>
