@@ -15,7 +15,7 @@ const Offers = async () => {
 
         <Container>
           <div className='flex items-center justify-center gap-4 pb-6'>
-            <Heading title='Ogłoszenia' />
+            <Heading title='Offers' />
           </div>
 
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur'>
