@@ -2,13 +2,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { BiLockAlt, BiMailSend, BiUser, BiPhone, BiLocationPlus, BiErrorCircle } from 'react-icons/bi'
+import { BiLockAlt, BiMailSend, BiUser, BiPhone, BiLocationPlus } from 'react-icons/bi'
 import { z } from 'zod'
 
+import { ErrorMessage } from '../../components/Form/ErrorMessage'
 import { Input } from '../../components/Form/Input'
 import { CheckboxInput } from '../../components/filter/CheckboxInput'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
+import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/SecondaryButton'
 
@@ -40,14 +42,6 @@ const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = data => {
     console.log(data)
-  }
-
-  const ErrorMessage = ({ children }: { readonly children: React.ReactNode }) => {
-    return (
-      <p className='text-red-700 flex items-center gap-2'>
-        <BiErrorCircle /> {children}
-      </p>
-    )
   }
 
   return (
@@ -96,7 +90,7 @@ const RegisterForm = () => {
         validate={{ ...register('phoneNumber') }}
         className='max-md:col-span-2'
         icon={<BiPhone className='text-lg' />}
-        type='text'
+        type='tel'
         label='Phone number'
         error={errors.phoneNumber?.message && <ErrorMessage>{errors.phoneNumber?.message}</ErrorMessage>}
       />
@@ -126,8 +120,8 @@ const RegisterForm = () => {
 
 const Register = () => {
   return (
-    <div className='relative'>
-      <div className='grid grid-cols-1 gap-4 w-full max-w-[43rem] m-auto'>
+    <Layout>
+      <div className='grid grid-cols-1 gap-4 w-full max-w-[46rem] m-auto'>
         <Container>
           <Heading title='Create Account' className='pb-6' />
 
@@ -139,7 +133,7 @@ const Register = () => {
           <SecondaryButton href='/login'>Login to your account!</SecondaryButton>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 

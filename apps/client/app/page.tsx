@@ -4,6 +4,7 @@ import { CategoryItem } from '../components/categories/CategoryItem'
 import { Offer } from '../components/offers/Offer'
 import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
+import { Layout } from '../components/ui/Layout'
 import { MainSearch } from '../components/ui/MainSearch'
 import { PrimaryButton } from '../components/ui/PrimaryButton'
 import { SecondaryButton } from '../components/ui/SecondaryButton'
@@ -17,7 +18,7 @@ const Home = async () => {
   const promotedOffers = offers.filter(f => f.isPromoted).slice(0, 10)
 
   return (
-    <div className='relative'>
+    <Layout>
       <div className='grid grid-cols-2 gap-4'>
         <Container className='col-span-2 z-20'>
           <Heading title='Find offers' className='pb-6' />
@@ -42,7 +43,14 @@ const Home = async () => {
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
             {promotedOffers.map(o => {
               return (
-                <Offer key={o.id} id={o.id} image={o.images} name={o.name} price={o.price} createdAt={o.createdAt} />
+                <Offer
+                  key={o.id}
+                  id={o.id}
+                  image={o.images[0].img}
+                  name={o.name}
+                  price={o.price}
+                  createdAt={o.createdAt}
+                />
               )
             })}
           </ul>
@@ -62,7 +70,7 @@ const Home = async () => {
           </div>
         </Container>
       </div>
-    </div>
+    </Layout>
   )
 }
 

@@ -2,13 +2,14 @@ import { Filter } from '../../components/filter/Filter'
 import { Offer } from '../../components/offers/Offer'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
+import { Layout } from '../../components/ui/Layout'
 import { api } from '../../utils/fetcher'
 
 const Offers = async () => {
   const { data: offers } = await api.get('/offers/')
 
   return (
-    <div className='relative'>
+    <Layout>
       <div className='grid grid-rows-none max-lg:grid-cols-1 grid-cols-[1fr,_2fr] gap-4'>
         {/* @ts-expect-error */}
         <Filter />
@@ -34,7 +35,7 @@ const Offers = async () => {
           </ul>
         </Container>
       </div>
-    </div>
+    </Layout>
   )
 }
 

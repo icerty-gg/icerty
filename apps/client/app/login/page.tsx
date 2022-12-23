@@ -2,12 +2,14 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { BiLockAlt, BiMailSend, BiErrorCircle } from 'react-icons/bi'
+import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
 
+import { ErrorMessage } from '../../components/Form/ErrorMessage'
 import { Input } from '../../components/Form/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
+import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/SecondaryButton'
 
@@ -31,14 +33,6 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = data => {
     console.log(data)
-  }
-
-  const ErrorMessage = ({ children }: { readonly children: React.ReactNode }) => {
-    return (
-      <p className='text-red-700 flex items-center gap-2'>
-        <BiErrorCircle /> {children}
-      </p>
-    )
   }
 
   return (
@@ -69,8 +63,8 @@ const LoginForm = () => {
 
 const Login = () => {
   return (
-    <div className='relative'>
-      <div className='grid grid-cols-1 gap-4 w-full max-w-[43rem] m-auto'>
+    <Layout>
+      <div className='grid grid-cols-1 gap-4 w-full max-w-[35rem] m-auto'>
         <Container>
           <Heading title='Login to your account' className='pb-6' />
 
@@ -82,7 +76,7 @@ const Login = () => {
           <SecondaryButton href='/register'>Create new account!</SecondaryButton>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }
 
