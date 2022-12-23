@@ -11,7 +11,7 @@ export const PrimaryButton = ({ children, className, href, isFormTypeButton }: P
   return isFormTypeButton ? (
     <button
       className={clsx(
-        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500  hover:bg-sky-400 px-6 py-2 rounded-full transition-all text-center',
+        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-12 py-[0.7rem] rounded-full transition-all text-center font-bold',
         className
       )}
       type='submit'
@@ -21,7 +21,7 @@ export const PrimaryButton = ({ children, className, href, isFormTypeButton }: P
   ) : (
     <Link
       className={clsx(
-        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500  hover:bg-sky-400 px-6 py-2 rounded-full transition-all text-center',
+        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-12 py-[0.7rem] rounded-full transition-all text-center font-bold',
         className
       )}
       href={href}
