@@ -6,11 +6,12 @@ import { usePathname } from 'next/navigation'
 
 interface Props {
   readonly href: string
+  readonly icon?: React.ReactNode
   readonly isMobile?: boolean
   readonly title: string
 }
 
-export const NavLink = ({ href, isMobile, title }: Props) => {
+export const NavLink = ({ href, icon, isMobile, title }: Props) => {
   const pathname = usePathname()
 
   if (isMobile) {
@@ -18,10 +19,10 @@ export const NavLink = ({ href, isMobile, title }: Props) => {
       <Link
         className={`${
           pathname === href ? 'text-sky-600' : 'text-slate-200'
-        } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
+        } flex items-center gap-2 hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
         href={href}
       >
-        {title}
+        {icon} {title}
       </Link>
     )
   }
@@ -29,10 +30,11 @@ export const NavLink = ({ href, isMobile, title }: Props) => {
   return (
     <Link
       className={`${
-        pathname === href ? 'text-sky-600' : 'text-slate-200'
-      } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
+        pathname === href ? 'text-sky-600 ml-4' : 'text-slate-200'
+      } flex items-center gap-2 transition-all hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 text-sm`}
       href={href}
     >
+      {icon}
       {title}
       {pathname === href && (
         <motion.span

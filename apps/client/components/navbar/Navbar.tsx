@@ -1,7 +1,8 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useRef } from 'react'
-import { BiMenu } from 'react-icons/bi'
+import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiAddToQueue } from 'react-icons/bi'
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
@@ -16,6 +17,7 @@ export const Navbar = () => {
   const isOpenMiniNav = useCheckScroll(80)
   const [isOpenNav, toggleOpenNav] = useToggle()
   const navbarRef = useRef<HTMLElement | null>(null)
+  const pathname = usePathname()
 
   return (
     <>
@@ -25,11 +27,51 @@ export const Navbar = () => {
       >
         <div className='max-w-screen-2xl w-full px-8 my-0 flex flex-wrap items-center justify-between mx-auto'>
           <Logo isSmall={false} />
-          <div className='flex gap-2 max-lg:hidden'>
-            <NavLink title='Main Page' href='/' />
-            <NavLink title='Offers' href='/offers' />
-            <NavLink title='Observed' href='/observed' />
-            <NavLink title='Add Offer' href='/add-offer' />
+          <div className='flex items-center max-lg:hidden'>
+            <NavLink
+              icon={
+                <BiHomeAlt
+                  className={`text-lg transition-all ${
+                    pathname === '/' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                  }`}
+                />
+              }
+              title='Main Page'
+              href='/'
+            />
+            <NavLink
+              icon={
+                <BiBriefcase
+                  className={`text-lg transition-all ${
+                    pathname === '/offers' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                  }`}
+                />
+              }
+              title='Offers'
+              href='/offers'
+            />
+            <NavLink
+              icon={
+                <BiHeart
+                  className={`text-lg transition-all ${
+                    pathname === '/observed' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                  }`}
+                />
+              }
+              title='Observed'
+              href='/observed'
+            />
+            <NavLink
+              icon={
+                <BiAddToQueue
+                  className={`text-lg transition-all ${
+                    pathname === '/add-offer' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                  }`}
+                />
+              }
+              title='Add Offer'
+              href='/add-offer'
+            />
           </div>
 
           <button
@@ -40,7 +82,7 @@ export const Navbar = () => {
           </button>
 
           <div className='flex gap-3 items-center text-sm max-lg:hidden'>
-            <PrimaryButton href='/login'>Get Started</PrimaryButton>
+            <PrimaryButton href='/login'>Login</PrimaryButton>
           </div>
         </div>
       </nav>
