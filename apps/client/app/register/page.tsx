@@ -51,7 +51,7 @@ const RegisterForm = () => {
         className='max-md:col-span-2'
         icon={<BiUser className='text-lg' />}
         type='text'
-        label='First Name'
+        label='Firstname'
         error={errors.firstName?.message && <ErrorMessage>{errors.firstName?.message}</ErrorMessage>}
       />
       <Input
@@ -59,7 +59,7 @@ const RegisterForm = () => {
         className='max-md:col-span-2'
         icon={<BiUser className='text-lg' />}
         type='text'
-        label='Last Name'
+        label='Lastname'
         error={errors.lastName?.message && <ErrorMessage>{errors.lastName?.message}</ErrorMessage>}
       />
       <Input
@@ -83,7 +83,7 @@ const RegisterForm = () => {
         className='col-span-2'
         icon={<BiLockAlt className='text-lg' />}
         type='password'
-        label='Repeat Password'
+        label='Repeat'
         error={errors.repeatPassword?.message && <ErrorMessage>{errors.repeatPassword?.message}</ErrorMessage>}
       />
       <Input
@@ -91,7 +91,7 @@ const RegisterForm = () => {
         className='max-md:col-span-2'
         icon={<BiPhone className='text-lg' />}
         type='tel'
-        label='Phone number'
+        label='Phone'
         error={errors.phoneNumber?.message && <ErrorMessage>{errors.phoneNumber?.message}</ErrorMessage>}
       />
 

@@ -67,7 +67,6 @@ const Login = () => {
       <div className='grid grid-cols-1 gap-4 w-full max-w-[35rem] m-auto'>
         <Container>
           <Heading title='Login to your account' className='pb-6' />
-
           <LoginForm />
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
