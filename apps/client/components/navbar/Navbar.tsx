@@ -27,7 +27,7 @@ export const Navbar = () => {
       >
         <div className='max-w-screen-2xl w-full px-8 my-0 flex flex-wrap items-center justify-between mx-auto'>
           <Logo isSmall={false} />
-          <div className='flex items-center max-lg:hidden'>
+          <div className='flex items-center max-lg:hidden mr-8'>
             <NavLink
               icon={
                 <BiHomeAlt
