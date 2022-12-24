@@ -1,6 +1,5 @@
 import { randomUUID } from 'crypto'
 
-import { prisma } from '../../utils/prisma'
 import { supabase } from '../../utils/supabase'
 
 import {
@@ -14,13 +13,13 @@ import {
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
-export const offersRoutes: FastifyPluginAsync = async fastify => {
+const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
     const { city, name, order_by = 'createdAt', order_direction = 'asc', page = 1 } = request.query
 
     const OFFERS_SHOWN = 20
 
-    const offers = await prisma.offer.findMany({
+    const offers = await fastify.prisma.offer.findMany({
       skip: (page - 1) * OFFERS_SHOWN,
       take: OFFERS_SHOWN,
       orderBy: {
@@ -75,7 +74,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/:id', { schema: getOfferSchema }, async (request, reply) => {
     const { id } = request.params
 
-    const offer = await prisma.offer.findFirst({
+    const offer = await fastify.prisma.offer.findFirst({
       where: { id },
       include: {
         offerImage: true
@@ -119,7 +118,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
       const urls = await Promise.all(promises)
 
-      const offer = await prisma.offer.create({
+      const offer = await fastify.prisma.offer.create({
         data: {
           count,
           name,
@@ -159,7 +158,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
     .delete('/:id', { schema: deleteOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { id } = request.params
 
-      const offer = await prisma.offer.findFirst({
+      const offer = await fastify.prisma.offer.findFirst({
         where: { id }
       })
 
@@ -171,7 +170,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         throw reply.forbidden('You can only delete your own offers!')
       }
 
-      await prisma.offer.delete({
+      await fastify.prisma.offer.delete({
         where: { id }
       })
 
@@ -185,7 +184,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
       const { categoryId, city, condition, count, description, isPromoted, name, price } = request.body
 
-      const offer = await prisma.offer.findFirst({
+      const offer = await fastify.prisma.offer.findFirst({
         where: { id }
       })
 
@@ -197,7 +196,7 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
         throw reply.forbidden('You can only update your own offers!')
       }
 
-      await prisma.offer.update({
+      await fastify.prisma.offer.update({
         where: { id },
         data: { count, name, price, categoryId, description, isPromoted, city, condition }
       })
@@ -205,3 +204,5 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
       return reply.code(204).send()
     })
 }
+
+export default offersPlugin

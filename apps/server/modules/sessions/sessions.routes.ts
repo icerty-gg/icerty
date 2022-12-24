@@ -1,13 +1,11 @@
 import bcrypt from 'bcryptjs'
 
-import { prisma } from '../../utils/prisma'
-
 import { getSessionSchema, loginSchema, logoutSchema } from './sessions.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
-const sessionRoutes: FastifyPluginAsync = async fastify => {
+const sessionsPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
     const { email, password } = request.body
 
@@ -15,7 +13,7 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
       return reply.forbidden('You are already logged in!')
     }
 
-    const user = await prisma.user.findFirst({
+    const user = await fastify.prisma.user.findFirst({
       where: {
         email: email.toLowerCase()
       }
@@ -45,4 +43,4 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
     })
 }
 
-export default sessionRoutes
+export default sessionsPlugin

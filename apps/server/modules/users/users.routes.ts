@@ -1,7 +1,5 @@
 import bcrypt from 'bcryptjs'
 
-import { prisma } from '../../utils/prisma'
-
 import {
   createUserSchema,
   deleteCurrentUserSchema,
@@ -13,13 +11,13 @@ import {
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
-export const userRoutes: FastifyPluginAsync = async fastify => {
+const usersPlugin: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/register', { schema: createUserSchema }, async (request, reply) => {
       const { email, name, password, surname } = request.body
 
-      const isUserRegistered = await prisma.user.findFirst({ where: { email } })
+      const isUserRegistered = await fastify.prisma.user.findFirst({ where: { email } })
 
       if (isUserRegistered) {
         throw reply.conflict('This email is already taken!')
@@ -27,7 +25,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
       const hashedPassword = await bcrypt.hash(password, 10)
 
-      const user = await prisma.user.create({
+      const user = await fastify.prisma.user.create({
         data: { name, surname, email: email.toLowerCase(), password: hashedPassword }
       })
 
@@ -37,7 +35,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete('/me', { schema: deleteCurrentUserSchema, preValidation: fastify.auth() }, async (request, reply) => {
-      await prisma.user.delete({ where: { id: request.session.user.id } })
+      await fastify.prisma.user.delete({ where: { id: request.session.user.id } })
 
       return reply.code(204).send()
     })
@@ -50,13 +48,13 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       async (request, reply) => {
         const { id } = request.params
 
-        const deletedUser = await prisma.user.findFirst({ where: { id } })
+        const deletedUser = await fastify.prisma.user.findFirst({ where: { id } })
 
         if (!deletedUser) {
           throw reply.notFound('User not found!')
         }
 
-        await prisma.user.delete({ where: { id } })
+        await fastify.prisma.user.delete({ where: { id } })
 
         return reply.code(204).send()
       }
@@ -74,7 +72,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
 
       const hashedPassword = await bcrypt.hash(newPassword, 10)
 
-      await prisma.user.update({
+      await fastify.prisma.user.update({
         where: { id: user.id },
         data: {
           password: hashedPassword
@@ -89,7 +87,7 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
     .put('/email', { schema: updateEmailSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { email } = request.body
 
-      await prisma.user.update({
+      await fastify.prisma.user.update({
         where: { id: request.session.user.id },
         data: {
           email
@@ -99,3 +97,5 @@ export const userRoutes: FastifyPluginAsync = async fastify => {
       return reply.code(204).send()
     })
 }
+
+export default usersPlugin
