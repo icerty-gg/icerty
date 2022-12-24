@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import { api } from '../../../utils/fetcher'
 
 export const generateStaticParams = async () => {
@@ -19,6 +21,7 @@ const OfferDetails = async ({ params }: Props) => {
   return (
     <div>
       <h1>{offer.name}</h1>
+      <Image width={500} height={500} alt={offer.name} src={offer.name} />
     </div>
   )
 }
