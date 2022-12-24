@@ -86,14 +86,12 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
       throw reply.notFound('Offer not found!')
     }
 
-    return reply
-      .code(200)
-      .send({
-        ...offer,
-        createdAt: offer.createdAt.toISOString(),
-        updatedAt: offer.updatedAt.toISOString(),
-        images: offer.offerImage
-      })
+    return reply.code(200).send({
+      ...offer,
+      createdAt: offer.createdAt.toISOString(),
+      updatedAt: offer.updatedAt.toISOString(),
+      images: offer.offerImage
+    })
   })
 
   fastify

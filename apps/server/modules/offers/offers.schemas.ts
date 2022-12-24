@@ -1,6 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-import { BufferType, StringEnum } from '../../utils/schema'
+import { BufferType, StringEnum, createTypeBoxFastifySchema } from '../../utils/schema'
 import { CategorySchema } from '../categories/categories.schemas'
 import { UserSchema } from '../users/users.schemas'
 
@@ -29,7 +29,7 @@ export const OfferSchema = Type.Object({
 
 export type Offer = Static<typeof OfferSchema>
 
-export const getAllOffersSchema = {
+export const getAllOffersSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Get all offers',
   querystring: Type.Object({
@@ -59,9 +59,9 @@ export const getAllOffersSchema = {
       )
     })
   }
-}
+})
 
-export const getOfferSchema = {
+export const getOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Get offer by id',
   params: Type.Object({
@@ -70,9 +70,9 @@ export const getOfferSchema = {
   response: {
     200: OfferSchema
   }
-}
+})
 
-export const createOfferSchema = {
+export const createOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Create offer',
   consumes: ['multipart/form-data'],
@@ -105,9 +105,9 @@ export const createOfferSchema = {
       })
     ])
   }
-}
+})
 
-export const deleteOfferSchema = {
+export const deleteOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Delete offer by id',
   params: Type.Object({
@@ -116,9 +116,9 @@ export const deleteOfferSchema = {
   response: {
     204: Type.Null()
   }
-}
+})
 
-export const updateOfferSchema = {
+export const updateOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Update offer by id',
   body: Type.Optional(
@@ -130,4 +130,4 @@ export const updateOfferSchema = {
   response: {
     204: Type.Null()
   }
-}
+})
