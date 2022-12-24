@@ -75,7 +75,12 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/:id', { schema: getOfferSchema }, async (request, reply) => {
     const { id } = request.params
 
-    const offer = await prisma.offer.findFirst({ where: { id } })
+    const offer = await prisma.offer.findFirst({
+      where: { id },
+      include: {
+        offerImage: true
+      }
+    })
 
     if (!offer) {
       throw reply.notFound('Offer not found!')
@@ -83,7 +88,12 @@ export const offersRoutes: FastifyPluginAsync = async fastify => {
 
     return reply
       .code(200)
-      .send({ ...offer, createdAt: offer.createdAt.toISOString(), updatedAt: offer.updatedAt.toISOString() })
+      .send({
+        ...offer,
+        createdAt: offer.createdAt.toISOString(),
+        updatedAt: offer.updatedAt.toISOString(),
+        images: offer.offerImage
+      })
   })
 
   fastify

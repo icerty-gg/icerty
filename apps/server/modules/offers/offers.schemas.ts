@@ -18,7 +18,13 @@ export const OfferSchema = Type.Object({
   updatedAt: Type.String(),
   createdAt: Type.String(),
   city: Type.String({ minLength: 3, maxLength: 50 }),
-  condition: StringEnum(['new', 'used'])
+  condition: StringEnum(['new', 'used']),
+  images: Type.Array(
+    Type.Object({
+      id: Type.String(),
+      img: Type.String()
+    })
+  )
 })
 
 export type Offer = Static<typeof OfferSchema>
