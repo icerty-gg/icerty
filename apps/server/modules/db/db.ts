@@ -19,7 +19,6 @@ const db: FastifyPluginAsync = async fastify => {
   fastify.decorate('prisma', prisma)
 
   fastify.setErrorHandler((err, request, reply) => {
-    console.log('Error handler', err)
     if (err instanceof PrismaClientKnownRequestError) {
       switch (err.code) {
         case PrismaErrorCode.UniqueKeyViolation:
