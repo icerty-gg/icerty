@@ -31,7 +31,7 @@ export const deleteCurrentUserSchema = createTypeBoxFastifySchema({
   tags: ['users'],
   summary: 'Delete current user',
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -42,7 +42,7 @@ export const deleteUserByIdSchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -54,7 +54,7 @@ export const updatePasswordSchema = createTypeBoxFastifySchema({
     newPassword: PasswordSchema
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -65,6 +65,6 @@ export const updateEmailSchema = createTypeBoxFastifySchema({
     email: Type.String({ format: 'email' })
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })

@@ -114,7 +114,7 @@ export const deleteOfferSchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -128,6 +128,6 @@ export const updateOfferSchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })

@@ -20,7 +20,7 @@ export const logoutSchema = createTypeBoxFastifySchema({
   tags: ['sessions'],
   summary: 'Logout',
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 

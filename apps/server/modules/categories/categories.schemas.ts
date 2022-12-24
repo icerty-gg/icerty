@@ -43,7 +43,7 @@ export const createCategorySchema = createTypeBoxFastifySchema({
     })
   ]),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -54,7 +54,7 @@ export const deleteCategorySchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
 
@@ -66,6 +66,6 @@ export const updateCategorySchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
 })
