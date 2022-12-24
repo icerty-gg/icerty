@@ -15,7 +15,8 @@ import type { FastifyPluginAsync } from 'fastify'
 
 const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
-    const { city, name, order_by = 'createdAt', order_direction = 'asc', page = 1 } = request.query
+    const { category, city, count_from, count_to, name, order_by, order_direction, page, price_from, price_to } =
+      request.query
 
     const OFFERS_SHOWN = 20
 
@@ -33,6 +34,19 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         city: {
           contains: city,
           mode: 'insensitive'
+        },
+        count: {
+          gte: count_from,
+          lte: count_to
+        },
+        price: {
+          gte: price_from,
+          lte: price_to
+        },
+        category: {
+          name: {
+            contains: category
+          }
         }
       },
       include: {
@@ -108,6 +122,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         })
 
         if (error) {
+          console.log(error)
           throw reply.internalServerError(error.message)
         }
 

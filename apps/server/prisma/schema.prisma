@@ -23,7 +23,7 @@ model user {
 
 model offer {
   id          String       @id @default(uuid())
-  name        String       @unique
+  name        String
   category    category     @relation(fields: [categoryId], references: [id])
   categoryId  String
   user        user         @relation(fields: [userId], references: [id])

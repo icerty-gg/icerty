@@ -18,6 +18,8 @@ const db: FastifyPluginAsync = async fastify => {
   fastify.addHook('onClose', () => prisma.$disconnect())
   fastify.decorate('prisma', prisma)
 
+  const defaultErrorHandler = fastify.errorHandler
+
   fastify.setErrorHandler((err, request, reply) => {
     if (err instanceof PrismaClientKnownRequestError) {
       switch (err.code) {
@@ -26,7 +28,7 @@ const db: FastifyPluginAsync = async fastify => {
       }
     }
 
-    return fastify.errorHandler(err, request, reply)
+    return defaultErrorHandler(err, request, reply)
   })
 }
 
