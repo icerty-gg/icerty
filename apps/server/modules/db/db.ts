@@ -25,6 +25,8 @@ const db: FastifyPluginAsync = async fastify => {
       switch (err.code) {
         case PrismaErrorCode.UniqueKeyViolation:
           return fastify.httpErrors.badRequest(err.message)
+        case PrismaErrorCode.ForeignKeyViolation:
+          return fastify.httpErrors.badRequest(err.message)
       }
     }
 
