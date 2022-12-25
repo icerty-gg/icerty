@@ -25,9 +25,10 @@ async function main() {
   })
 
   await prisma.offer.upsert({
-    where: { name: 'Brand new wooden desk cheap!' },
+    where: { id: 'c40241d0-2b72-4fd2-b6ba-be34ad5dbae7' },
     update: {},
     create: {
+      id: 'c40241d0-2b72-4fd2-b6ba-be34ad5dbae7',
       name: 'Brand new wooden desk cheap!',
       offerImage: {
         createMany: {

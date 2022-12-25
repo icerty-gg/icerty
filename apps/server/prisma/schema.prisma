@@ -11,32 +11,34 @@ datasource db {
 }
 
 model user {
-  id       String  @id @default(uuid())
-  name     String
-  surname  String
-  email    String  @unique
-  password String
-  img      String  @default("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
-  role     Role    @default(user)
-  offer    offer[]
+  id             String           @id @default(uuid())
+  name           String
+  surname        String
+  email          String           @unique
+  password       String
+  img            String           @default("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
+  role           Role             @default(user)
+  offer          offer[]
+  followedOffers followedOffers[]
 }
 
 model offer {
-  id          String       @id @default(uuid())
-  name        String
-  category    category     @relation(fields: [categoryId], references: [id])
-  categoryId  String
-  user        user         @relation(fields: [userId], references: [id])
-  userId      String
-  description String
-  count       Int
-  createdAt   DateTime     @default(now())
-  price       Int
-  updatedAt   DateTime     @updatedAt
-  isPromoted  Boolean      @default(false)
-  city        String
-  condition   Condition
-  offerImage  offerImage[]
+  id             String           @id @default(uuid())
+  name           String
+  category       category         @relation(fields: [categoryId], references: [id])
+  categoryId     String
+  user           user             @relation(fields: [userId], references: [id])
+  userId         String
+  description    String
+  count          Int
+  createdAt      DateTime         @default(now())
+  price          Int
+  updatedAt      DateTime         @updatedAt
+  isPromoted     Boolean          @default(false)
+  city           String
+  condition      Condition
+  offerImage     offerImage[]
+  followedOffers followedOffers[]
 }
 
 model category {
@@ -51,10 +53,21 @@ model category {
 }
 
 model offerImage {
-  id      String @id @default(uuid())
-  offer   offer  @relation(fields: [offerId], references: [id])
-  offerId String
-  img     String
+  id               String          @id @default(uuid())
+  offer            offer           @relation(fields: [offerId], references: [id])
+  offerId          String
+  img              String
+  followedOffers   followedOffers? @relation(fields: [followedOffersId], references: [id])
+  followedOffersId String?
+}
+
+model followedOffers {
+  id         String       @id @default(uuid())
+  offer      offer        @relation(fields: [offerId], references: [id])
+  offerId    String
+  offerImage offerImage[]
+  user       user         @relation(fields: [userId], references: [id])
+  userId     String
 }
 
 enum Role {

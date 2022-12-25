@@ -136,3 +136,35 @@ export const updateOfferSchema = createTypeBoxFastifySchema({
     204: Type.Void()
   }
 })
+
+export const followOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Follow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const unfollowOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Unfollow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const getMyFollowedOffersSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Get my followed offers',
+  response: {
+    200: Type.Object({
+      data: Type.Array(OfferSchema)
+    })
+  }
+})
