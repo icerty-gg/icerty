@@ -1,7 +1,7 @@
 interface Props {
-  readonly children: React.ReactNode
-  readonly error: React.ReactNode
-  readonly validate: any
+  readonly children?: React.ReactNode
+  readonly error?: React.ReactNode
+  readonly validate?: any
 }
 
 export const CheckboxInput = ({ children, error, validate }: Props) => {
