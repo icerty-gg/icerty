@@ -50,6 +50,7 @@ const Home = async () => {
                   name={o.name}
                   price={o.price}
                   createdAt={o.createdAt}
+                  isPromoted={o.isPromoted}
                 />
               )
             })}
