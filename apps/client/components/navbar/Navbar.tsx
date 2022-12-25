@@ -54,12 +54,12 @@ export const Navbar = () => {
               icon={
                 <BiHeart
                   className={`text-lg transition-all ${
-                    pathname === '/observed' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                    pathname === '/followed' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
                   }`}
                 />
               }
-              title='Observed'
-              href='/observed'
+              title='Followed'
+              href='/followed'
             />
             <NavLink
               icon={
@@ -100,7 +100,7 @@ export const Navbar = () => {
           <Logo isSmall={true} className='mr-4' />
           <NavLink isMobile={true} title='Main Page' href='/' />
           <NavLink isMobile={true} title='Offers' href='/offers' />
-          <NavLink isMobile={true} title='Observed' href='/observed' />
+          <NavLink isMobile={true} title='Followed' href='/followed' />
           <NavLink isMobile={true} title='Add Offer' href='/add-offer' />
           <PrimaryButton className='text-sm ml-4' href='/login'>
             Login
