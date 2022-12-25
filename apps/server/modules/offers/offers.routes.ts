@@ -260,11 +260,9 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       const followedOffers = await fastify.prisma.followedOffers.findMany({
         where: { userId: request.session.user.id },
         include: {
-          offer: true,
-          offerImage: {
-            select: {
-              id: true,
-              img: true
+          offer: {
+            include: {
+              offerImage: true
             }
           }
         }
@@ -275,7 +273,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
           ...o.offer,
           createdAt: o.offer.createdAt.toISOString(),
           updatedAt: o.offer.updatedAt.toISOString(),
-          images: o.offerImage
+          images: o.offer.offerImage
         }))
       })
     })

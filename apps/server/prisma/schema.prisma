@@ -53,21 +53,18 @@ model category {
 }
 
 model offerImage {
-  id               String          @id @default(uuid())
-  offer            offer           @relation(fields: [offerId], references: [id])
-  offerId          String
-  img              String
-  followedOffers   followedOffers? @relation(fields: [followedOffersId], references: [id])
-  followedOffersId String?
+  id      String @id @default(uuid())
+  offer   offer  @relation(fields: [offerId], references: [id])
+  offerId String
+  img     String
 }
 
 model followedOffers {
-  id         String       @id @default(uuid())
-  offer      offer        @relation(fields: [offerId], references: [id])
-  offerId    String
-  offerImage offerImage[]
-  user       user         @relation(fields: [userId], references: [id])
-  userId     String
+  id      String @id @default(uuid())
+  offer   offer  @relation(fields: [offerId], references: [id])
+  offerId String
+  user    user   @relation(fields: [userId], references: [id])
+  userId  String
 }
 
 enum Role {
