@@ -5,11 +5,12 @@ interface Props {
   readonly createdAt: string
   readonly id: string
   readonly image: any
+  readonly isPromoted: boolean
   readonly name: string
   readonly price: number
 }
 
-export const Offer = ({ createdAt, id, image, name, price }: Props) => {
+export const Offer = ({ createdAt, id, image, isPromoted, name, price }: Props) => {
   const date = new Date(createdAt)
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const
 
@@ -23,6 +24,12 @@ export const Offer = ({ createdAt, id, image, name, price }: Props) => {
           <h3 className='line-clamp-none md:line-clamp-2'>{name}</h3>
           <p className='text-sky-500 text-xl font-bold'>{price} USD</p>
         </div>
+
+        {isPromoted && (
+          <h3 className='absolute -top-2 -right-2 py-2 px-4 bg-sky-500 rounded-full text-white text-sm max-lg:text-xs text-center'>
+            Promoted offer
+          </h3>
+        )}
       </li>
     </Link>
   )
