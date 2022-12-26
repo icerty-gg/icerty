@@ -42,17 +42,7 @@ const Home = async () => {
 
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
             {promotedOffers.map(o => {
-              return (
-                <Offer
-                  key={o.id}
-                  id={o.id}
-                  image={o.images[0].img}
-                  name={o.name}
-                  price={o.price}
-                  createdAt={o.createdAt}
-                  isPromoted={o.isPromoted}
-                />
-              )
+              return <Offer key={o.id} image={o.images[0].img} {...o} />
             })}
           </ul>
         </Container>
