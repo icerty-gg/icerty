@@ -52,12 +52,6 @@ export const getAllOffersSchema = createTypeBoxFastifySchema({
           OfferSchema,
           Type.Object({
             user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
-            images: Type.Array(
-              Type.Object({
-                id: Type.String(),
-                img: Type.String()
-              })
-            ),
             category: Type.Pick(CategorySchema, ['id', 'name', 'img'])
           })
         ])
