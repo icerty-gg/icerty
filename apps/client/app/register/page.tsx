@@ -31,7 +31,7 @@ const RegisterSchema = z.object({
 
 type FormSchemaType = z.infer<typeof RegisterSchema>
 
-const RegisterForm = () => {
+const Register = () => {
   const {
     formState: { errors },
     handleSubmit,
@@ -45,87 +45,83 @@ const RegisterForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
-      <Input
-        validate={{ ...register('firstName') }}
-        className='max-md:col-span-2'
-        icon={<BiUser className='text-lg' />}
-        type='text'
-        label='Firstname'
-        error={errors.firstName?.message && <ErrorMessage>{errors.firstName?.message}</ErrorMessage>}
-      />
-      <Input
-        validate={{ ...register('lastName') }}
-        className='max-md:col-span-2'
-        icon={<BiUser className='text-lg' />}
-        type='text'
-        label='Lastname'
-        error={errors.lastName?.message && <ErrorMessage>{errors.lastName?.message}</ErrorMessage>}
-      />
-      <Input
-        validate={{ ...register('email') }}
-        className='col-span-2'
-        icon={<BiMailSend className='text-lg' />}
-        type='email'
-        label='Email'
-        error={errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
-      />
-      <Input
-        validate={{ ...register('password') }}
-        className='col-span-2'
-        icon={<BiLockAlt className='text-lg' />}
-        type='password'
-        label='Password'
-        error={errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
-      />
-      <Input
-        validate={{ ...register('repeatPassword') }}
-        className='col-span-2'
-        icon={<BiLockAlt className='text-lg' />}
-        type='password'
-        label='Repeat'
-        error={errors.repeatPassword?.message && <ErrorMessage>{errors.repeatPassword?.message}</ErrorMessage>}
-      />
-      <Input
-        validate={{ ...register('phoneNumber') }}
-        className='max-md:col-span-2'
-        icon={<BiPhone className='text-lg' />}
-        type='tel'
-        label='Phone'
-        error={errors.phoneNumber?.message && <ErrorMessage>{errors.phoneNumber?.message}</ErrorMessage>}
-      />
-
-      <Input
-        validate={{ ...register('city') }}
-        className='max-md:col-span-2'
-        icon={<BiLocationPlus className='text-lg' />}
-        type='text'
-        label='City'
-        error={errors.city?.message && <ErrorMessage>{errors.city?.message}</ErrorMessage>}
-      />
-
-      <CheckboxInput
-        validate={{ ...register('acceptPolicy') }}
-        error={errors.acceptPolicy?.message && <ErrorMessage>{errors.acceptPolicy?.message}</ErrorMessage>}
-      >
-        I Accept the Terms of Service
-      </CheckboxInput>
-
-      <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>
-        Register
-      </PrimaryButton>
-    </form>
-  )
-}
-
-const Register = () => {
-  return (
     <Layout>
       <div className='grid grid-cols-1 gap-4 w-full max-w-[46rem] m-auto'>
         <Container>
           <Heading title='Create Account' className='pb-6' />
 
-          <RegisterForm />
+          <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
+            <Input
+              register={{ ...register('firstName') }}
+              className='max-md:col-span-2'
+              icon={<BiUser className='text-lg' />}
+              type='text'
+              label='First name'
+              error={errors.firstName?.message && <ErrorMessage>{errors.firstName?.message}</ErrorMessage>}
+            />
+            <Input
+              register={{ ...register('lastName') }}
+              className='max-md:col-span-2'
+              icon={<BiUser className='text-lg' />}
+              type='text'
+              label='Last name'
+              error={errors.lastName?.message && <ErrorMessage>{errors.lastName?.message}</ErrorMessage>}
+            />
+            <Input
+              register={{ ...register('email') }}
+              className='col-span-2'
+              icon={<BiMailSend className='text-lg' />}
+              type='email'
+              label='Email'
+              error={errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+            />
+            <Input
+              register={{ ...register('password') }}
+              className='col-span-2'
+              icon={<BiLockAlt className='text-lg' />}
+              type='password'
+              label='Password'
+              isPasswordType={true}
+              error={errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+            />
+            <Input
+              register={{ ...register('repeatPassword') }}
+              className='col-span-2'
+              icon={<BiLockAlt className='text-lg' />}
+              type='password'
+              label='Repeat password'
+              isPasswordType={true}
+              error={errors.repeatPassword?.message && <ErrorMessage>{errors.repeatPassword?.message}</ErrorMessage>}
+            />
+            <Input
+              register={{ ...register('phoneNumber') }}
+              className='max-md:col-span-2'
+              icon={<BiPhone className='text-lg' />}
+              type='tel'
+              label='Phone number'
+              error={errors.phoneNumber?.message && <ErrorMessage>{errors.phoneNumber?.message}</ErrorMessage>}
+            />
+
+            <Input
+              register={{ ...register('city') }}
+              className='max-md:col-span-2'
+              icon={<BiLocationPlus className='text-lg' />}
+              type='text'
+              label='City'
+              error={errors.city?.message && <ErrorMessage>{errors.city?.message}</ErrorMessage>}
+            />
+
+            <CheckboxInput
+              validate={{ ...register('acceptPolicy') }}
+              error={errors.acceptPolicy?.message && <ErrorMessage>{errors.acceptPolicy?.message}</ErrorMessage>}
+            >
+              I Accept the Terms of Service
+            </CheckboxInput>
+
+            <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>
+              Register
+            </PrimaryButton>
+          </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
           <p className='text-white'>You already have an account?</p>
