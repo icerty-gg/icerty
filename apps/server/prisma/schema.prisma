@@ -10,24 +10,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id             String           @id @default(uuid())
   name           String
   surname        String
   email          String           @unique
   password       String
   img            String           @default("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
-  role           Role             @default(user)
-  offer          offer[]
-  followedOffers followedOffers[]
+  role           role             @default(user)
+  offer          Offer[]
+  followedOffers FollowedOffers[]
 }
 
-model offer {
+model Offer {
   id             String           @id @default(uuid())
   name           String
-  category       category         @relation(fields: [categoryId], references: [id])
   categoryId     String
-  user           user             @relation(fields: [userId], references: [id])
   userId         String
   description    String
   count          Int
@@ -36,43 +34,45 @@ model offer {
   updatedAt      DateTime         @updatedAt
   isPromoted     Boolean          @default(false)
   city           String
-  condition      Condition
-  offerImage     offerImage[]
-  followedOffers followedOffers[]
+  condition      condition
+  user           User             @relation(fields: [userId], references: [id])
+  category       Category         @relation(fields: [categoryId], references: [id])
+  offerImage     OfferImage[]
+  followedOffers FollowedOffers[]
 }
 
-model category {
+model Category {
   id        String   @id @default(uuid())
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  offer     offer[]
   img       String
+  offer     Offer[]
 
   @@unique([name, img])
 }
 
-model offerImage {
+model OfferImage {
   id      String @id @default(uuid())
-  offer   offer  @relation(fields: [offerId], references: [id])
   offerId String
   img     String
+  offer   Offer  @relation(fields: [offerId], references: [id])
 }
 
-model followedOffers {
+model FollowedOffers {
   id      String @id @default(uuid())
-  offer   offer  @relation(fields: [offerId], references: [id])
   offerId String
-  user    user   @relation(fields: [userId], references: [id])
   userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  offer   Offer  @relation(fields: [offerId], references: [id])
 }
 
-enum Role {
+enum role {
   admin
   user
 }
 
-enum Condition {
+enum condition {
   new
   used
 }
