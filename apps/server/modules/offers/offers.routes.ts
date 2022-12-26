@@ -94,7 +94,16 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
     const offer = await fastify.prisma.offer.findFirst({
       where: { id },
       include: {
-        offerImage: true
+        offerImage: true,
+        user: {
+          select: {
+            id: true,
+            img: true,
+            name: true,
+            surname: true,
+            createdAt: true
+          }
+        }
       }
     })
 
@@ -103,10 +112,16 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
     }
 
     return reply.code(200).send({
-      ...offer,
-      createdAt: offer.createdAt.toISOString(),
-      updatedAt: offer.updatedAt.toISOString(),
-      images: offer.offerImage
+      offer: {
+        ...offer,
+        createdAt: offer.createdAt.toISOString(),
+        updatedAt: offer.updatedAt.toISOString(),
+        images: offer.offerImage
+      },
+      user: {
+        ...offer.user,
+        createdAt: offer.user.createdAt.toISOString()
+      }
     })
   })
 
@@ -125,7 +140,6 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         })
 
         if (error) {
-          console.log(error)
           throw reply.internalServerError(error.message)
         }
 
@@ -136,7 +150,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
 
       const urls = await Promise.all(promises)
 
-      const offer = await fastify.prisma.offer.create({
+      await fastify.prisma.offer.create({
         data: {
           count,
           name,
@@ -151,24 +165,10 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
               data: urls
             }
           }
-        },
-        include: {
-          category: true,
-          offerImage: true,
-          user: true
         }
       })
-      return reply.code(201).send({
-        ...offer,
-        updatedAt: offer.updatedAt.toISOString(),
-        createdAt: offer.createdAt.toISOString(),
-        category: {
-          ...offer.category,
-          createdAt: offer.category.createdAt.toISOString(),
-          updatedAt: offer.category.updatedAt.toISOString()
-        },
-        images: offer.offerImage
-      })
+
+      return reply.code(204).send()
     })
 
   fastify

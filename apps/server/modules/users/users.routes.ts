@@ -29,7 +29,7 @@ const usersPlugin: FastifyPluginAsync = async fastify => {
         data: { name, surname, email: email.toLowerCase(), password: hashedPassword }
       })
 
-      return reply.code(201).send(user)
+      return reply.code(201).send({ ...user, createdAt: user.createdAt.toISOString() })
     })
 
   fastify

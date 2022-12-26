@@ -13,7 +13,8 @@ export const UserSchema = Type.Object({
   img: Type.String(),
   email: Type.String({ format: 'email' }),
   password: Type.String(),
-  role: StringEnum(['admin', 'user'])
+  role: StringEnum(['admin', 'user']),
+  createdAt: Type.String()
 })
 
 export type User = Static<typeof UserSchema>

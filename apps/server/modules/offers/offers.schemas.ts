@@ -73,7 +73,10 @@ export const getOfferSchema = createTypeBoxFastifySchema({
     id: Type.String()
   }),
   response: {
-    200: OfferSchema
+    200: Type.Object({
+      offer: OfferSchema,
+      user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img', 'createdAt'])
+    })
   }
 })
 
@@ -96,19 +99,7 @@ export const createOfferSchema = createTypeBoxFastifySchema({
     })
   ]),
   response: {
-    201: Type.Intersect([
-      OfferSchema,
-      Type.Object({
-        user: UserSchema,
-        images: Type.Array(
-          Type.Object({
-            id: Type.String(),
-            img: Type.String()
-          })
-        ),
-        category: CategorySchema
-      })
-    ])
+    204: Type.Void()
   }
 })
 

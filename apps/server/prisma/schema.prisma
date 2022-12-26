@@ -17,6 +17,7 @@ model User {
   email          String           @unique
   password       String
   img            String           @default("https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png")
+  createdAt      DateTime         @default(now())
   role           role             @default(user)
   offer          Offer[]
   followedOffers FollowedOffers[]

@@ -23,9 +23,9 @@ const sessionsPlugin: FastifyPluginAsync = async fastify => {
       throw reply.notFound('Invalid username or password!')
     }
 
-    request.session.user = user
+    request.session.user = { ...user, createdAt: user.createdAt.toISOString() }
 
-    return reply.code(201).send(user)
+    return reply.code(201).send({ ...user, createdAt: user.createdAt.toISOString() })
   })
 
   fastify
