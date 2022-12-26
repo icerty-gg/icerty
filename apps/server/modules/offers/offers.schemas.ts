@@ -13,7 +13,7 @@ export const OfferSchema = Type.Object({
   categoryId: Type.String(),
   userId: Type.String(),
   count: Type.Number({ minimum: 1 }),
-  price: Type.Number({ minimum: 0 }),
+  price: Type.Number({ minimum: 1 }),
   isPromoted: Type.Boolean(),
   updatedAt: Type.String(),
   createdAt: Type.String(),
@@ -36,8 +36,13 @@ export const getAllOffersSchema = createTypeBoxFastifySchema({
     city: Type.Optional(Type.String()),
     name: Type.Optional(Type.String()),
     page: Type.Number({ minimum: 1, default: 1 }),
-    order_direction: Type.Optional(StringEnum(['asc', 'desc'], 'asc')),
-    order_by: Type.Optional(StringEnum(['price', 'createdAt'], 'createdAt'))
+    price_from: Type.Optional(Type.Number({ minimum: 1 })),
+    price_to: Type.Optional(Type.Number({ minimum: 1 })),
+    count_from: Type.Optional(Type.Number({ minimum: 1 })),
+    count_to: Type.Optional(Type.Number({ minimum: 1 })),
+    category: Type.Optional(Type.String()),
+    order_direction: StringEnum(['asc', 'desc'], 'asc'),
+    order_by: StringEnum(['price', 'createdAt'], 'createdAt')
   }),
   response: {
     200: Type.Object({
@@ -129,5 +134,37 @@ export const updateOfferSchema = createTypeBoxFastifySchema({
   }),
   response: {
     204: Type.Void()
+  }
+})
+
+export const followOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Follow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const unfollowOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Unfollow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const getMyFollowedOffersSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Get my followed offers',
+  response: {
+    200: Type.Object({
+      data: Type.Array(OfferSchema)
+    })
   }
 })

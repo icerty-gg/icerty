@@ -18,15 +18,19 @@ const db: FastifyPluginAsync = async fastify => {
   fastify.addHook('onClose', () => prisma.$disconnect())
   fastify.decorate('prisma', prisma)
 
+  const defaultErrorHandler = fastify.errorHandler
+
   fastify.setErrorHandler((err, request, reply) => {
     if (err instanceof PrismaClientKnownRequestError) {
       switch (err.code) {
         case PrismaErrorCode.UniqueKeyViolation:
           return fastify.httpErrors.badRequest(err.message)
+        case PrismaErrorCode.ForeignKeyViolation:
+          return fastify.httpErrors.badRequest(err.message)
       }
     }
 
-    return fastify.errorHandler(err, request, reply)
+    return defaultErrorHandler(err, request, reply)
   })
 }
 

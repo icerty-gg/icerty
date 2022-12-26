@@ -7,7 +7,10 @@ import {
   deleteOfferSchema,
   updateOfferSchema,
   getAllOffersSchema,
-  getOfferSchema
+  getOfferSchema,
+  getMyFollowedOffersSchema,
+  followOfferSchema,
+  unfollowOfferSchema
 } from './offers.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
@@ -15,7 +18,8 @@ import type { FastifyPluginAsync } from 'fastify'
 
 const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
-    const { city, name, order_by = 'createdAt', order_direction = 'asc', page = 1 } = request.query
+    const { category, city, count_from, count_to, name, order_by, order_direction, page, price_from, price_to } =
+      request.query
 
     const OFFERS_SHOWN = 20
 
@@ -33,6 +37,19 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         city: {
           contains: city,
           mode: 'insensitive'
+        },
+        count: {
+          gte: count_from,
+          lte: count_to
+        },
+        price: {
+          gte: price_from,
+          lte: price_to
+        },
+        category: {
+          name: {
+            contains: category
+          }
         }
       },
       include: {
@@ -108,6 +125,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         })
 
         if (error) {
+          console.log(error)
           throw reply.internalServerError(error.message)
         }
 
@@ -157,6 +175,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete('/:id', { schema: deleteOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
       const { id } = request.params
+      const { user } = request.session
 
       const offer = await fastify.prisma.offer.findFirst({
         where: { id }
@@ -166,7 +185,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         throw reply.notFound('Offer not found!')
       }
 
-      if (offer.userId !== request.session.user.id) {
+      if (user.role === 'user' && offer.userId !== user.id) {
         throw reply.forbidden('You can only delete your own offers!')
       }
 
@@ -202,6 +221,61 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       })
 
       return reply.code(204).send()
+    })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .post('/follow/:id', { schema: followOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      await fastify.prisma.followedOffers.create({
+        data: { offerId: request.params.id, userId: request.session.user.id }
+      })
+
+      return reply.code(204).send()
+    })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .delete('/follow/:id', { schema: unfollowOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      const followedOffer = await fastify.prisma.followedOffers.findFirst({
+        where: {
+          offerId: request.params.id,
+          userId: request.session.user.id
+        }
+      })
+
+      if (!followedOffer) {
+        throw reply.notFound('Offer not found!')
+      }
+
+      await fastify.prisma.followedOffers.delete({
+        where: { id: followedOffer.id }
+      })
+
+      return reply.code(204).send()
+    })
+
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/followed', { schema: getMyFollowedOffersSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      const followedOffers = await fastify.prisma.followedOffers.findMany({
+        where: { userId: request.session.user.id },
+        include: {
+          offer: {
+            include: {
+              offerImage: true
+            }
+          }
+        }
+      })
+
+      return reply.code(200).send({
+        data: followedOffers.map(o => ({
+          ...o.offer,
+          createdAt: o.offer.createdAt.toISOString(),
+          updatedAt: o.offer.updatedAt.toISOString(),
+          images: o.offer.offerImage
+        }))
+      })
     })
 }
 

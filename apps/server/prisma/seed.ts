@@ -25,9 +25,10 @@ async function main() {
   })
 
   await prisma.offer.upsert({
-    where: { name: 'Brand new wooden desk cheap!' },
+    where: { id: 'c40241d0-2b72-4fd2-b6ba-be34ad5dbae7' },
     update: {},
     create: {
+      id: 'c40241d0-2b72-4fd2-b6ba-be34ad5dbae7',
       name: 'Brand new wooden desk cheap!',
       offerImage: {
         createMany: {
@@ -47,8 +48,8 @@ async function main() {
       condition: 'used',
       count: 1,
       price: 100,
-      categoryId: '308afac0-0598-4618-a505-678e5d9cf9f2',
-      userId: '6e94bcde-c2d5-4ec3-af2b-66d9e03d90a5'
+      categoryId: 'c4a6c75d-948b-4feb-9950-09ffa256eb9c',
+      userId: '1cd5d746-8c35-45fa-bd89-8081db784f58'
     }
   })
 }
