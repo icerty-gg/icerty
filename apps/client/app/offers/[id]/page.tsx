@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { BiHeart } from 'react-icons/bi'
 
 import { Container } from '../../../components/ui/Container'
@@ -11,17 +12,17 @@ export const generateStaticParams = async () => {
   const { data: offers } = await api.get('/offers/')
 
   return offers.map(o => ({
-    slug: o.id
+    id: o.id
   }))
 }
 
 interface Props {
-  readonly params: { readonly slug: string }
+  readonly params: { readonly id: string }
 }
 
 const OfferDetails = async ({ params }: Props) => {
-  const { slug } = params
-  const offer = await api.get('/offers/:id', { params: { id: slug } })
+  const { id } = params
+  const offer = await api.get('/offers/:id', { params: { id: id } })
 
   return (
     <Layout>
@@ -29,22 +30,43 @@ const OfferDetails = async ({ params }: Props) => {
         <div className='grid grid-cols-1 gap-4 max-lg:col-span-2'>
           <Container>
             <Heading title='Image' className='pb-4' />
-
-            <div className='bg-gray-500 w-full h-96 rounded-xl' />
+            <Image
+              src='https://ajvfiitmeqcfguupmscm.supabase.co/storage/v1/object/public/offers/drewniane-biurko-7824.jpg'
+              alt='chuj'
+              width={800}
+              height={500}
+              className='rounded-xl object-cover'
+            />
           </Container>
 
           <Container>
             <Heading title='Description' className='pb-4' />
 
-            <p className='text-white text-lg'>{offer.description}</p>
+            <p className='text-white'>{offer.description}</p>
           </Container>
 
           <div className='grid grid-cols-2 gap-4'>
             <Container>
               <Heading title='Seller' className='pb-4' />
 
-              <p className='text-white text-lg'>Stachu Jones</p>
-              <SecondaryButton href={`/users/${offer.userId}`}>Check Profile</SecondaryButton>
+              <div className='flex flex-col gap-4'>
+                <div className='flex items-center gap-2'>
+                  <Image
+                    src={
+                      'https://ajvfiitmeqcfguupmscm.supabase.co/storage/v1/object/public/offers/BIURKO_SIMONA_II-1.jpg'
+                    }
+                    width={50}
+                    height={50}
+                    alt={'user'}
+                    className='rounded-[50%] w-[2.5rem] h-[2.5rem]'
+                  />
+                  <p className='text-white text-lg'>Stachu Jones</p>
+                </div>
+                <p className='text-white text-sm'>Joined at December 26, 2022</p>
+                <SecondaryButton href={`/users/${offer.userId}`} className='w-full'>
+                  Check Profile
+                </SecondaryButton>
+              </div>
             </Container>
             <Container>
               <Heading title='Description' className='pb-4' />
