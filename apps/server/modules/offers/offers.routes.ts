@@ -1,7 +1,5 @@
 import { randomUUID } from 'crypto'
 
-import { supabase } from '../../utils/supabase'
-
 import {
   createOfferSchema,
   deleteOfferSchema,
@@ -135,7 +133,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       }
 
       const promises = images.map(async file => {
-        const { data, error } = await supabase.storage.from('offers').upload(randomUUID(), file.data, {
+        const { data, error } = await fastify.supabase.storage.from('offers').upload(randomUUID(), file.data, {
           contentType: file.mimetype
         })
 
@@ -143,7 +141,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
           throw reply.internalServerError(error.message)
         }
 
-        const { data: url } = supabase.storage.from('offers').getPublicUrl(data.path)
+        const { data: url } = fastify.supabase.storage.from('offers').getPublicUrl(data.path)
 
         return { img: url.publicUrl }
       })

@@ -1,15 +1,12 @@
 import { Type } from '@sinclair/typebox'
-import dotenv from 'dotenv'
 import Fastify from 'fastify'
-
-import { getPort } from './config'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
-dotenv.config()
-
 const fastify = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>()
 
+await fastify.register(import('./plugins/env'))
+await fastify.register(import('./plugins/supabase'))
 await fastify.register(import('@fastify/multipart'), { addToBody: true, limits: { files: 5 } })
 await fastify.register(import('@fastify/sensible'))
 await fastify.register(import('@fastify/swagger'), {
@@ -26,7 +23,6 @@ await fastify.register(import('@fastify/swagger-ui'), {
 })
 await fastify.register(import('@fastify/cors'), { origin: true, credentials: true })
 await fastify.register(import('./modules/db/db'))
-
 await fastify.register(import('./modules/sessions/sessions'))
 await fastify.register(import('./modules/offers/offers.routes'), { prefix: '/api/offers' })
 await fastify.register(import('./modules/categories/categories.routes'), { prefix: '/api/categories' })
@@ -46,7 +42,7 @@ fastify.get(
 
 const start = async () => {
   try {
-    await fastify.listen({ port: getPort(), host: '0.0.0.0' })
+    await fastify.listen({ port: fastify.config.PORT, host: '0.0.0.0' })
   } catch (err) {
     fastify.log.error(err)
     process.exit(1)

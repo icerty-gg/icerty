@@ -1,7 +1,5 @@
 import { randomUUID } from 'crypto'
 
-import { supabase } from '../../utils/supabase'
-
 import {
   createCategorySchema,
   deleteCategorySchema,
@@ -38,7 +36,7 @@ const categoriesPlugin: FastifyPluginAsync = async fastify => {
         throw reply.badRequest('Image must be a single file!')
       }
 
-      const { data, error } = await supabase.storage.from('categories').upload(randomUUID(), img[0].data, {
+      const { data, error } = await fastify.supabase.storage.from('categories').upload(randomUUID(), img[0].data, {
         contentType: img[0].mimetype
       })
 
@@ -46,7 +44,7 @@ const categoriesPlugin: FastifyPluginAsync = async fastify => {
         throw reply.internalServerError(error.message)
       }
 
-      const { data: url } = supabase.storage.from('categories').getPublicUrl(data.path)
+      const { data: url } = fastify.supabase.storage.from('categories').getPublicUrl(data.path)
 
       await fastify.prisma.category.create({ data: { name, img: url.publicUrl } })
 

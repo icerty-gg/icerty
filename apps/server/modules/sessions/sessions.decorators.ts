@@ -1,8 +1,7 @@
 import fp from 'fastify-plugin'
 
 import type { User } from '../users/users.schemas'
-import type { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
-import type { preValidationHookHandler } from 'fastify'
+import type { FastifyPluginAsync, preValidationHookHandler } from 'fastify'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -14,7 +13,7 @@ declare module 'fastify' {
   }
 }
 
-const sessionsDecorators: FastifyPluginCallbackTypebox = async (fastify, _options) => {
+const sessionsDecorators: FastifyPluginAsync = async fastify => {
   fastify.decorate('auth', (roles?: User['role'][]) => {
     const handler: preValidationHookHandler = async (request, reply) => {
       const { user } = request.session
