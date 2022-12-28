@@ -15,8 +15,6 @@ const Home = async () => {
   const { data: categories } = await api.get('/categories/')
   const { data: offers } = await api.get('/offers/')
 
-  console.log(offers.forEach(o => console.log(o.images[0])))
-
   return (
     <Layout>
       <div className='grid grid-cols-2 gap-4'>
@@ -59,9 +57,9 @@ const Home = async () => {
             </div>
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
-              {offers.map(o => {
-                return <Offer image={o.images[0]?.img} key={o.id} {...o} />
-              })}
+              {offers.map(o => (
+                <Offer image={o.images[0]?.img} key={o.id} {...o} />
+              ))}
             </ul>
           </Container>
         </div>

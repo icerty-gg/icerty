@@ -46,9 +46,7 @@ const putApicategoriesId_Body = z.object({ name: z.string().min(3), img: z.strin
 const postApiusersregister_Body = z.object({
   name: z.string().min(4).max(16),
   surname: z.string().min(4).max(20),
-  img: z.string(),
   email: z.string().email(),
-  createdAt: z.string(),
   password: z.string().min(8).max(20)
 })
 const putApiuserspassword_Body = z.object({
@@ -455,4 +453,8 @@ if (!apiUrl) {
   throw new Error('NEXT_PUBLIC_API_URL is not set!')
 }
 
-export const api = new Zodios(apiUrl, endpoints)
+export const api = new Zodios(apiUrl, endpoints, {
+  axiosConfig: {
+    withCredentials: true
+  }
+})

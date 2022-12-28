@@ -22,7 +22,10 @@ export type User = Static<typeof UserSchema>
 export const createUserSchema = createTypeBoxFastifySchema({
   tags: ['users'],
   summary: 'Create user',
-  body: Type.Intersect([Type.Omit(UserSchema, ['id', 'role', 'password']), Type.Object({ password: PasswordSchema })]),
+  body: Type.Intersect([
+    Type.Omit(UserSchema, ['id', 'role', 'password', 'createdAt', 'img']),
+    Type.Object({ password: PasswordSchema })
+  ]),
   response: {
     201: UserSchema
   }

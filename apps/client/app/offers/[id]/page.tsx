@@ -7,7 +7,6 @@ import { Layout } from '../../../components/ui/Layout'
 import { PrimaryButton } from '../../../components/ui/PrimaryButton'
 import { SecondaryButton } from '../../../components/ui/SecondaryButton'
 import { Slider } from '../../../components/ui/Slider'
-import { useDate } from '../../../hooks/useDate'
 import { api } from '../../../utils/fetcher'
 
 export const generateStaticParams = async () => {
@@ -18,14 +17,20 @@ export const generateStaticParams = async () => {
   }))
 }
 
+// hook useDate nie ma sensu - hooki robisz jak używasz stanów reaktowych, tak to tworzysz helper funkcję, w tym przypadku jak używasz to parsowanie daty tylko tu
+// to nie ma sensu jej wydzielać w ogóle, jak zaczniesz używać jej w innych miejscach to wtedy przenieś do utils
+const parseDate = (date: string) => {
+  const dateObj = new Date(date)
+
+  return dateObj.toLocaleDateString('us-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+}
+
 interface Props {
   readonly params: { readonly id: string }
 }
 
 const OfferDetails = async ({ params }: Props) => {
-  const { id } = params
-  const { offer, user } = await api.get('/offers/:id', { params: { id: id } })
-  const date = useDate(user.createdAt)
+  const { offer, user } = await api.get('/offers/:id', { params })
 
   return (
     <Layout>
@@ -43,14 +48,14 @@ const OfferDetails = async ({ params }: Props) => {
                     src={user.img}
                     width={50}
                     height={50}
-                    alt={'user'}
+                    alt={`Profile picture of ${user.name} ${user.surname}`}
                     className='rounded-[50%] w-[2.5rem] h-[2.5rem]'
                   />
                   <p className='text-white text-lg'>
                     {user.name} {user.surname}
                   </p>
                 </div>
-                <p className='text-white text-sm'>Joined at {date}</p>
+                <p className='text-white text-sm'>Joined at {parseDate(offer.createdAt)}</p>
                 <SecondaryButton href={`/users/${offer.userId}`} className='w-full'>
                   Check Profile
                 </SecondaryButton>

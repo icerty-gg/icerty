@@ -24,7 +24,7 @@ await fastify.register(import('@fastify/swagger'), {
 await fastify.register(import('@fastify/swagger-ui'), {
   routePrefix: '/docs'
 })
-await fastify.register(import('@fastify/cors'), { origin: true })
+await fastify.register(import('@fastify/cors'), { origin: true, credentials: true })
 await fastify.register(import('./modules/db/db'))
 
 await fastify.register(import('./modules/sessions/sessions'))

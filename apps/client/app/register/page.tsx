@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import { BiLockAlt, BiMailSend, BiUser, BiPhone, BiLocationPlus } from 'react-icons/bi'
+import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
 import { ErrorMessage } from '../../components/Form/ErrorMessage'
@@ -13,21 +13,33 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/SecondaryButton'
+import { api } from '../../utils/fetcher'
 
 import type { SubmitHandler } from 'react-hook-form'
 
-const RegisterSchema = z.object({
-  firstName: z.string().min(3, { message: 'First name is Required' }),
-  lastName: z.string().min(3, { message: 'Last name is Required' }),
-  email: z.string().email(),
-  password: z.string().min(8, { message: 'Password is required' }),
-  repeatPassword: z.string().min(8, { message: 'Password is required' }),
-  phoneNumber: z.string().min(9, { message: 'Phone number is required' }),
-  city: z.string().min(3, { message: 'City is required' }),
-  acceptPolicy: z.literal(true, {
-    invalid_type_error: 'You must accept Terms and Conditions'
+
+// min i max wartości do poprawy zgodznie ze swaggerem
+const RegisterSchema = z
+  .object({
+    name: z.string().min(3, { message: 'First name is Required' }),
+    surname: z.string().min(3, { message: 'Last name is Required' }),
+    email: z.string().email(),
+    password: z.string().min(8, { message: 'Password is required' }),
+    repeatPassword: z.string().min(8, { message: 'Password is required' }),
+    acceptPolicy: z.literal(true, {
+      invalid_type_error: 'You must accept Terms and Conditions'
+    })
   })
-})
+  .superRefine(({ password, repeatPassword }, ctx) => {
+    if (password !== repeatPassword) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['password', 'repeatPassword'],
+        message: 'Passwords do not match'
+      })
+    }
+    // to działa, ale nie wiem jak dostać się do tego błędu, trzeba ogarnąć :D
+  })
 
 type FormSchemaType = z.infer<typeof RegisterSchema>
 
@@ -40,8 +52,14 @@ const Register = () => {
     resolver: zodResolver(RegisterSchema)
   })
 
-  const onSubmit: SubmitHandler<FormSchemaType> = data => {
-    console.log(data)
+  const onSubmit: SubmitHandler<FormSchemaType> = async ({ email, name, password, surname }) => {
+    try {
+      await api.post('/users/register', { email, surname, name, password })
+
+      // zarejestrowano - zrób redirect lub co tam chcesz
+    } catch (err) {
+      // nie zarejestrowano - obsłuż błąd
+    }
   }
 
   return (
@@ -52,20 +70,20 @@ const Register = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
             <Input
-              register={{ ...register('firstName') }}
+              register={{ ...register('name') }}
               className='max-md:col-span-2'
               icon={<BiUser className='text-lg' />}
               type='text'
               label='First name'
-              error={errors.firstName?.message && <ErrorMessage>{errors.firstName?.message}</ErrorMessage>}
+              error={errors.name?.message && <ErrorMessage>{errors.name?.message}</ErrorMessage>}
             />
             <Input
-              register={{ ...register('lastName') }}
+              register={{ ...register('surname') }}
               className='max-md:col-span-2'
               icon={<BiUser className='text-lg' />}
               type='text'
               label='Last name'
-              error={errors.lastName?.message && <ErrorMessage>{errors.lastName?.message}</ErrorMessage>}
+              error={errors.surname?.message && <ErrorMessage>{errors.surname?.message}</ErrorMessage>}
             />
             <Input
               register={{ ...register('email') }}
@@ -92,23 +110,6 @@ const Register = () => {
               label='Repeat password'
               isPasswordType={true}
               error={errors.repeatPassword?.message && <ErrorMessage>{errors.repeatPassword?.message}</ErrorMessage>}
-            />
-            <Input
-              register={{ ...register('phoneNumber') }}
-              className='max-md:col-span-2'
-              icon={<BiPhone className='text-lg' />}
-              type='tel'
-              label='Phone number'
-              error={errors.phoneNumber?.message && <ErrorMessage>{errors.phoneNumber?.message}</ErrorMessage>}
-            />
-
-            <Input
-              register={{ ...register('city') }}
-              className='max-md:col-span-2'
-              icon={<BiLocationPlus className='text-lg' />}
-              type='text'
-              label='City'
-              error={errors.city?.message && <ErrorMessage>{errors.city?.message}</ErrorMessage>}
             />
 
             <CheckboxInput

@@ -9,7 +9,7 @@ async function main() {
     create: {
       email: 'admin@example.com',
       name: 'Admin',
-      password: '$2a$10$Hg15umuK5xrHsD6KoTxh.uX5qQmyXJslrEnA9S0shpxOhVprUWfGm',
+      password: '$2a$10$02vAXeqFIihjJCXb0w.WD.0UQPJa8YwWjX6Jkw8JYsVwvX0AffVFW',
       role: 'admin',
       surname: 'Admin'
     }
