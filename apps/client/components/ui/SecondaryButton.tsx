@@ -2,7 +2,7 @@ import { clsx } from 'clsx'
 import Link from 'next/link'
 
 interface Props {
-  readonly children: string
+  readonly children: string | React.ReactNode
   readonly className?: string
   readonly href: string
 }
@@ -10,9 +10,10 @@ interface Props {
 export const SecondaryButton = ({ children, className, href }: Props) => {
   return (
     <Link
-      className={`text-sky-600 border bg-sky-400/10 border-slate-800 hover:bg-sky-400/20  hover:border-sky-500 transition-all px-6 py-2 rounded-full text-center text-sm ${clsx(
-        className && className
-      )}`}
+      className={clsx(
+        'text-sky-600 border bg-sky-400/10 border-slate-800 hover:bg-sky-400/20  hover:border-sky-500 transition-all px-10 py-[0.6rem] rounded-full text-center text-sm',
+        className
+      )}
       href={href}
     >
       {children}

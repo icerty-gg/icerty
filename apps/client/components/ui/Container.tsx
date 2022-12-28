@@ -8,9 +8,7 @@ interface Props {
 export const Container = ({ children, className }: Props) => {
   return (
     <div
-      className={`rounded-2xl max-md:p-2 p-4 bg-gray-900/75 backdrop-blur border-slate-300/10 border ${clsx(
-        className && className
-      )}`}
+      className={clsx('rounded-2xl p-4 pt-6 bg-gray-900/75 backdrop-blur border-slate-300/10 border', className)}
     >
       {children}
     </div>

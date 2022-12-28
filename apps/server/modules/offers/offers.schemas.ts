@@ -1,6 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-import { BufferType, StringEnum } from '../../utils/schema'
+import { BufferType, StringEnum, createTypeBoxFastifySchema } from '../../utils/schema'
 import { CategorySchema } from '../categories/categories.schemas'
 import { UserSchema } from '../users/users.schemas'
 
@@ -13,25 +13,36 @@ export const OfferSchema = Type.Object({
   categoryId: Type.String(),
   userId: Type.String(),
   count: Type.Number({ minimum: 1 }),
-  price: Type.Number({ minimum: 0 }),
+  price: Type.Number({ minimum: 1 }),
   isPromoted: Type.Boolean(),
   updatedAt: Type.String(),
   createdAt: Type.String(),
   city: Type.String({ minLength: 3, maxLength: 50 }),
-  condition: StringEnum(['new', 'used'])
+  condition: StringEnum(['new', 'used']),
+  images: Type.Array(
+    Type.Object({
+      id: Type.String(),
+      img: Type.String()
+    })
+  )
 })
 
 export type Offer = Static<typeof OfferSchema>
 
-export const getAllOffersSchema = {
+export const getAllOffersSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Get all offers',
   querystring: Type.Object({
     city: Type.Optional(Type.String()),
     name: Type.Optional(Type.String()),
     page: Type.Number({ minimum: 1, default: 1 }),
-    order_direction: Type.Optional(StringEnum(['asc', 'desc'], 'asc')),
-    order_by: Type.Optional(StringEnum(['price', 'createdAt'], 'createdAt'))
+    price_from: Type.Optional(Type.Number({ minimum: 1 })),
+    price_to: Type.Optional(Type.Number({ minimum: 1 })),
+    count_from: Type.Optional(Type.Number({ minimum: 1 })),
+    count_to: Type.Optional(Type.Number({ minimum: 1 })),
+    category: Type.Optional(Type.String()),
+    order_direction: StringEnum(['asc', 'desc'], 'asc'),
+    order_by: StringEnum(['price', 'createdAt'], 'createdAt')
   }),
   response: {
     200: Type.Object({
@@ -41,32 +52,29 @@ export const getAllOffersSchema = {
           OfferSchema,
           Type.Object({
             user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
-            images: Type.Array(
-              Type.Object({
-                id: Type.String(),
-                img: Type.String()
-              })
-            ),
             category: Type.Pick(CategorySchema, ['id', 'name', 'img'])
           })
         ])
       )
     })
   }
-}
+})
 
-export const getOfferSchema = {
+export const getOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Get offer by id',
   params: Type.Object({
     id: Type.String()
   }),
   response: {
-    200: OfferSchema
+    200: Type.Object({
+      offer: OfferSchema,
+      user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img', 'createdAt'])
+    })
   }
-}
+})
 
-export const createOfferSchema = {
+export const createOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Create offer',
   consumes: ['multipart/form-data'],
@@ -85,34 +93,22 @@ export const createOfferSchema = {
     })
   ]),
   response: {
-    201: Type.Intersect([
-      OfferSchema,
-      Type.Object({
-        user: UserSchema,
-        images: Type.Array(
-          Type.Object({
-            id: Type.String(),
-            img: Type.String()
-          })
-        ),
-        category: CategorySchema
-      })
-    ])
+    204: Type.Void()
   }
-}
+})
 
-export const deleteOfferSchema = {
+export const deleteOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Delete offer by id',
   params: Type.Object({
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
-}
+})
 
-export const updateOfferSchema = {
+export const updateOfferSchema = createTypeBoxFastifySchema({
   tags: ['offers'],
   summary: 'Update offer by id',
   body: Type.Optional(
@@ -122,6 +118,38 @@ export const updateOfferSchema = {
     id: Type.String()
   }),
   response: {
-    204: Type.Null()
+    204: Type.Void()
   }
-}
+})
+
+export const followOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Follow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const unfollowOfferSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Unfollow offer by id',
+  params: Type.Object({
+    id: Type.String()
+  }),
+  response: {
+    204: Type.Void()
+  }
+})
+
+export const getMyFollowedOffersSchema = createTypeBoxFastifySchema({
+  tags: ['offers'],
+  summary: 'Get my followed offers',
+  response: {
+    200: Type.Object({
+      data: Type.Array(OfferSchema)
+    })
+  }
+})

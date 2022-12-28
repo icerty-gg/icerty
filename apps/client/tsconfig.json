@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "noUncheckedIndexedAccess": true,
     "plugins": [
       {
         "name": "next"

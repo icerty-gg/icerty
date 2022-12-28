@@ -3,10 +3,6 @@ import dotenv from 'dotenv'
 import Fastify from 'fastify'
 
 import { getPort } from './config'
-import { categoriesRoutes } from './modules/categories/categories.routes'
-import { offersRoutes } from './modules/offers/offers.routes'
-import sessionsPlugin from './modules/sessions/sessions'
-import { userRoutes } from './modules/users/users.routes'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 
@@ -29,10 +25,12 @@ await fastify.register(import('@fastify/swagger-ui'), {
   routePrefix: '/docs'
 })
 await fastify.register(import('@fastify/cors'), { origin: true })
-await fastify.register(sessionsPlugin)
-await fastify.register(offersRoutes, { prefix: '/api/offers' })
-await fastify.register(categoriesRoutes, { prefix: '/api/categories' })
-await fastify.register(userRoutes, { prefix: '/api/users' })
+await fastify.register(import('./modules/db/db'))
+
+await fastify.register(import('./modules/sessions/sessions'))
+await fastify.register(import('./modules/offers/offers.routes'), { prefix: '/api/offers' })
+await fastify.register(import('./modules/categories/categories.routes'), { prefix: '/api/categories' })
+await fastify.register(import('./modules/users/users.routes'), { prefix: '/api/users' })
 
 fastify.get(
   '/',

@@ -1,12 +1,14 @@
+'use client'
+
 import '../styles/globals.css'
-import { Inter } from '@next/font/google'
+import { Open_Sans } from '@next/font/google'
 
 import { Navbar } from '../components/navbar/Navbar'
 import { BackToTopButton } from '../components/ui/BackToTopButton'
 import { BluredCircle } from '../components/ui/BluredCircle'
 import { Wrapper } from '../components/ui/Wrapper'
 
-const inter = Inter({
+const openSans = Open_Sans({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-inter'
@@ -14,7 +16,7 @@ const inter = Inter({
 
 const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
   return (
-    <html className={`${inter.variable} font-sans`} lang='en'>
+    <html className={`${openSans.variable} font-sans`} lang='en'>
       <body className='bg-gray-900 relative'>
         <Navbar />
         <Wrapper>

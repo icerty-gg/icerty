@@ -14,7 +14,7 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
     <div
       className={`${
         isOpened ? 'translate-x-[0]' : 'translate-x-[100%]'
-      } fixed top-0 z-30 right-0 h-full w-96 bg-gray-900 transition-transform backdrop-blur-md border-l border-slate-300/10`}
+      } fixed top-0 z-[22929] right-0 h-full w-96 bg-gray-900 transition-transform backdrop-blur-md border-l border-slate-300/10`}
     >
       <div className='p-6'>
         <button
@@ -25,11 +25,11 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
         </button>
 
         <div className='flex flex-col gap-2 mt-12'>
-          <NavLink isMobile={true} title='Strona główna' href='/' />
-          <NavLink isMobile={true} title='Ogłoszenia' href='/offers' />
-          <NavLink isMobile={true} title='Obserwowane' href='/observed' />
-          <NavLink isMobile={true} title='Dodaj ogłoszenie' href='/add-offers' />
-          <PrimaryButton href='/sign-in'>Zaloguj się</PrimaryButton>
+          <NavLink isMobile={true} title='Main Page' href='/' />
+          <NavLink isMobile={true} title='Offers' href='/offers' />
+          <NavLink isMobile={true} title='Followed' href='/followed' />
+          <NavLink isMobile={true} title='Add Offer' href='/add-offer' />
+          <PrimaryButton href='/login'>Login</PrimaryButton>
         </div>
       </div>
     </div>

@@ -5,8 +5,10 @@ interface Props {
 
 export const SearchItem = ({ name, onAddCity }: Props) => {
   return (
-    <button className='p-2 hover:bg-gray-800' onClick={() => onAddCity(name)}>
-      {name}
-    </button>
+    <li className='hover:bg-gray-700 text-center cursor-pointer'>
+      <button type='button' className='w-full h-full p-4' onClick={() => onAddCity(name)}>
+        {name}
+      </button>
+    </li>
   )
 }
