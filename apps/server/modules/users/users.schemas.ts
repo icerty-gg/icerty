@@ -4,12 +4,12 @@ import { StringEnum, createTypeBoxFastifySchema } from '../../utils/schema'
 
 import type { Static } from '@sinclair/typebox'
 
-const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
+export const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
 
 export const UserSchema = Type.Object({
   id: Type.String(),
-  name: Type.String({ minLength: 4, maxLength: 16 }),
-  surname: Type.String({ minLength: 4, maxLength: 20 }),
+  name: Type.String({ minLength: 3, maxLength: 16 }),
+  surname: Type.String({ minLength: 3, maxLength: 20 }),
   img: Type.String(),
   email: Type.String({ format: 'email' }),
   password: Type.String(),

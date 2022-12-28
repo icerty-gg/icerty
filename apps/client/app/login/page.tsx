@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { ErrorMessage } from '../../components/Form/ErrorMessage'
-import { Input } from '../../components/Form/Input'
+import { ErrorMessage } from '../../components/form/ErrorMessage'
+import { Input } from '../../components/form/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
@@ -42,7 +42,7 @@ const Login = () => {
       const user = await api.post('/sessions/login', data)
 
       console.log(user)
-      // zalogowano
+      // zalogowano - tu chcesz zapisać usera w contextcie i gdzieś przekierować
     } catch (err) {
       // nie ma takiego użytkownika - wyświetl jakiś error
     }

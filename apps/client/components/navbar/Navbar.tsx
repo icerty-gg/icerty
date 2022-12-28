@@ -6,7 +6,6 @@ import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiAddToQueue } from 'react-ico
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
-import { Backdrop } from '../ui/Backdrop'
 import { PrimaryButton } from '../ui/PrimaryButton'
 
 import { Logo } from './Logo'
@@ -89,7 +88,7 @@ export const Navbar = () => {
 
       <MobileNavbar isOpened={isOpenNav} onOpenNav={toggleOpenNav} />
 
-      {isOpenNav && <Backdrop onHideNav={toggleOpenNav} />}
+      {isOpenNav && <div onClick={toggleOpenNav} className='fixed top-0 z-40 left-0 w-full h-full bg-black/40' />}
 
       <nav
         className={`fixed w-full flex duration-300 text-center justify-center items-center z-50 transition-transform max-lg:hidden ${

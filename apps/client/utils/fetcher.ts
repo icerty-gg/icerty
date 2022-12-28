@@ -1,7 +1,7 @@
 import { makeApi, Zodios } from '@zodios/core'
 import { z } from 'zod'
 
-const postApisessionslogin_Body = z.object({ email: z.string(), password: z.string() })
+const postApisessionslogin_Body = z.object({ email: z.string().email(), password: z.string().min(8).max(20) })
 const postApioffers_Body = z.object({
   name: z.string().min(8).max(50),
   description: z.string().min(50).max(1500),
@@ -44,8 +44,8 @@ const postApicategories_Body = z.object({
 })
 const putApicategoriesId_Body = z.object({ name: z.string().min(3), img: z.string() })
 const postApiusersregister_Body = z.object({
-  name: z.string().min(4).max(16),
-  surname: z.string().min(4).max(20),
+  name: z.string().min(3).max(16),
+  surname: z.string().min(3).max(20),
   email: z.string().email(),
   password: z.string().min(8).max(20)
 })
@@ -196,8 +196,8 @@ const endpoints = makeApi([
           images: z.array(z.object({ id: z.string(), img: z.string() })),
           user: z.object({
             id: z.string(),
-            name: z.string().min(4).max(16),
-            surname: z.string().min(4).max(20),
+            name: z.string().min(3).max(16),
+            surname: z.string().min(3).max(20),
             img: z.string()
           }),
           category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() })
@@ -247,8 +247,8 @@ const endpoints = makeApi([
       }),
       user: z.object({
         id: z.string(),
-        name: z.string().min(4).max(16),
-        surname: z.string().min(4).max(20),
+        name: z.string().min(3).max(16),
+        surname: z.string().min(3).max(20),
         img: z.string(),
         createdAt: z.string()
       })
@@ -348,8 +348,8 @@ const endpoints = makeApi([
     ],
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
       password: z.string(),
@@ -369,8 +369,8 @@ const endpoints = makeApi([
     requestFormat: 'json',
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
       password: z.string(),
@@ -436,8 +436,8 @@ const endpoints = makeApi([
     ],
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
       password: z.string(),

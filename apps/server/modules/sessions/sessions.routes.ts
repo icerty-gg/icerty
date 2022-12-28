@@ -20,7 +20,7 @@ const sessionsPlugin: FastifyPluginAsync = async fastify => {
     })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw reply.notFound('Invalid username or password!')
+      throw reply.notFound('Invalid email or password!')
     }
 
     request.session.user = { ...user, createdAt: user.createdAt.toISOString() }

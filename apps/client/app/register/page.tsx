@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { ErrorMessage } from '../../components/Form/ErrorMessage'
-import { Input } from '../../components/Form/Input'
 import { CheckboxInput } from '../../components/filter/CheckboxInput'
+import { ErrorMessage } from '../../components/form/ErrorMessage'
+import { Input } from '../../components/form/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
@@ -17,15 +17,26 @@ import { api } from '../../utils/fetcher'
 
 import type { SubmitHandler } from 'react-hook-form'
 
-
-// min i max wartości do poprawy zgodznie ze swaggerem
+// tu wartości też poprawiłem na te ze swaggera
 const RegisterSchema = z
   .object({
-    name: z.string().min(3, { message: 'First name is Required' }),
-    surname: z.string().min(3, { message: 'Last name is Required' }),
+    name: z
+      .string()
+      .min(3, { message: 'Name must be at least 8 characters long' })
+      .max(16, { message: 'Name must be at most 20 characters long' }),
+    surname: z
+      .string()
+      .min(3, { message: 'Surname must be at least 8 characters long' })
+      .max(20, { message: 'Surname must be at most 20 characters long' }),
     email: z.string().email(),
-    password: z.string().min(8, { message: 'Password is required' }),
-    repeatPassword: z.string().min(8, { message: 'Password is required' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long' })
+      .max(20, { message: 'Password must be at most 20 characters long' }),
+    repeatPassword: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long' })
+      .max(20, { message: 'Password must be at most 20 characters long' }),
     acceptPolicy: z.literal(true, {
       invalid_type_error: 'You must accept Terms and Conditions'
     })

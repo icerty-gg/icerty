@@ -1,16 +1,13 @@
 import { Type } from '@sinclair/typebox'
 
-import { UserSchema } from '../users/users.schemas'
+import { UserSchema, PasswordSchema } from '../users/users.schemas'
 
 import { createTypeBoxFastifySchema } from './../../utils/schema'
 
 export const loginSchema = createTypeBoxFastifySchema({
   tags: ['sessions'],
   summary: 'Login',
-  body: Type.Object({
-    email: Type.String(),
-    password: Type.String()
-  }),
+  body: Type.Intersect([Type.Pick(UserSchema, ['email']), Type.Object({ password: PasswordSchema })]),
   response: {
     201: UserSchema
   }
