@@ -15,6 +15,7 @@ const Home = async () => {
   const { data: categories } = await api.get('/categories/')
   const { data: offers } = await api.get('/offers/')
 
+  // brakuje labela w inpucie vvv
   return (
     <Layout>
       <div className='grid grid-cols-2 gap-4'>

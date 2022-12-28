@@ -1,32 +1,27 @@
 'use client'
 
 import clsx from 'clsx'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BiLocationPlus } from 'react-icons/bi'
 
 import { api } from '../../utils/fetcher'
 
-import type { Api } from '../../utils/fetcher'
-import type { ZodiosResponseByPath } from '@zodios/core'
 import type { ChangeEvent } from 'react'
 
 interface Props {
   readonly className?: string
 }
 
-type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
-
-type Offers = Response['data']
-
 export const SearchCityInput = ({ className }: Props) => {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
-  const [offers, setOffers] = useState<Offers>([])
+  const [cities, setCities] = useState<readonly string[]>([])
 
   const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { data: offers } = await api.get('/offers/', { queries: { city: e.target.value } })
 
-    setOffers(offers)
+    setCities(offers.map(o => o.city))
+
+    // jak na razie tu wyświetlamy wszystkie miasta z ofert czyli jak jest oferta która ma miasto Katowice to tu będą Katowice inaczej ich nie będzie
   }
 
   return (
@@ -50,11 +45,9 @@ export const SearchCityInput = ({ className }: Props) => {
         }`}
       >
         <ul className={`grid grid-cols-1 max-h-[15rem] overflow-y-auto overflow-hidden text-white z-20`}>
-          {offers.map(o => (
-            <li className='hover:bg-gray-700 text-center cursor-pointer' key={o.id}>
-              <Link className='w-full h-full p-4' href={`/offers/${o.id}`}>
-                {o.name}
-              </Link>
+          {cities.map(c => (
+            <li className='hover:bg-gray-700 text-center cursor-pointer' key={c}>
+              <button className='w-full h-full p-4'>{c}</button>
             </li>
           ))}
         </ul>
