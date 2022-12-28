@@ -1,6 +1,8 @@
 import { makeApi, Zodios } from '@zodios/core'
 import { z } from 'zod'
 
+import type { ApiOf } from '@zodios/core'
+
 const postApisessionslogin_Body = z.object({ email: z.string().email(), password: z.string().min(8).max(20) })
 const postApioffers_Body = z.object({
   name: z.string().min(8).max(50),
@@ -178,7 +180,7 @@ const endpoints = makeApi([
       }
     ],
     response: z.object({
-      maxPage: z.number().gte(1),
+      maxPage: z.number().gte(0),
       data: z.array(
         z.object({
           id: z.string(),
@@ -458,3 +460,5 @@ export const api = new Zodios(apiUrl, endpoints, {
     withCredentials: true
   }
 })
+
+export type Api = ApiOf<typeof api>

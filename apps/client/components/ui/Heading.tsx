@@ -5,6 +5,7 @@ interface Props {
   readonly title: string
 }
 
+// zmienić title na children !!!
 export const Heading = ({ className, title }: Props) => (
   <h2 className={clsx('text-2xl text-white font-bold text-center', className)}>{title}</h2>
 )

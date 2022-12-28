@@ -7,8 +7,9 @@ import { Heading } from '../ui/Heading'
 import { PrimaryButton } from '../ui/PrimaryButton'
 import { SecondaryButton } from '../ui/SecondaryButton'
 
-import { PriceInput } from './PriceInput'
-import { SmallHeading } from './SmallHeading'
+const SmallHeading = ({ children }: { readonly children: string }) => (
+  <h4 className='text-white text-lg pb-4'>{children}</h4>
+)
 
 export const Filter = async () => {
   const { data: categories } = await api.get('/categories/')
@@ -48,7 +49,24 @@ export const Filter = async () => {
           <Container className='flex items-center flex-col mb-12'>
             <SmallHeading>Price</SmallHeading>
 
-            <PriceInput />
+            <div className='flex items-center gap-2'>
+              <div className='flex items-center relative'>
+                <input
+                  type='text'
+                  className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-16 w-full'
+                />
+                <span className='text-white absolute left-[1.2rem] pointer-events-none'>USD</span>
+              </div>
+
+              <p className='text-white'>-</p>
+              <div className='flex items-center relative'>
+                <input
+                  type='text'
+                  className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-16 w-full'
+                />
+                <span className='text-white absolute left-[1.2rem] pointer-events-none'>USD</span>
+              </div>
+            </div>
           </Container>
 
           <PrimaryButton isFormTypeButton={true} href='/' className='w-full fixed bottom-0 left-0'>

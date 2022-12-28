@@ -1,27 +1,32 @@
 'use client'
 
 import clsx from 'clsx'
+import Link from 'next/link'
 import React, { useState } from 'react'
 import { BiLocationPlus } from 'react-icons/bi'
 
-import { SearchItem } from './SearchItem'
-import { cities } from './cities'
+import { api } from '../../utils/fetcher'
+
+import type { Api } from '../../utils/fetcher'
+import type { ZodiosResponseByPath } from '@zodios/core'
+import type { ChangeEvent } from 'react'
 
 interface Props {
   readonly className?: string
-  readonly error?: React.ReactNode
-  readonly validate?: any
 }
 
-export const SearchCityInput = ({ className, error, validate }: Props) => {
-  const [inputValue, setInputValue] = useState('')
-  const [isOpenDropdown, setIsOpenDropdown] = useState(!!inputValue)
+type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
 
-  const filteredCities = cities.filter(c => c.name.trim().toLowerCase().includes(inputValue.toLowerCase()))
+type Offers = Response['data']
 
-  const searchValueHandler = (city: string) => {
-    setInputValue(city)
-    setIsOpenDropdown(false)
+export const SearchCityInput = ({ className }: Props) => {
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false)
+  const [offers, setOffers] = useState<Offers>([])
+
+  const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { data: offers } = await api.get('/offers/', { queries: { city: e.target.value } })
+
+    setOffers(offers)
   }
 
   return (
@@ -33,11 +38,9 @@ export const SearchCityInput = ({ className, error, validate }: Props) => {
           'border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-full p-4 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full',
           className
         )}
-        onChange={e => setInputValue(e.target.value)}
+        onChange={onInputChange}
         onFocus={() => setIsOpenDropdown(true)}
         onBlur={() => setTimeout(() => setIsOpenDropdown(false), 100)}
-        value={inputValue}
-        {...validate}
       />
       <BiLocationPlus className='absolute left-4 text-white text-xl' />
 
@@ -47,12 +50,15 @@ export const SearchCityInput = ({ className, error, validate }: Props) => {
         }`}
       >
         <ul className={`grid grid-cols-1 max-h-[15rem] overflow-y-auto overflow-hidden text-white z-20`}>
-          {filteredCities.map(c => (
-            <SearchItem onAddCity={searchValueHandler} key={c.id} name={c.name} />
+          {offers.map(o => (
+            <li className='hover:bg-gray-700 text-center cursor-pointer' key={o.id}>
+              <Link className='w-full h-full p-4' href={`/offers/${o.id}`}>
+                {o.name}
+              </Link>
+            </li>
           ))}
         </ul>
       </div>
-      {error}
     </div>
   )
 }

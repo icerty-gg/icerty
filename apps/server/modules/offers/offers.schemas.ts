@@ -46,7 +46,7 @@ export const getAllOffersSchema = createTypeBoxFastifySchema({
   }),
   response: {
     200: Type.Object({
-      maxPage: Type.Number({ minimum: 1 }),
+      maxPage: Type.Number({ minimum: 0 }),
       data: Type.Array(
         Type.Intersect([
           OfferSchema,
