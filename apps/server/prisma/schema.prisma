@@ -57,7 +57,7 @@ model OfferImage {
   id      String @id @default(uuid())
   offerId String
   img     String
-  offer   Offer  @relation(fields: [offerId], references: [id])
+  offer   Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
 }
 
 model FollowedOffers {
