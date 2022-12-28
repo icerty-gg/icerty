@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { CheckboxInput } from '../../components/filter/CheckboxInput'
-import { ErrorMessage } from '../../components/form/ErrorMessage'
+import { CheckboxInput } from '../../components/form/CheckboxInput'
 import { Input } from '../../components/form/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
@@ -69,7 +68,7 @@ const Register = () => {
 
       // zarejestrowano - zrób redirect lub co tam chcesz
     } catch (err) {
-      // nie zarejestrowano - obsłuż błąd
+      // nie zarejestrowano - obsłuż błąd (email taken)
     }
   }
 
@@ -81,52 +80,47 @@ const Register = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
             <Input
-              register={{ ...register('name') }}
               className='max-md:col-span-2'
               icon={<BiUser className='text-lg' />}
               type='text'
-              label='First name'
-              error={errors.name?.message && <ErrorMessage>{errors.name?.message}</ErrorMessage>}
+              placeholder='First name'
+              errorMessage={errors.name?.message}
+              {...register('name')}
             />
             <Input
-              register={{ ...register('surname') }}
               className='max-md:col-span-2'
               icon={<BiUser className='text-lg' />}
               type='text'
-              label='Last name'
-              error={errors.surname?.message && <ErrorMessage>{errors.surname?.message}</ErrorMessage>}
+              placeholder='Last name'
+              errorMessage={errors.surname?.message}
+              {...register('surname')}
             />
             <Input
-              register={{ ...register('email') }}
               className='col-span-2'
               icon={<BiMailSend className='text-lg' />}
               type='email'
-              label='Email'
-              error={errors.email?.message && <ErrorMessage>{errors.email?.message}</ErrorMessage>}
+              placeholder='Email'
+              errorMessage={errors.email?.message}
+              {...register('email')}
             />
             <Input
-              register={{ ...register('password') }}
               className='col-span-2'
               icon={<BiLockAlt className='text-lg' />}
               type='password'
-              label='Password'
-              isPasswordType={true}
-              error={errors.password?.message && <ErrorMessage>{errors.password?.message}</ErrorMessage>}
+              placeholder='Password'
+              errorMessage={errors.password?.message}
+              {...register('password')}
             />
             <Input
-              register={{ ...register('repeatPassword') }}
               className='col-span-2'
               icon={<BiLockAlt className='text-lg' />}
               type='password'
-              label='Repeat password'
-              isPasswordType={true}
-              error={errors.repeatPassword?.message && <ErrorMessage>{errors.repeatPassword?.message}</ErrorMessage>}
+              placeholder='Repeat password'
+              errorMessage={errors.repeatPassword?.message}
+              {...register('repeatPassword')}
             />
 
-            <CheckboxInput
-              validate={{ ...register('acceptPolicy') }}
-              error={errors.acceptPolicy?.message && <ErrorMessage>{errors.acceptPolicy?.message}</ErrorMessage>}
-            >
+            <CheckboxInput errorMessage={errors.acceptPolicy?.message} {...register('acceptPolicy')}>
               I Accept the Terms of Service
             </CheckboxInput>
 
@@ -136,7 +130,7 @@ const Register = () => {
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
-          <p className='text-white'>You already have an account?</p>
+          <p className='text-white'>Already have an account?</p>
 
           <SecondaryButton href='/login'>Login to your account!</SecondaryButton>
         </div>

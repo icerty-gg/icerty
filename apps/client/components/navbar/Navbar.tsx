@@ -1,16 +1,32 @@
 'use client'
 
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useRef } from 'react'
 import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiAddToQueue } from 'react-icons/bi'
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
+import Logotype from '../../public/logo.svg'
 import { PrimaryButton } from '../ui/PrimaryButton'
 
-import { Logo } from './Logo'
 import { MobileNavbar } from './MobileNavbar'
 import { NavLink } from './NavLink'
+
+interface Props {
+  readonly className?: string
+  readonly isSmall?: boolean
+}
+
+export const Logo = ({ className, isSmall }: Props) => (
+  <Link
+    className={`text-white ${isSmall ? 'text-xl' : 'text-2xl'} font-bold flex items-center gap-4 ${className}`}
+    href='/'
+  >
+    <Logotype className={`${isSmall ? 'w-[2.7rem]' : 'w-12'}`} />
+    <h1>Icerty</h1>
+  </Link>
+)
 
 export const Navbar = () => {
   const isOpenMiniNav = useCheckScroll(80)

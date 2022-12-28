@@ -1,12 +1,12 @@
 import { api } from '../../utils/fetcher'
 import { CategoryItem } from '../categories/CategoryItem'
+import { CheckboxInput } from '../form/CheckboxInput'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
 import { PrimaryButton } from '../ui/PrimaryButton'
 import { SecondaryButton } from '../ui/SecondaryButton'
 
-import { CheckboxInput } from './CheckboxInput'
 import { PriceInput } from './PriceInput'
 import { SmallHeading } from './SmallHeading'
 

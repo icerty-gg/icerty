@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { ErrorMessage } from '../../components/form/ErrorMessage'
 import { Input } from '../../components/form/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
@@ -55,21 +54,20 @@ const Login = () => {
           <Heading title='Login to your account' className='pb-6' />
           <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-6'>
             <Input
-              register={{ ...register('email') }}
               className='col-span-2'
               icon={<BiMailSend className='text-lg' />}
               type='email'
-              label='Email'
-              error={errors.email?.message && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+              placeholder='Email'
+              errorMessage={errors.email?.message}
+              {...register('email')}
             />
             <Input
-              register={{ ...register('password') }}
               className='col-span-2'
               icon={<BiLockAlt className='text-lg' />}
               type='password'
-              label='Password'
-              isPasswordType={true}
-              error={errors.password?.message && <ErrorMessage>{errors.password.message}</ErrorMessage>}
+              placeholder='Password'
+              errorMessage={errors.password?.message}
+              {...register('password')}
             />
 
             <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>

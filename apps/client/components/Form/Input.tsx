@@ -1,66 +1,60 @@
 'use client'
 
 import clsx from 'clsx'
-import React from 'react'
+import { forwardRef } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
 import { useToggle } from '../../hooks/useToggle'
 
-import type { UseFormRegister, FieldValues } from 'react-hook-form'
+import { ErrorMessage } from './ErrorMessage'
 
-interface Props {
-  readonly children?: React.ReactNode
+import type { InputHTMLAttributes } from 'react'
+
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   readonly className?: string
-  readonly error?: React.ReactNode
+  readonly errorMessage?: string
   readonly icon: JSX.Element
-  readonly isPasswordType?: boolean
-  readonly label: string
-  readonly register: UseFormRegister<FieldValues> | any
-  readonly type: string
 }
 
-export const Input = ({ children, className, error, icon, isPasswordType, label, register, type }: Props) => {
-  const [isVisible, toggleIsVisible] = useToggle()
+export const Input = forwardRef<HTMLInputElement, Props>(
+  ({ className, errorMessage, icon, id, type, ...rest }, ref) => {
+    const [isVisible, toggleIsVisible] = useToggle()
 
-  return (
-    <div className={clsx('flex flex-col gap-[0.7rem] w-full', className)}>
-      {children ? (
-        children
-      ) : (
-        <>
-          <div className='relative flex items-center w-full group'>
-            <label
-              className='border border-r-0 bg-gray-800/20 border-slate-800 group-hover:border-sky-400/20 rounded-l-full  text-white text-sm flex items-center gap-2 p-4 h-[54px]'
-              htmlFor={label}
-            >
-              {icon}
-            </label>
-            <div className='w-full flex items-center'>
-              <input
-                className='border border-l-0 bg-gray-800/20 border-slate-800 group-hover:border-sky-400/20  rounded-r-full p-4 pl-0 focus:outline-none group-focus:border-sky-400/20 text-white w-full text-sm'
-                id={label}
-                type={isPasswordType ? (isVisible ? 'text' : 'password') : type}
-                placeholder={label}
-                {...register}
-              />
+    return (
+      <div className={clsx('flex flex-col gap-[0.7rem] w-full', className)}>
+        <div className='relative flex items-center w-full group'>
+          <label
+            className='border border-r-0 bg-gray-800/20 border-slate-800 group-hover:border-sky-400/20 rounded-l-full  text-white text-sm flex items-center gap-2 p-4 h-[54px]'
+            htmlFor={id}
+          >
+            {icon}
+          </label>
+          <div className='w-full flex items-center'>
+            <input
+              className='border border-l-0 bg-gray-800/20 border-slate-800 group-hover:border-sky-400/20  rounded-r-full p-4 pl-0 focus:outline-none group-focus:border-sky-400/20 text-white w-full text-sm'
+              type={isVisible ? 'text' : type}
+              aria-invalid={errorMessage ? 'true' : 'false'}
+              id={id}
+              ref={ref}
+              {...rest}
+            />
 
-              {isPasswordType &&
-                (isVisible ? (
-                  <AiOutlineEyeInvisible
-                    onClick={toggleIsVisible}
-                    className='absolute right-4 text-white text-xl cursor-pointer'
-                  />
-                ) : (
-                  <AiOutlineEye
-                    onClick={toggleIsVisible}
-                    className='absolute right-4 text-white text-xl cursor-pointer'
-                  />
-                ))}
-            </div>
+            {type === 'password' &&
+              (isVisible ? (
+                <AiOutlineEyeInvisible
+                  onClick={toggleIsVisible}
+                  className='absolute right-4 text-white text-xl cursor-pointer'
+                />
+              ) : (
+                <AiOutlineEye
+                  onClick={toggleIsVisible}
+                  className='absolute right-4 text-white text-xl cursor-pointer'
+                />
+              ))}
           </div>
-          {error}
-        </>
-      )}
-    </div>
-  )
-}
+        </div>
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      </div>
+    )
+  }
+)

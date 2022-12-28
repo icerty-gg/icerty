@@ -80,7 +80,8 @@ module.exports = {
         html: true
       }
     ],
-    'react/no-unescaped-entities': 'off'
+    'react/no-unescaped-entities': 'off',
+    'react/display-name': 'off'
   },
   ignorePatterns: ['.eslintrc.js', '*.config.js', 'apiTypes.ts']
 }
