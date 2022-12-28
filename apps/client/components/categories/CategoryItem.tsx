@@ -10,7 +10,7 @@ interface Props {
 
 export const CategoryItem = ({ href, image, isSmall, name }: Props) => {
   return (
-    <li className='border bg-gray-800/20 border-slate-800 hover:bg-sky-400/20 rounded-xl'>
+    <li className='border bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl'>
       <Link
         className={`flex ${isSmall ? 'flex-row p-2' : 'flex-col p-4'} items-center gap-6`}
         href={`offers/${href.toLowerCase()}`}

@@ -30,7 +30,7 @@ export const SearchCityInput = ({ className, error, validate }: Props) => {
         type='search'
         placeholder='Everywhere'
         className={clsx(
-          'border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full',
+          'border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-full p-4 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full',
           className
         )}
         onChange={e => setInputValue(e.target.value)}
@@ -46,7 +46,7 @@ export const SearchCityInput = ({ className, error, validate }: Props) => {
           isOpenDropdown ? 'grid' : 'hidden'
         }`}
       >
-        <ul className={`grid grid-cols-1 max-h-[15rem] overflow-y-auto overflow-hidden text-white`}>
+        <ul className={`grid grid-cols-1 max-h-[15rem] overflow-y-auto overflow-hidden text-white z-20`}>
           {filteredCities.map(c => (
             <SearchItem onAddCity={searchValueHandler} key={c.id} name={c.name} />
           ))}

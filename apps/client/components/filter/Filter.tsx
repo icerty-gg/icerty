@@ -14,7 +14,7 @@ export const Filter = async () => {
   const { data: categories } = await api.get('/categories/')
 
   return (
-    <div className='w-full h-full relative'>
+    <div className='w-full h-full'>
       <Container className='sticky top-[6rem] max-lg:col-span-2'>
         <div className='flex items-center justify-center gap-4 pb-6'>
           <Heading title='Filters' />
@@ -45,13 +45,13 @@ export const Filter = async () => {
             </div>
           </Container>
 
-          <Container className='flex items-center flex-col'>
+          <Container className='flex items-center flex-col mb-12'>
             <SmallHeading>Price</SmallHeading>
 
             <PriceInput />
           </Container>
 
-          <PrimaryButton href='/' className='w-full'>
+          <PrimaryButton isFormTypeButton={true} href='/' className='w-full fixed bottom-0 left-0'>
             Apply filters
           </PrimaryButton>
         </div>
