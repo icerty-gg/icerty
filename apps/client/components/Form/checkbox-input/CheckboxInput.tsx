@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 
-import { ErrorMessage } from './ErrorMessage'
+import { ErrorMessage } from '../error-message/ErrorMessage'
 
 import type { ReactNode, InputHTMLAttributes } from 'react'
 

@@ -1,11 +1,11 @@
 import { api } from '../../utils/fetcher'
 import { CategoryItem } from '../categories/CategoryItem'
-import { CheckboxInput } from '../form/CheckboxInput'
+import { CheckboxInput } from '../form/checkbox-input/CheckboxInput'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
-import { SecondaryButton } from '../ui/secondary-button/SecondaryButton'
 import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
+import { SecondaryButton } from '../ui/secondary-button/SecondaryButton'
 
 const SmallHeading = ({ children }: { readonly children: string }) => (
   <h4 className='text-white text-lg pb-4'>{children}</h4>

@@ -3,7 +3,7 @@ import { BiLockAlt } from 'react-icons/bi'
 import { Input } from './Input'
 
 const meta: Meta<typeof Input> = {
-  title: 'Input',
+  title: 'Form/Input',
   component: Input
 }
 

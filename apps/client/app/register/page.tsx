@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { CheckboxInput } from '../../components/form/CheckboxInput'
+import { CheckboxInput } from '../../components/form/checkbox-input/CheckboxInput'
 import { Input } from '../../components/form/input/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
