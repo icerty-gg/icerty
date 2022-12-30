@@ -4,9 +4,8 @@ import clsx from 'clsx'
 import { forwardRef } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 
-import { useToggle } from '../../hooks/useToggle'
-
-import { ErrorMessage } from './ErrorMessage'
+import { useToggle } from '../../../hooks/useToggle'
+import { ErrorMessage } from '../ErrorMessage'
 
 import type { InputHTMLAttributes } from 'react'
 

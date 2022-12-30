@@ -6,8 +6,8 @@ import { SearchCityInput } from '../components/searchCityInput/SearchCityInput'
 import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
 import { Layout } from '../components/ui/Layout'
-import { PrimaryButton } from '../components/ui/PrimaryButton'
-import { SecondaryButton } from '../components/ui/SecondaryButton'
+import { SecondaryButton } from '../components/ui/secondary-button/SecondaryButton'
+import { PrimaryButton } from '../components/ui/primary-button/PrimaryButton'
 import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
@@ -46,7 +46,7 @@ const Home = async () => {
             <Heading title='Categories' className='pb-6' />
             <ul className='sticky grid grid-cols-2 max-lg:grid-cols-2 gap-4 max-md:grid-cols-1 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll'>
               {categories.map(c => (
-                <CategoryItem href={c.name} key={c.id} image={c.img} {...c} />
+                <CategoryItem key={c.id} {...c} />
               ))}
             </ul>
           </Container>

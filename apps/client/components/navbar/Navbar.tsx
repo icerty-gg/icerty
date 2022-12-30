@@ -8,7 +8,7 @@ import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiAddToQueue } from 'react-ico
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
 import Logotype from '../../public/logo.svg'
-import { PrimaryButton } from '../ui/PrimaryButton'
+import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
 
 import { MobileNavbar } from './MobileNavbar'
 import { NavLink } from './NavLink'

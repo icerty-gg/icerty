@@ -15,7 +15,7 @@ export const Layout = ({ children }: { readonly children: React.ReactNode }) => 
       initial='hidden'
       animate='enter'
       exit='exit'
-      transition={{ type: 'linear' }}
+      transition={{ type: 'spring' }}
       className='relative'
     >
       {children}

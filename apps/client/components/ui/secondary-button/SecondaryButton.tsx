@@ -1,8 +1,9 @@
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 import Link from 'next/link'
+import { ReactNode } from 'react'
 
 interface Props {
-  readonly children: string | React.ReactNode
+  readonly children: ReactNode
   readonly className?: string
   readonly href: string
 }

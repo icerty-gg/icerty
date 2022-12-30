@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { Offer } from '../offers/Offer'
-import { PrimaryButton } from '../ui/PrimaryButton'
+import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
 
 export const UserStats = () => {
   const [selectedStatus, setIsSelectedStatus] = useState<'offers' | 'Followed'>('offers')
@@ -31,15 +31,15 @@ export const UserStats = () => {
 
       {selectedStatus === 'offers' && (
         <div className='grid grid-cols-1 gap-4 '>
-          <Offer createdAt={'xd'} id={'awd'} image={undefined} name={'awd'} price={0} />
+          {/* <Offer createdAt={'xd'} id={'awd'} image={undefined} name={'awd'} price={0} /> */}
           <PrimaryButton href='/offers'>Zobacz wszystkie</PrimaryButton>
         </div>
       )}
 
       {selectedStatus === 'Followed' && (
         <div className='grid grid-cols-1 gap-4 '>
-          <Offer createdAt={'awdd'} id={'2323'} image={undefined} name={'awd'} price={0} />
-          <Offer createdAt={'ddd'} id={'4424'} image={undefined} name={'awdawd'} price={0} />
+          {/* <Offer createdAt={'awdd'} id={'2323'} image={undefined} name={'awd'} price={0} /> */}
+          {/* <Offer createdAt={'ddd'} id={'4424'} image={undefined} name={'awdawd'} price={0} /> */}
           <PrimaryButton href='/followed'>Zobacz wszystkie</PrimaryButton>
         </div>
       )}

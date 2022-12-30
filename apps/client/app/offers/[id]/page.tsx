@@ -4,9 +4,9 @@ import { BiHeart } from 'react-icons/bi'
 import { Container } from '../../../components/ui/Container'
 import { Heading } from '../../../components/ui/Heading'
 import { Layout } from '../../../components/ui/Layout'
-import { PrimaryButton } from '../../../components/ui/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/SecondaryButton'
+import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
 import { Slider } from '../../../components/ui/Slider'
+import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
 import { api } from '../../../utils/fetcher'
 
 export const generateStaticParams = async () => {

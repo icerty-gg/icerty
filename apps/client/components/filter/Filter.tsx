@@ -4,8 +4,8 @@ import { CheckboxInput } from '../form/CheckboxInput'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
-import { PrimaryButton } from '../ui/PrimaryButton'
-import { SecondaryButton } from '../ui/SecondaryButton'
+import { SecondaryButton } from '../ui/secondary-button/SecondaryButton'
+import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
 
 const SmallHeading = ({ children }: { readonly children: string }) => (
   <h4 className='text-white text-lg pb-4'>{children}</h4>
@@ -33,7 +33,7 @@ export const Filter = async () => {
             <SmallHeading>Category</SmallHeading>
             <ul className='grid grid-cols-1 gap-4 max-h-[25rem] overflow-y-scroll overflow-hidden w-full'>
               {categories.map(c => {
-                return <CategoryItem key={c.id} href={c.name} name={c.name} image={c.img} isSmall={true} />
+                return <CategoryItem key={c.id} isSmall {...c} />
               })}
             </ul>
           </Container>
