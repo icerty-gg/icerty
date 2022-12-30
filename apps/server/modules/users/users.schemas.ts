@@ -1,8 +1,9 @@
 import { Type } from '@sinclair/typebox'
 
-import { StringEnum, createTypeBoxFastifySchema } from '../../utils/schema'
+import { StringEnum } from '../../utils/schema'
 
 import type { Static } from '@sinclair/typebox'
+import type { FastifySchema } from 'fastify'
 
 export const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
 
@@ -19,7 +20,7 @@ export const UserSchema = Type.Object({
 
 export type User = Static<typeof UserSchema>
 
-export const createUserSchema = createTypeBoxFastifySchema({
+export const createUserSchema = {
   tags: ['users'],
   summary: 'Create user',
   body: Type.Intersect([
@@ -29,17 +30,17 @@ export const createUserSchema = createTypeBoxFastifySchema({
   response: {
     201: UserSchema
   }
-})
+} satisfies FastifySchema
 
-export const deleteCurrentUserSchema = createTypeBoxFastifySchema({
+export const deleteCurrentUserSchema = {
   tags: ['users'],
   summary: 'Delete current user',
   response: {
     204: Type.Void()
   }
-})
+} satisfies FastifySchema
 
-export const deleteUserByIdSchema = createTypeBoxFastifySchema({
+export const deleteUserByIdSchema = {
   tags: ['users'],
   summary: 'Delete user by id',
   params: Type.Object({
@@ -48,9 +49,9 @@ export const deleteUserByIdSchema = createTypeBoxFastifySchema({
   response: {
     204: Type.Void()
   }
-})
+} satisfies FastifySchema
 
-export const updatePasswordSchema = createTypeBoxFastifySchema({
+export const updatePasswordSchema = {
   tags: ['users'],
   summary: 'Update password',
   body: Type.Object({
@@ -60,9 +61,9 @@ export const updatePasswordSchema = createTypeBoxFastifySchema({
   response: {
     204: Type.Void()
   }
-})
+} satisfies FastifySchema
 
-export const updateEmailSchema = createTypeBoxFastifySchema({
+export const updateEmailSchema = {
   tags: ['users'],
   summary: 'Update email',
   body: Type.Object({
@@ -71,4 +72,4 @@ export const updateEmailSchema = createTypeBoxFastifySchema({
   response: {
     204: Type.Void()
   }
-})
+} satisfies FastifySchema
