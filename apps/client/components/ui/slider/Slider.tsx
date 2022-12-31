@@ -4,8 +4,8 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'
 import Image from 'next/image'
 import { Carousel } from 'react-responsive-carousel'
 
-import { Container } from './Container'
-import { Heading } from './Heading'
+import { Container } from '../Container'
+import { Heading } from '../Heading'
 
 interface Images {
   readonly id: string
