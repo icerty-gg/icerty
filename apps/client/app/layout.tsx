@@ -1,13 +1,13 @@
 'use client'
 
 import '../styles/globals.css'
-import { Open_Sans } from '@next/font/google'
+import { Roboto } from '@next/font/google'
 import { BiArrowBack } from 'react-icons/bi'
 
 import { Navbar } from '../components/navbar/Navbar'
 import { useCheckScroll } from '../hooks/useCheckScroll'
 
-const openSans = Open_Sans({
+const roboto = Roboto({
   subsets: ['latin'],
   weight: ['400', '700'],
   variable: '--font-inter'
@@ -21,7 +21,7 @@ const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
   }
 
   return (
-    <html className={`${openSans.variable} font-sans`} lang='en'>
+    <html className={`${roboto.variable} font-sans`} lang='en'>
       <body className='bg-gray-900 relative'>
         <Navbar />
         <div className='max-w-screen-2xl w-full my-0 mx-auto px-8 max-md:px-4 py-24'>
