@@ -18,15 +18,15 @@ export const SearchCityInput = ({ className }: Props) => {
 
   const onInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { data: offers } = await api.get('/offers/', { queries: { city: e.target.value } })
+    const allCities = offers.map(o => o.city)
 
-    setCities(offers.map(o => o.city))
-
-    // jak na razie tu wyświetlamy wszystkie miasta z ofert czyli jak jest oferta która ma miasto Katowice to tu będą Katowice inaczej ich nie będzie
+    setCities(allCities.filter((city, index) => allCities.indexOf(city) === index))
   }
 
   return (
     <div className='flex relative items-center w-full'>
       <input
+        id='searchCityInput'
         type='search'
         placeholder='Everywhere'
         className={clsx(
@@ -37,7 +37,9 @@ export const SearchCityInput = ({ className }: Props) => {
         onFocus={() => setIsOpenDropdown(true)}
         onBlur={() => setTimeout(() => setIsOpenDropdown(false), 100)}
       />
-      <BiLocationPlus className='absolute left-4 text-white text-xl' />
+      <label htmlFor='searchCityInput' className='absolute left-4'>
+        <BiLocationPlus className='text-white text-xl' />
+      </label>
 
       <div
         className={`absolute bg-gray-800 overflow-hidden w-full top-[100%] left-0 rounded-xl ${
