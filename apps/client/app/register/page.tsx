@@ -5,18 +5,17 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
+import { Input } from '../../components/Form/input/Input'
 import { CheckboxInput } from '../../components/form/checkbox-input/CheckboxInput'
-import { Input } from '../../components/form/input/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
-import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
+import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { api } from '../../utils/fetcher'
 
 import type { SubmitHandler } from 'react-hook-form'
 
-// tu wartości też poprawiłem na te ze swaggera
 const RegisterSchema = z
   .object({
     name: z
@@ -48,7 +47,6 @@ const RegisterSchema = z
         message: 'Passwords do not match'
       })
     }
-    // to działa, ale nie wiem jak dostać się do tego błędu, trzeba ogarnąć :D
   })
 
 type FormSchemaType = z.infer<typeof RegisterSchema>
@@ -66,9 +64,9 @@ const Register = () => {
     try {
       await api.post('/users/register', { email, surname, name, password })
 
-      // zarejestrowano - zrób redirect lub co tam chcesz
+      console.log({ email, surname, name, password })
     } catch (err) {
-      // nie zarejestrowano - obsłuż błąd (email taken)
+      console.log(err)
     }
   }
 

@@ -6,8 +6,8 @@ import { SearchCityInput } from '../components/searchCityInput/SearchCityInput'
 import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
 import { Layout } from '../components/ui/Layout'
-import { SecondaryButton } from '../components/ui/secondary-button/SecondaryButton'
 import { PrimaryButton } from '../components/ui/primary-button/PrimaryButton'
+import { SecondaryButton } from '../components/ui/secondary-button/SecondaryButton'
 import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
@@ -26,15 +26,18 @@ const Home = async () => {
               <div className='flex relative items-center'>
                 <input
                   type='text'
+                  id='searchOfferInput'
                   placeholder='Search offer'
                   className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-full p-4 focus:outline-none focus:border-sky-400/20 text-white pl-12 w-full'
                 />
-                <BiSearchAlt2 className='absolute left-4 text-white text-xl' />
+                <label className='absolute left-4' htmlFor='searchOfferInput'>
+                  <BiSearchAlt2 className='text-white text-xl' />
+                </label>
               </div>
               <div className='flex items-center gap-4 max-md:flex-col'>
                 <SearchCityInput />
                 <PrimaryButton isFormTypeButton={true} href='/offers'>
-                  Find
+                  <BiSearchAlt2 className='text-lg' /> Find
                 </PrimaryButton>
               </div>
             </div>
