@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useRef } from 'react'
-import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiAddToQueue } from 'react-icons/bi'
+import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiPlus, BiUser } from 'react-icons/bi'
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
@@ -78,14 +78,16 @@ export const Navbar = () => {
             />
             <NavLink
               icon={
-                <BiAddToQueue
+                <BiUser
                   className={`text-lg transition-all ${
-                    pathname === '/add-offer' ? 'translate-x-[0] opacity-100' : 'translate-x-[2rem] opacity-0'
+                    pathname === ('/login' || '/register')
+                      ? 'translate-x-[0] opacity-100'
+                      : 'translate-x-[2rem] opacity-0'
                   }`}
                 />
               }
-              title='Add Offer'
-              href='/add-offer'
+              title='Login'
+              href='/login'
             />
           </div>
 
@@ -97,7 +99,9 @@ export const Navbar = () => {
           </button>
 
           <div className='flex gap-3 items-center text-sm max-lg:hidden'>
-            <PrimaryButton href='/login'>Login</PrimaryButton>
+            <PrimaryButton href='/login'>
+              <BiPlus className='text-xl' /> Add offer
+            </PrimaryButton>
           </div>
         </div>
       </nav>
@@ -116,9 +120,9 @@ export const Navbar = () => {
           <NavLink isMobile={true} title='Main Page' href='/' />
           <NavLink isMobile={true} title='Offers' href='/offers' />
           <NavLink isMobile={true} title='Followed' href='/followed' />
-          <NavLink isMobile={true} title='Add Offer' href='/add-offer' />
-          <PrimaryButton className='text-sm ml-4' href='/login'>
-            Login
+          <NavLink isMobile={true} title='Login' href='/login' />
+          <PrimaryButton href='/login'>
+            <BiPlus className='text-xl' /> Add offer
           </PrimaryButton>
         </div>
       </nav>

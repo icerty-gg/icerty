@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { BiHeart, BiLocationPlus, BiCategoryAlt } from 'react-icons/bi'
 
+import { useRippleClickEffect } from '../../hooks/useRippleClickEffect'
 interface Props {
   readonly city: string
   readonly id: string
@@ -14,9 +15,11 @@ interface Props {
 }
 
 export const Offer = ({ city, id, image, isPromoted, name, price }: Props) => {
+  const { coords, createRippleHandler, isRipple } = useRippleClickEffect()
+
   return (
-    <div className='relative'>
-      <Link href={`/offers/${id}`}>
+    <div className='relative overflow-hidden'>
+      <Link onClick={createRippleHandler} href={`/offers/${id}`}>
         <li className='flex items-center gap-6 border transition-colors bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl overflow-hidden'>
           <Image
             width={210}
@@ -53,6 +56,16 @@ export const Offer = ({ city, id, image, isPromoted, name, price }: Props) => {
             )}
           </div>
         </li>
+
+        {isRipple && (
+          <div
+            style={{
+              left: coords.x,
+              top: coords.y
+            }}
+            className='absolute animate-[ripple_1.5s_ease_forwards] bg-sky-500/20 rounded-full translate-x-[-50%] translate-y-[-50%] pointer-events-none'
+          />
+        )}
       </Link>
       <button
         onClick={() => console.log(id)}
