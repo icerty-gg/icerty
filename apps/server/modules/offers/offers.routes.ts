@@ -16,8 +16,19 @@ import type { FastifyPluginAsync } from 'fastify'
 
 const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getAllOffersSchema }, async (request, reply) => {
-    const { category, city, count_from, count_to, name, order_by, order_direction, page, price_from, price_to } =
-      request.query
+    const {
+      category,
+      city,
+      count_from,
+      count_to,
+      name,
+      order_by,
+      order_direction,
+      page,
+      price_from,
+      price_to,
+      promoted
+    } = request.query
 
     const OFFERS_SHOWN = 20
 
@@ -44,9 +55,11 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
           gte: price_from,
           lte: price_to
         },
+        isPromoted: promoted,
         category: {
           name: {
-            contains: category
+            contains: category,
+            mode: 'insensitive'
           }
         }
       },
@@ -75,14 +88,43 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       }
     })
 
+    const count = await fastify.prisma.offer.count({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive'
+        },
+        city: {
+          contains: city,
+          mode: 'insensitive'
+        },
+        count: {
+          gte: count_from,
+          lte: count_to
+        },
+        price: {
+          gte: price_from,
+          lte: price_to
+        },
+        isPromoted: promoted,
+        category: {
+          name: {
+            contains: category,
+            mode: 'insensitive'
+          }
+        }
+      }
+    })
+
     return reply.code(200).send({
-      data: offers.map(o => ({
+      offers: offers.map(o => ({
         ...o,
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
         images: o.offerImage
       })),
-      maxPage: Math.ceil(offers.length / OFFERS_SHOWN)
+      maxPage: Math.ceil(offers.length / OFFERS_SHOWN),
+      count
     })
   })
 
@@ -267,7 +309,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       })
 
       return reply.code(200).send({
-        data: followedOffers.map(o => ({
+        offers: followedOffers.map(o => ({
           ...o.offer,
           createdAt: o.offer.createdAt.toISOString(),
           updatedAt: o.offer.updatedAt.toISOString(),
