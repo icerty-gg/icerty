@@ -137,11 +137,17 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         offerImage: true,
         user: {
           select: {
-            id: true,
             img: true,
             name: true,
             surname: true,
-            createdAt: true
+            createdAt: true,
+            email: true
+          }
+        },
+        category: {
+          select: {
+            name: true,
+            img: true
           }
         }
       }
@@ -152,16 +158,15 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
     }
 
     return reply.code(200).send({
-      offer: {
-        ...offer,
-        createdAt: offer.createdAt.toISOString(),
-        updatedAt: offer.updatedAt.toISOString(),
-        images: offer.offerImage
-      },
+      ...offer,
+      createdAt: offer.createdAt.toISOString(),
+      updatedAt: offer.updatedAt.toISOString(),
+      images: offer.offerImage,
       user: {
         ...offer.user,
         createdAt: offer.user.createdAt.toISOString()
-      }
+      },
+      category: offer.category
     })
   })
 

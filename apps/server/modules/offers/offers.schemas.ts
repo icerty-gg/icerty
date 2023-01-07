@@ -67,10 +67,13 @@ export const getOfferSchema = {
     id: Type.String()
   }),
   response: {
-    200: Type.Object({
-      offer: OfferSchema,
-      user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img', 'createdAt'])
-    })
+    200: Type.Intersect([
+      Type.Omit(OfferSchema, ['userId', 'categoryId']),
+      Type.Object({
+        user: Type.Pick(UserSchema, ['name', 'surname', 'img', 'email', 'createdAt']),
+        category: Type.Pick(CategorySchema, ['name', 'img'])
+      })
+    ])
   }
 } satisfies FastifySchema
 
