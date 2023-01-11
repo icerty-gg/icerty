@@ -1,63 +1,27 @@
 'use client'
 
 import clsx from 'clsx'
-import Link from 'next/link'
-
-import { useRippleClickEffect } from '../../../hooks/useRippleClickEffect'
 
 import type { ReactNode } from 'react'
+
 interface Props {
   readonly children: ReactNode
   readonly className?: string
-  readonly href: string
-  readonly isFormTypeButton?: boolean
+  readonly onClick?: () => void
 }
 
-export const PrimaryButton = ({ children, className, href, isFormTypeButton }: Props) => {
-  const { coords, createRippleHandler, isRipple } = useRippleClickEffect()
-
-  if (isFormTypeButton) {
-    return (
-      <button
-        className={clsx(
-          'relative flex items-center justify-center gap-2 shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-6 py-[0.6rem] rounded-full transition-all text-center font-bold text-sm overflow-hidden',
-          className
-        )}
-        type='submit'
-        onClick={createRippleHandler}
-      >
-        {children}
-        {isRipple ? (
-          <div
-            style={{
-              left: coords.x,
-              top: coords.y
-            }}
-            className='absolute animate-[ripple_1.5s_ease_forwards] bg-white rounded-full translate-x-[-50%] translate-y-[-50%] pointer-events-none'
-          />
-        ) : null}
-      </button>
-    )
-  }
+export const PrimaryButton = ({ children, className, onClick }: Props) => {
   return (
-    <Link
+    <button
       className={clsx(
-        'relative flex items-center justify-center gap-2 shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-6 py-[0.6rem] rounded-full transition-all text-center font-bold text-sm overflow-hidden',
+        'relative flex items-center justify-center gap-2 text-white bg-sky-500 px-6 py-[0.6rem] rounded-full text-center text-sm overflow-hidden group',
         className
       )}
-      onClick={createRippleHandler}
-      href={href}
+      type='submit'
+      onClick={onClick}
     >
       {children}
-      {isRipple && (
-        <div
-          style={{
-            left: coords.x,
-            top: coords.y
-          }}
-          className='absolute animate-[ripple_1.5s_ease_forwards] bg-white rounded-full translate-x-[-50%] translate-y-[-50%] pointer-events-none'
-        />
-      )}
-    </Link>
+      <span className='absolute translate-x-[-50%,_-50%] w-0 h-0 bg-white/20 rounded-[50%] group-hover:w-[60rem] group-hover:h-[60rem] transition-all duration-500' />
+    </button>
   )
 }

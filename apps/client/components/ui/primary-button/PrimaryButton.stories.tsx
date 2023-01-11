@@ -12,15 +12,3 @@ const meta: Meta<typeof PrimaryButton> = {
 export default meta
 
 type Story = StoryObj<typeof PrimaryButton>
-
-export const Link: Story = {
-  args: {
-    href: '/'
-  }
-}
-
-export const Button: Story = {
-  args: {
-    isFormTypeButton: true
-  }
-}
