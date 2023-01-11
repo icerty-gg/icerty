@@ -7,15 +7,15 @@ import { Container } from '../components/ui/Container'
 import { Heading } from '../components/ui/Heading'
 import { Layout } from '../components/ui/Layout'
 import { PrimaryButton } from '../components/ui/primary-button/PrimaryButton'
+import { PrimaryLink } from '../components/ui/primary-button/PrimaryLink'
 import { SecondaryButton } from '../components/ui/secondary-button/SecondaryButton'
 import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
 const Home = async () => {
-  const { data: categories } = await api.get('/categories/')
-  const { data: offers } = await api.get('/offers/')
+  const { categories } = await api.get('/categories/')
+  const { offers } = await api.get('/offers/')
 
-  // brakuje labela w inpucie vvv
   return (
     <Layout>
       <div className='grid grid-cols-2 gap-4'>
@@ -36,8 +36,8 @@ const Home = async () => {
               </div>
               <div className='flex items-center gap-4 max-md:flex-col'>
                 <SearchCityInput />
-                <PrimaryButton isFormTypeButton={true} href='/offers'>
-                  <BiSearchAlt2 className='text-lg' /> Find
+                <PrimaryButton>
+                  <BiSearchAlt2 className='text-2xl' /> Find
                 </PrimaryButton>
               </div>
             </div>
@@ -62,7 +62,7 @@ const Home = async () => {
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
               {offers.map(o => (
-                <Offer image={o.images[0]?.img} key={o.id} {...o} />
+                <Offer image={o.images[0]?.img} key={o.id} category={o.category.name} {...o} />
               ))}
             </ul>
           </Container>
@@ -77,7 +77,7 @@ const Home = async () => {
               <p className='flex items-center text-center font-bold text-white text-xl gap-4'>
                 <BiLockAlt className='text-2xl' /> You need to login!
               </p>
-              <PrimaryButton href='/login'>Login</PrimaryButton>
+              <PrimaryLink href='/login'>Login</PrimaryLink>
             </div>
           </div>
         </Container>
