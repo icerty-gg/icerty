@@ -8,7 +8,7 @@ import { BiMenu, BiHomeAlt, BiBriefcase, BiHeart, BiPlus, BiUser } from 'react-i
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useToggle } from '../../hooks/useToggle'
 import Logotype from '../../public/logo.svg'
-import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
+import { PrimaryLink } from '../ui/primary-button/PrimaryLink'
 
 import { MobileNavbar } from './MobileNavbar'
 import { NavLink } from './NavLink'
@@ -99,9 +99,9 @@ export const Navbar = () => {
           </button>
 
           <div className='flex gap-3 items-center text-sm max-lg:hidden'>
-            <PrimaryButton href='/login'>
+            <PrimaryLink href='/login'>
               <BiPlus className='text-xl' /> Add offer
-            </PrimaryButton>
+            </PrimaryLink>
           </div>
         </div>
       </nav>
@@ -121,9 +121,9 @@ export const Navbar = () => {
           <NavLink isMobile={true} title='Offers' href='/offers' />
           <NavLink isMobile={true} title='Followed' href='/followed' />
           <NavLink isMobile={true} title='Login' href='/login' />
-          <PrimaryButton href='/login'>
+          <PrimaryLink href='/login'>
             <BiPlus className='text-xl' /> Add offer
-          </PrimaryButton>
+          </PrimaryLink>
         </div>
       </nav>
     </>

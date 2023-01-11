@@ -1,6 +1,6 @@
 import { BiX } from 'react-icons/bi'
 
-import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
+import { PrimaryLink } from '../ui/primary-button/PrimaryLink'
 
 import { NavLink } from './NavLink'
 
@@ -29,7 +29,7 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
           <NavLink isMobile={true} title='Offers' href='/offers' />
           <NavLink isMobile={true} title='Followed' href='/followed' />
           <NavLink isMobile={true} title='Add Offer' href='/add-offer' />
-          <PrimaryButton href='/login'>Login</PrimaryButton>
+          <PrimaryLink href='/login'>Login</PrimaryLink>
         </div>
       </div>
     </div>
