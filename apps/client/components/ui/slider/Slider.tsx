@@ -22,7 +22,7 @@ export const Slider = ({ images }: Props) => {
       <Heading title='Images' className='mb-4' />
       <div className='flex items-center justify-center w-full h-full'>
         <div className='max-w-[50rem]'>
-          <Carousel>
+          <Carousel showThumbs={true} swipeable={true} infiniteLoop autoPlay interval={5000}>
             {images.map(i => {
               return (
                 <div key={i.id} className='w-full h-full flex items-center justify-center'>
@@ -31,7 +31,7 @@ export const Slider = ({ images }: Props) => {
                     alt='Product image'
                     width={300}
                     height={300}
-                    className='rounded-xl object-contain w-full h-full flex items-center justify-center'
+                    className='rounded-xl object-contain w-full h-full flex items-center justify-center max-h-[40rem]'
                   />
                 </div>
               )
