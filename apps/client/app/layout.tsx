@@ -1,8 +1,10 @@
 'use client'
 
 import '../styles/globals.css'
+import 'react-toastify/dist/ReactToastify.css'
 import { Roboto } from '@next/font/google'
 import { BiArrowBack } from 'react-icons/bi'
+import { ToastContainer } from 'react-toastify'
 
 import { Navbar } from '../components/navbar/Navbar'
 import { useCheckScroll } from '../hooks/useCheckScroll'
@@ -16,10 +18,6 @@ const roboto = Roboto({
 const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
   const isVisible = useCheckScroll(800)
 
-  const scrollToTopHandler = () => {
-    document.documentElement.scrollTop = 0
-  }
-
   return (
     <html className={`${roboto.variable} font-sans`} lang='en'>
       <body className='bg-gray-900 relative'>
@@ -32,11 +30,12 @@ const RootLayout = ({ children }: { readonly children: React.ReactNode }) => {
           className={`fixed bottom-12 right-4 transition-transform ${
             isVisible ? 'translate-x-[0]' : 'translate-x-[150%]'
           } flex gap-2 items-center text-white bg-sky-500/10 hover:bg-sky-400/20 py-2 px-4 rounded-full border border-slate-300/10`}
-          onClick={scrollToTopHandler}
+          onClick={() => (document.documentElement.scrollTop = 0)}
         >
           <BiArrowBack className='rotate-90' />
           <p>Top</p>
         </button>
+        <ToastContainer />
       </body>
     </html>
   )
