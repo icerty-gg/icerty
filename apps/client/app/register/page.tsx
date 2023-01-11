@@ -1,7 +1,7 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
@@ -54,6 +54,7 @@ const RegisterSchema = z
 type FormSchemaType = z.infer<typeof RegisterSchema>
 
 const Register = () => {
+  const router = useRouter()
   const [accountAlreadyExists, setAccountAlreadyExists] = useState(false)
 
   const {
@@ -67,11 +68,10 @@ const Register = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async ({ email, name, password, surname }) => {
     try {
       await api.post('/users/register', { email, surname, name, password })
-
       console.log({ email, surname, name, password })
 
       setAccountAlreadyExists(false)
-      redirect('/login')
+      router.push('/login')
     } catch (err) {
       setAccountAlreadyExists(true)
     }
@@ -81,9 +81,10 @@ const Register = () => {
     <Layout>
       <div className='grid grid-cols-1 gap-4 w-full max-w-[46rem] m-auto'>
         {accountAlreadyExists && (
-          <Container>
-            <p>Already exists</p>
-          </Container>
+          <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
+            <p className='text-red-700'>Account is already exists!</p>
+            <SecondaryButton href='/login'>Try login</SecondaryButton>
+          </div>
         )}
 
         <Container>
