@@ -1,12 +1,14 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { redirect } from 'next/navigation'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
+import { CheckboxInput } from '../../components/Form/checkbox-input/CheckboxInput'
 import { Input } from '../../components/Form/input/Input'
-import { CheckboxInput } from '../../components/form/checkbox-input/CheckboxInput'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
@@ -52,6 +54,8 @@ const RegisterSchema = z
 type FormSchemaType = z.infer<typeof RegisterSchema>
 
 const Register = () => {
+  const [accountAlreadyExists, setAccountAlreadyExists] = useState(false)
+
   const {
     formState: { errors },
     handleSubmit,
@@ -65,14 +69,23 @@ const Register = () => {
       await api.post('/users/register', { email, surname, name, password })
 
       console.log({ email, surname, name, password })
+
+      setAccountAlreadyExists(false)
+      redirect('/login')
     } catch (err) {
-      console.log(err)
+      setAccountAlreadyExists(true)
     }
   }
 
   return (
     <Layout>
       <div className='grid grid-cols-1 gap-4 w-full max-w-[46rem] m-auto'>
+        {accountAlreadyExists && (
+          <Container>
+            <p>Already exists</p>
+          </Container>
+        )}
+
         <Container>
           <Heading title='Create Account' className='pb-6' />
 
@@ -122,9 +135,7 @@ const Register = () => {
               I Accept the Terms of Service
             </CheckboxInput>
 
-            <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>
-              Register
-            </PrimaryButton>
+            <PrimaryButton className='text-sm col-span-2'>Register</PrimaryButton>
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>

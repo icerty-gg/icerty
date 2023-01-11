@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { Input } from '../../components/form/input/Input'
+import { Input } from '../../components/Form/input/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
-import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
+import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { api } from '../../utils/fetcher'
 
 import type { SubmitHandler } from 'react-hook-form'
@@ -38,9 +38,9 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
-      const user = await api.post('/sessions/login', data)
+      // const user = await api.post('/sessions/login', data)
 
-      console.log(user)
+      console.log(data)
       // zalogowano - tu chcesz zapisać usera w contextcie i gdzieś przekierować
     } catch (err) {
       // nie ma takiego użytkownika - wyświetl jakiś error
@@ -70,9 +70,7 @@ const Login = () => {
               {...register('password')}
             />
 
-            <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>
-              Login
-            </PrimaryButton>
+            <PrimaryButton className='text-sm col-span-2'>Login</PrimaryButton>
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
