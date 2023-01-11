@@ -25,7 +25,9 @@
     "react-icons": "^4.7.1",
     "react-paginate": "^8.1.4",
     "react-responsive-carousel": "^3.2.23",
+    "react-ripples": "^2.2.1",
     "react-slick": "^0.29.0",
+    "ripple-effects": "^1.0.2",
     "slick-carousel": "^1.8.1",
     "zod": "^3.20.2"
   },
