@@ -1,7 +1,6 @@
 'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
@@ -12,7 +11,9 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
+import { UserContext } from '../../context/UserContext'
 import { api } from '../../utils/fetcher'
+import { notify } from '../../utils/notifications'
 
 import type { SubmitHandler } from 'react-hook-form'
 
@@ -22,12 +23,12 @@ const LoginSchema = z.object({
     .string()
     .min(8, 'Password must be at least 8 characters long')
     .max(20, 'Password must be at most 20 characters long')
-  // te wartości możesz sprawdić w docsach na swaggerze - tam widać ile min / max musi mieć hasło i inne rzeczy
 })
 
 type FormSchemaType = z.infer<typeof LoginSchema>
 
 const Login = () => {
+  const { setUser } = useContext(UserContext)
   const {
     formState: { errors },
     handleSubmit,
@@ -38,12 +39,11 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
-      // const user = await api.post('/sessions/login', data)
+      const user = await api.post('/sessions/login', data)
 
-      console.log(data)
-      // zalogowano - tu chcesz zapisać usera w contextcie i gdzieś przekierować
+      setUser(user)
     } catch (err) {
-      // nie ma takiego użytkownika - wyświetl jakiś error
+      notify('User not found', 'error')
     }
   }
 
