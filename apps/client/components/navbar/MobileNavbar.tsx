@@ -1,9 +1,5 @@
 import { BiX } from 'react-icons/bi'
 
-import { PrimaryLink } from '../ui/primary-button/PrimaryLink'
-
-import { NavLink } from './NavLink'
-
 interface Props {
   readonly isOpened: boolean
   readonly onOpenNav: () => void
@@ -23,14 +19,6 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
         >
           <BiX className='text-white text-2xl' />
         </button>
-
-        <div className='flex flex-col gap-2 mt-12'>
-          <NavLink isMobile={true} title='Main Page' href='/' />
-          <NavLink isMobile={true} title='Offers' href='/offers' />
-          <NavLink isMobile={true} title='Followed' href='/followed' />
-          <NavLink isMobile={true} title='Add Offer' href='/add-offer' />
-          <PrimaryLink href='/login'>Login</PrimaryLink>
-        </div>
       </div>
     </div>
   )
