@@ -1,6 +1,5 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
@@ -11,7 +10,6 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
-import { UserContext } from '../../context/UserContext'
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
 
@@ -28,7 +26,6 @@ const LoginSchema = z.object({
 type FormSchemaType = z.infer<typeof LoginSchema>
 
 const Login = () => {
-  const { setUser } = useContext(UserContext)
   const {
     formState: { errors },
     handleSubmit,
@@ -40,8 +37,8 @@ const Login = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
       const user = await api.post('/sessions/login', data)
+      console.log(user)
 
-      setUser(user)
     } catch (err) {
       notify('User not found', 'error')
     }
