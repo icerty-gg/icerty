@@ -21,16 +21,32 @@ module.exports = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:react-hooks/recommended',
     'next/core-web-vitals',
-    'next'
+    'next',
+    'plugin:storybook/recommended'
   ],
   rules: {
-    '@typescript-eslint/consistent-type-assertions': ['error', { assertionStyle: 'never' }],
-    '@typescript-eslint/consistent-type-imports': ['error', { disallowTypeAnnotations: false }],
+    '@typescript-eslint/consistent-type-assertions': [
+      'error',
+      {
+        assertionStyle: 'never'
+      }
+    ],
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      {
+        disallowTypeAnnotations: false
+      }
+    ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
-    '@typescript-eslint/no-floating-promises': ['error', { ignoreVoid: true }],
+    '@typescript-eslint/no-floating-promises': [
+      'error',
+      {
+        ignoreVoid: true
+      }
+    ],
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
@@ -39,12 +55,27 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_', ignoreRestSiblings: true }
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        ignoreRestSiblings: true
+      }
     ],
     '@typescript-eslint/prefer-optional-chain': 'error',
-    '@typescript-eslint/restrict-template-expressions': ['error', { allowNullish: true }],
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNullish: true
+      }
+    ],
     '@typescript-eslint/switch-exhaustiveness-check': 'error',
-    'functional/no-let': ['error', { allowLocalMutation: true, ignorePattern: '^mutable' }],
+    'functional/no-let': [
+      'error',
+      {
+        allowLocalMutation: true,
+        ignorePattern: '^mutable'
+      }
+    ],
     'functional/no-loop-statement': 'error',
     'functional/no-this-expression': 'error',
     'functional/prefer-readonly-type': 'error',
@@ -57,20 +88,38 @@ module.exports = {
       'error',
       {
         'newlines-between': 'always',
-        alphabetize: { order: 'asc' },
+        alphabetize: {
+          order: 'asc'
+        },
         groups: ['builtin', 'external', 'parent', 'sibling', 'index', 'type']
       }
     ],
     'unicorn/prefer-module': 'error',
-    eqeqeq: ['error', 'always', { null: 'ignore' }],
-    'eslint-comments/require-description': ['error', { ignore: ['eslint-enable'] }],
+    eqeqeq: [
+      'error',
+      'always',
+      {
+        null: 'ignore'
+      }
+    ],
+    'eslint-comments/require-description': [
+      'error',
+      {
+        ignore: ['eslint-enable']
+      }
+    ],
     'no-const-assign': 'error',
     'no-param-reassign': 'error',
     'no-unused-vars': 'off',
     'no-var': 'error',
     'prefer-const': 'error',
     'require-await': 'error',
-    'sort-destructure-keys/sort-destructure-keys': [2, { caseSensitive: false }],
+    'sort-destructure-keys/sort-destructure-keys': [
+      2,
+      {
+        caseSensitive: false
+      }
+    ],
     'typescript-sort-keys/interface': 'error',
     'typescript-sort-keys/string-enum': 'error',
     'react/self-closing-comp': [
@@ -80,7 +129,8 @@ module.exports = {
         html: true
       }
     ],
-    'react/no-unescaped-entities': 'off'
+    'react/no-unescaped-entities': 'off',
+    'react/display-name': 'off'
   },
-  ignorePatterns: ['.eslintrc.js', '*.config.js', 'apiTypes.ts']
+  ignorePatterns: ['.eslintrc.js', '*.config.js', 'apiTypes.ts', '*.stories.tsx']
 }

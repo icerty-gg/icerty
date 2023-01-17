@@ -1,13 +1,17 @@
 import { makeApi, Zodios } from '@zodios/core'
 import { z } from 'zod'
 
-const postApisessionslogin_Body = z.object({ email: z.string(), password: z.string() })
+import type { ApiOf } from '@zodios/core'
+
+const postApisessionslogin_Body = z.object({ email: z.string().email(), password: z.string().min(8).max(20) })
 const postApioffers_Body = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(8).max(50),
+  description: z.string().min(50).max(1500),
   categoryId: z.string(),
-  count: z.number(),
-  price: z.number(),
+  count: z.number().gte(1),
+  price: z.number().gte(1),
+  city: z.string().min(3).max(50),
+  condition: z.enum(['new', 'used']),
   images: z.array(
     z.object({
       data: z.unknown(),
@@ -19,42 +23,66 @@ const postApioffers_Body = z.object({
   )
 })
 const putApioffersId_Body = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string().min(8).max(50),
+  description: z.string().min(50).max(1500),
   categoryId: z.string(),
-  count: z.number(),
-  price: z.number(),
-  isPromoted: z.boolean()
+  count: z.number().gte(1),
+  price: z.number().gte(1),
+  isPromoted: z.boolean(),
+  city: z.string().min(3).max(50),
+  condition: z.enum(['new', 'used'])
 })
-const postApicategories_Body = z.object({ name: z.string().min(3), img: z.string() })
+const postApicategories_Body = z.object({
+  name: z.string().min(3),
+  img: z.array(
+    z.object({
+      data: z.unknown(),
+      filename: z.string(),
+      encoding: z.string(),
+      mimetype: z.string(),
+      limit: z.boolean()
+    })
+  )
+})
+const putApicategoriesId_Body = z.object({ name: z.string().min(3), img: z.string() })
 const postApiusersregister_Body = z.object({
-  name: z.string().min(4).max(16),
-  surname: z.string().min(4).max(20),
-  img: z.string(),
+  name: z.string().min(3).max(16),
+  surname: z.string().min(3).max(20),
   email: z.string().email(),
   password: z.string().min(8).max(20)
 })
-const putApiuserspassword_Body = z.object({ oldPassword: z.string(), newPassword: z.string().min(8).max(20) })
+const putApiuserspassword_Body = z.object({
+  oldPassword: z.string().min(8).max(20),
+  newPassword: z.string().min(8).max(20)
+})
 
 const endpoints = makeApi([
   {
     method: 'get',
+    path: '/',
+    requestFormat: 'json',
+    response: z.string()
+  },
+  {
+    method: 'get',
     path: '/categories/',
     requestFormat: 'json',
-    response: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string().min(3),
-        updatedAt: z.string(),
-        createdAt: z.string(),
-        img: z.string()
-      })
-    )
+    response: z.object({
+      categories: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string().min(3),
+          updatedAt: z.string(),
+          createdAt: z.string(),
+          img: z.string()
+        })
+      )
+    })
   },
   {
     method: 'post',
     path: '/categories/',
-    requestFormat: 'json',
+    requestFormat: 'form-data',
     parameters: [
       {
         name: 'body',
@@ -62,13 +90,7 @@ const endpoints = makeApi([
         schema: postApicategories_Body
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(3),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      img: z.string()
-    })
+    response: z.void()
   },
   {
     method: 'delete',
@@ -81,13 +103,7 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(3),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      img: z.string()
-    })
+    response: z.void()
   },
   {
     method: 'put',
@@ -97,7 +113,7 @@ const endpoints = makeApi([
       {
         name: 'body',
         type: 'Body',
-        schema: postApicategories_Body
+        schema: putApicategoriesId_Body
       },
       {
         name: 'id',
@@ -105,54 +121,100 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(3),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      img: z.string()
-    })
+    response: z.void()
   },
   {
     method: 'get',
     path: '/offers/',
     requestFormat: 'json',
-    response: z.array(
-      z.object({
-        id: z.string(),
-        name: z.string(),
-        description: z.string(),
-        categoryId: z.string(),
-        userId: z.string(),
-        count: z.number(),
-        price: z.number(),
-        isPromoted: z.boolean(),
-        updatedAt: z.string(),
-        createdAt: z.string(),
-        user: z.object({
+    parameters: [
+      {
+        name: 'city',
+        type: 'Query',
+        schema: z.string().min(1).optional()
+      },
+      {
+        name: 'name',
+        type: 'Query',
+        schema: z.string().min(1).optional()
+      },
+      {
+        name: 'page',
+        type: 'Query',
+        schema: z.number().gte(1).default(1)
+      },
+      {
+        name: 'price_from',
+        type: 'Query',
+        schema: z.number().gte(1).optional()
+      },
+      {
+        name: 'price_to',
+        type: 'Query',
+        schema: z.number().gte(1).optional()
+      },
+      {
+        name: 'count_from',
+        type: 'Query',
+        schema: z.number().gte(1).optional()
+      },
+      {
+        name: 'count_to',
+        type: 'Query',
+        schema: z.number().gte(1).optional()
+      },
+      {
+        name: 'promoted',
+        type: 'Query',
+        schema: z.boolean().optional()
+      },
+      {
+        name: 'category',
+        type: 'Query',
+        schema: z.string().min(1).optional()
+      },
+      {
+        name: 'order_direction',
+        type: 'Query',
+        schema: z.enum(['asc', 'desc']).default('asc')
+      },
+      {
+        name: 'order_by',
+        type: 'Query',
+        schema: z.enum(['price', 'createdAt']).default('createdAt')
+      }
+    ],
+    response: z.object({
+      maxPage: z.number(),
+      offers: z.array(
+        z.object({
           id: z.string(),
-          name: z.string().min(4).max(16),
-          surname: z.string().min(4).max(20),
-          img: z.string(),
-          email: z.string().email(),
-          password: z.string().min(8).max(20),
-          role: z.enum(['ADMIN', 'USER'])
-        }),
-        images: z.array(z.object({ id: z.string(), img: z.string() })),
-        category: z.object({
-          id: z.string(),
-          name: z.string().min(3),
+          name: z.string().min(8).max(50),
+          description: z.string().min(50).max(1500),
+          count: z.number().gte(1),
+          price: z.number().gte(1),
+          isPromoted: z.boolean(),
           updatedAt: z.string(),
           createdAt: z.string(),
-          img: z.string()
+          city: z.string().min(3).max(50),
+          condition: z.enum(['new', 'used']),
+          images: z.array(z.object({ id: z.string(), img: z.string() })),
+          user: z.object({
+            id: z.string(),
+            name: z.string().min(3).max(16),
+            surname: z.string().min(3).max(20),
+            img: z.string()
+          }),
+          category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() })
         })
-      })
-    )
+      ),
+      count: z.number()
+    })
   },
   {
     method: 'post',
     path: '/offers/',
-    requestFormat: 'json',
+    requestFormat: 'form-data',
     parameters: [
       {
         name: 'body',
@@ -160,35 +222,7 @@ const endpoints = makeApi([
         schema: postApioffers_Body
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      categoryId: z.string(),
-      userId: z.string(),
-      count: z.number(),
-      price: z.number(),
-      isPromoted: z.boolean(),
-      updatedAt: z.string(),
-      createdAt: z.string(),
-      user: z.object({
-        id: z.string(),
-        name: z.string().min(4).max(16),
-        surname: z.string().min(4).max(20),
-        img: z.string(),
-        email: z.string().email(),
-        password: z.string().min(8).max(20),
-        role: z.enum(['ADMIN', 'USER'])
-      }),
-      images: z.array(z.object({ id: z.string(), img: z.string() })),
-      category: z.object({
-        id: z.string(),
-        name: z.string().min(3),
-        updatedAt: z.string(),
-        createdAt: z.string(),
-        img: z.string()
-      })
-    })
+    response: z.void()
   },
   {
     method: 'get',
@@ -203,15 +237,24 @@ const endpoints = makeApi([
     ],
     response: z.object({
       id: z.string(),
-      name: z.string(),
-      description: z.string(),
-      categoryId: z.string(),
-      userId: z.string(),
-      count: z.number(),
-      price: z.number(),
+      name: z.string().min(8).max(50),
+      description: z.string().min(50).max(1500),
+      count: z.number().gte(1),
+      price: z.number().gte(1),
       isPromoted: z.boolean(),
       updatedAt: z.string(),
-      createdAt: z.string()
+      createdAt: z.string(),
+      city: z.string().min(3).max(50),
+      condition: z.enum(['new', 'used']),
+      images: z.array(z.object({ id: z.string(), img: z.string() })),
+      user: z.object({
+        name: z.string().min(3).max(16),
+        surname: z.string().min(3).max(20),
+        img: z.string(),
+        email: z.string().email(),
+        createdAt: z.string()
+      }),
+      category: z.object({ name: z.string().min(3), img: z.string() })
     })
   },
   {
@@ -247,6 +290,56 @@ const endpoints = makeApi([
   },
   {
     method: 'post',
+    path: '/offers/follow/:id',
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'id',
+        type: 'Path',
+        schema: z.string()
+      }
+    ],
+    response: z.void()
+  },
+  {
+    method: 'delete',
+    path: '/offers/follow/:id',
+    requestFormat: 'json',
+    parameters: [
+      {
+        name: 'id',
+        type: 'Path',
+        schema: z.string()
+      }
+    ],
+    response: z.void()
+  },
+  {
+    method: 'get',
+    path: '/offers/followed',
+    requestFormat: 'json',
+    response: z.object({
+      offers: z.array(
+        z.object({
+          id: z.string(),
+          name: z.string().min(8).max(50),
+          description: z.string().min(50).max(1500),
+          categoryId: z.string(),
+          userId: z.string(),
+          count: z.number().gte(1),
+          price: z.number().gte(1),
+          isPromoted: z.boolean(),
+          updatedAt: z.string(),
+          createdAt: z.string(),
+          city: z.string().min(3).max(50),
+          condition: z.enum(['new', 'used']),
+          images: z.array(z.object({ id: z.string(), img: z.string() }))
+        })
+      )
+    })
+  },
+  {
+    method: 'post',
     path: '/sessions/login',
     requestFormat: 'json',
     parameters: [
@@ -258,19 +351,20 @@ const endpoints = makeApi([
     ],
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
+      password: z.string(),
+      role: z.enum(['admin', 'user']),
+      createdAt: z.string()
     })
   },
   {
     method: 'post',
     path: '/sessions/logout',
     requestFormat: 'json',
-    response: z.object({ message: z.string() })
+    response: z.void()
   },
   {
     method: 'get',
@@ -278,12 +372,13 @@ const endpoints = makeApi([
     requestFormat: 'json',
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
+      password: z.string(),
+      role: z.enum(['admin', 'user']),
+      createdAt: z.string()
     })
   },
   {
@@ -297,15 +392,7 @@ const endpoints = makeApi([
         schema: z.string()
       }
     ],
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
-      img: z.string(),
-      email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
-    })
+    response: z.void()
   },
   {
     method: 'put',
@@ -324,15 +411,7 @@ const endpoints = makeApi([
     method: 'delete',
     path: '/users/me',
     requestFormat: 'json',
-    response: z.object({
-      id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
-      img: z.string(),
-      email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
-    })
+    response: z.void()
   },
   {
     method: 'put',
@@ -360,12 +439,13 @@ const endpoints = makeApi([
     ],
     response: z.object({
       id: z.string(),
-      name: z.string().min(4).max(16),
-      surname: z.string().min(4).max(20),
+      name: z.string().min(3).max(16),
+      surname: z.string().min(3).max(20),
       img: z.string(),
       email: z.string().email(),
-      password: z.string().min(8).max(20),
-      role: z.enum(['ADMIN', 'USER'])
+      password: z.string(),
+      role: z.enum(['admin', 'user']),
+      createdAt: z.string()
     })
   }
 ])
@@ -376,4 +456,10 @@ if (!apiUrl) {
   throw new Error('NEXT_PUBLIC_API_URL is not set!')
 }
 
-export const api = new Zodios(apiUrl, endpoints)
+export const api = new Zodios(apiUrl, endpoints, {
+  axiosConfig: {
+    withCredentials: true
+  }
+})
+
+export type Api = ApiOf<typeof api>

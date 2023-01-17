@@ -1,11 +1,9 @@
-'use client'
-
 import { useState } from 'react'
 
-export const useToggle = () => {
-  const [toggle, setToggle] = useState(false)
+export const useToggle = (defaultToggle = false) => {
+  const [isToggled, setIsToggled] = useState(defaultToggle)
 
-  const toggleHandler = () => setToggle(!toggle)
+  const toggleHandler = () => setIsToggled(prev => !prev)
 
-  return [toggle, toggleHandler] as const
+  return [isToggled, toggleHandler] as const
 }

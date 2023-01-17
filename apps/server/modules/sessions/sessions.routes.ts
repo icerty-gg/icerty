@@ -1,13 +1,11 @@
 import bcrypt from 'bcryptjs'
 
-import { prisma } from '../../utils/prisma'
-
 import { getSessionSchema, loginSchema, logoutSchema } from './sessions.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
-const sessionRoutes: FastifyPluginAsync = async fastify => {
+const sessionsPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().post('/login', { schema: loginSchema }, async (request, reply) => {
     const { email, password } = request.body
 
@@ -15,38 +13,34 @@ const sessionRoutes: FastifyPluginAsync = async fastify => {
       return reply.forbidden('You are already logged in!')
     }
 
-    const user = await prisma.user.findFirst({
+    const user = await fastify.prisma.user.findFirst({
       where: {
         email: email.toLowerCase()
       }
     })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw reply.notFound('Invalid username or password!')
+      throw reply.notFound('Invalid email or password!')
     }
 
-    request.session.user = user
+    request.session.user = { ...user, createdAt: user.createdAt.toISOString() }
 
-    return reply.code(201).send(user)
+    return reply.code(201).send({ ...user, createdAt: user.createdAt.toISOString() })
   })
 
-  fastify.withTypeProvider<TypeBoxTypeProvider>().post('/logout', { schema: logoutSchema }, async (request, reply) => {
-    if (!request.session.user) {
-      throw reply.unauthorized('You need to be logged in!')
-    }
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .post('/logout', { schema: logoutSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      await request.session.destroy()
 
-    await request.session.destroy()
+      return reply.code(204).send()
+    })
 
-    return reply.code(200).send({ message: 'Logged out' })
-  })
-
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/me', { schema: getSessionSchema }, async (request, reply) => {
-    if (!request.session.user) {
-      throw reply.unauthorized('You need to be logged in!')
-    }
-
-    return reply.code(200).send(request.session.user)
-  })
+  fastify
+    .withTypeProvider<TypeBoxTypeProvider>()
+    .get('/me', { schema: getSessionSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      return reply.code(200).send(request.session.user)
+    })
 }
 
-export default sessionRoutes
+export default sessionsPlugin

@@ -1,6 +1,8 @@
 import { Type } from '@sinclair/typebox'
 
-import type { Static } from '@sinclair/typebox'
+import { BufferType } from '../../utils/schema'
+
+import type { FastifySchema } from 'fastify'
 
 export const CategorySchema = Type.Object({
   id: Type.String(),
@@ -10,24 +12,38 @@ export const CategorySchema = Type.Object({
   img: Type.String()
 })
 
-export type Category = Static<typeof CategorySchema>
-
 export const getCategoriesSchema = {
   tags: ['categories'],
   summary: 'Get all categories',
   response: {
-    200: Type.Array(CategorySchema)
+    200: Type.Object({
+      categories: Type.Array(CategorySchema)
+    })
   }
-}
+} satisfies FastifySchema
 
 export const createCategorySchema = {
   tags: ['categories'],
   summary: 'Create category',
-  body: Type.Pick(CategorySchema, ['name', 'img']),
+  consumes: ['multipart/form-data'],
+  body: Type.Intersect([
+    Type.Pick(CategorySchema, ['name']),
+    Type.Object({
+      img: Type.Array(
+        Type.Object({
+          data: BufferType,
+          filename: Type.String(),
+          encoding: Type.String(),
+          mimetype: Type.String(),
+          limit: Type.Boolean()
+        })
+      )
+    })
+  ]),
   response: {
-    201: CategorySchema
+    204: Type.Void()
   }
-}
+} satisfies FastifySchema
 
 export const deleteCategorySchema = {
   tags: ['categories'],
@@ -36,9 +52,9 @@ export const deleteCategorySchema = {
     id: Type.String()
   }),
   response: {
-    200: CategorySchema
+    204: Type.Void()
   }
-}
+} satisfies FastifySchema
 
 export const updateCategorySchema = {
   tags: ['categories'],
@@ -48,6 +64,6 @@ export const updateCategorySchema = {
     id: Type.String()
   }),
   response: {
-    200: CategorySchema
+    204: Type.Void()
   }
-}
+} satisfies FastifySchema

@@ -1,42 +1,32 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+import { useCheckScroll } from '../../hooks/useCheckScroll'
+
+import type { ReactNode } from 'react'
+
 interface Props {
+  readonly children: ReactNode
   readonly href: string
-  readonly isMobile?: boolean
-  readonly title: string
 }
 
-export const NavLink = ({ href, isMobile, title }: Props) => {
+export const NavLink = ({ children, href }: Props) => {
   const pathname = usePathname()
-  const p = pathname === href
+  const isSmallerNavbar = useCheckScroll(80)
 
-  return !isMobile ? (
+  return (
     <Link
-      className={`${
-        p ? 'text-sky-600' : 'text-slate-200'
-      } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
-      href={href}
-    >
-      {title}
-      {p && (
-        <motion.span
-          layoutId='rect'
-          className='absolute w-full h-full bottom-0 left-0 rounded-full bg-sky-400/10 border border-slate-800 shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500'
-        />
+      className={clsx(
+        'relative z-20 gap-[0.2rem] h-full transition-all duration-300 hover:text-sky-500 text-xl flex flex-col items-center p-4',
+        pathname === href ? 'text-sky-500' : 'text-slate-200',
+        isSmallerNavbar && 'pt-[22px] pb-0'
       )}
-    </Link>
-  ) : (
-    <Link
-      className={`${
-        p ? 'text-sky-600' : 'text-slate-200'
-      } hover:text-sky-500 relative last-of-type:border-transparent p-2 px-4 transition-colors text-sm`}
       href={href}
     >
-      {title}
+      {children}
     </Link>
   )
 }

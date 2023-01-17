@@ -2,7 +2,11 @@ export const DefaultTags = () => {
   return (
     <>
       <meta name='viewport' content='width=device-width, initial-scale=1' />
-      <link rel='shortcut icon' href='/public/favicon.ico' />
+      <link rel='shortcut icon' href='/favicon.ico' />
+      <meta
+        name='description'
+        content="E-commerce platforms in Poland. The portal belongs to Icerty Sp. z o. o., owned by three investment funds - Mid Europa Partners. The site was listed in Alex's post at 259"
+      />
     </>
   )
 }

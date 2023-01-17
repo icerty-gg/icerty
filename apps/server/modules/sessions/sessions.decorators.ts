@@ -1,12 +1,11 @@
 import fp from 'fastify-plugin'
 
 import type { User } from '../users/users.schemas'
-import type { FastifyPluginCallbackTypebox } from '@fastify/type-provider-typebox'
-import type { preValidationHookHandler } from 'fastify'
+import type { FastifyPluginAsync, preValidationHookHandler } from 'fastify'
 
 declare module 'fastify' {
   interface FastifyInstance {
-    auth: (roles: User['role'][]) => preValidationHookHandler
+    auth: (roles?: User['role'][]) => preValidationHookHandler
   }
 
   interface Session {
@@ -14,8 +13,8 @@ declare module 'fastify' {
   }
 }
 
-const sessionsDecorators: FastifyPluginCallbackTypebox = async (fastify, _options) => {
-  fastify.decorate('auth', (roles: User['role'][]) => {
+const sessionsDecorators: FastifyPluginAsync = async fastify => {
+  fastify.decorate('auth', (roles?: User['role'][]) => {
     const handler: preValidationHookHandler = async (request, reply) => {
       const { user } = request.session
 
@@ -23,7 +22,7 @@ const sessionsDecorators: FastifyPluginCallbackTypebox = async (fastify, _option
         return reply.unauthorized('You need to be logged in!')
       }
 
-      if (user.role !== 'ADMIN' && !roles.includes(user.role)) {
+      if (roles && !roles.includes(user.role)) {
         throw reply.forbidden(`This action is only available for roles: ${roles.join(' ')} `)
       }
     }

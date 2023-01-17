@@ -1,10 +1,11 @@
-import { clsx } from 'clsx'
+import clsx from 'clsx'
 
 interface Props {
   readonly className?: string
   readonly title: string
 }
 
+// zmienić title na children !!!
 export const Heading = ({ className, title }: Props) => (
-  <h2 className={`text-2xl text-white font-bold text-center ${clsx(className && className)}`}>{title}</h2>
+  <h2 className={clsx('text-2xl text-white font-bold text-center', className)}>{title}</h2>
 )

@@ -1,23 +1,21 @@
 import { Type } from '@sinclair/typebox'
 
+import { StringEnum } from '../../utils/schema'
+
 import type { Static } from '@sinclair/typebox'
+import type { FastifySchema } from 'fastify'
 
-const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
-
-function StringEnum<T extends string[]>(values: [...T]) {
-  return Type.Unsafe<T[number]>({ type: 'string', enum: values })
-}
-
-const Role = StringEnum(['ADMIN', 'USER'])
+export const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 })
 
 export const UserSchema = Type.Object({
   id: Type.String(),
-  name: Type.String({ minLength: 4, maxLength: 16 }),
-  surname: Type.String({ minLength: 4, maxLength: 20 }),
+  name: Type.String({ minLength: 3, maxLength: 16 }),
+  surname: Type.String({ minLength: 3, maxLength: 20 }),
   img: Type.String(),
   email: Type.String({ format: 'email' }),
-  password: PasswordSchema,
-  role: Role
+  password: Type.String(),
+  role: StringEnum(['admin', 'user']),
+  createdAt: Type.String()
 })
 
 export type User = Static<typeof UserSchema>
@@ -25,19 +23,22 @@ export type User = Static<typeof UserSchema>
 export const createUserSchema = {
   tags: ['users'],
   summary: 'Create user',
-  body: Type.Omit(UserSchema, ['id', 'role']),
+  body: Type.Intersect([
+    Type.Omit(UserSchema, ['id', 'role', 'password', 'createdAt', 'img']),
+    Type.Object({ password: PasswordSchema })
+  ]),
   response: {
     201: UserSchema
   }
-}
+} satisfies FastifySchema
 
 export const deleteCurrentUserSchema = {
   tags: ['users'],
   summary: 'Delete current user',
   response: {
-    200: UserSchema
+    204: Type.Void()
   }
-}
+} satisfies FastifySchema
 
 export const deleteUserByIdSchema = {
   tags: ['users'],
@@ -46,23 +47,29 @@ export const deleteUserByIdSchema = {
     id: Type.String()
   }),
   response: {
-    200: UserSchema
+    204: Type.Void()
   }
-}
+} satisfies FastifySchema
 
 export const updatePasswordSchema = {
   tags: ['users'],
   summary: 'Update password',
   body: Type.Object({
-    oldPassword: Type.String(),
+    oldPassword: PasswordSchema,
     newPassword: PasswordSchema
-  })
-}
+  }),
+  response: {
+    204: Type.Void()
+  }
+} satisfies FastifySchema
 
 export const updateEmailSchema = {
   tags: ['users'],
   summary: 'Update email',
   body: Type.Object({
     email: Type.String({ format: 'email' })
-  })
-}
+  }),
+  response: {
+    204: Type.Void()
+  }
+} satisfies FastifySchema

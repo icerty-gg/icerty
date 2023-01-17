@@ -1,16 +1,14 @@
-'use client'
-
 import { useEffect, useState } from 'react'
 
 export const useCheckScroll = (scrollHeight: number) => {
-  const [value, setValue] = useState(false)
+  const [active, setIsActive] = useState(false)
 
   useEffect(() => {
     const active = () => {
       if (window.scrollY > scrollHeight) {
-        setValue(true)
+        setIsActive(true)
       } else {
-        setValue(false)
+        setIsActive(false)
       }
     }
 
@@ -19,5 +17,5 @@ export const useCheckScroll = (scrollHeight: number) => {
     return () => window.removeEventListener('scroll', active)
   }, [scrollHeight])
 
-  return value
+  return active
 }

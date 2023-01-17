@@ -1,4 +1,4 @@
-import { prisma } from '../../utils/prisma'
+import { randomUUID } from 'crypto'
 
 import {
   createCategorySchema,
@@ -10,47 +10,61 @@ import {
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
 
-export const categoriesRoutes: FastifyPluginAsync = async fastify => {
+const categoriesPlugin: FastifyPluginAsync = async fastify => {
   fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
-    const categories = await prisma.category.findMany()
+    const categories = await fastify.prisma.category.findMany()
 
-    return reply.code(200).send(
-      categories.map(c => ({
+    return reply.code(200).send({
+      categories: categories.map(c => ({
         ...c,
         updatedAt: c.updatedAt.toISOString(),
         createdAt: c.createdAt.toISOString()
       }))
-    )
+    })
   })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { img, name } = request.body
 
-      const category = await prisma.category.create({ data: { name, img } })
+      if (img.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
+        throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
+      }
 
-      return reply.code(201).send({
-        ...category,
-        updatedAt: category.updatedAt.toISOString(),
-        createdAt: category.createdAt.toISOString()
+      if (img.length > 1 || !img[0]) {
+        throw reply.badRequest('Image must be a single file!')
+      }
+
+      const { data, error } = await fastify.supabase.storage.from('categories').upload(randomUUID(), img[0].data, {
+        contentType: img[0].mimetype
       })
+
+      if (error) {
+        throw reply.internalServerError(error.message)
+      }
+
+      const { data: url } = fastify.supabase.storage.from('categories').getPublicUrl(data.path)
+
+      await fastify.prisma.category.create({ data: { name, img: url.publicUrl } })
+
+      return reply.code(204).send()
     })
 
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .delete(
       '/:id',
-      { schema: deleteCategorySchema, preValidation: fastify.auth(['ADMIN']) },
+      { schema: deleteCategorySchema, preValidation: fastify.auth(['admin']) },
       async (request, reply) => {
         const { id } = request.params
-        const category = await prisma.category.findFirst({
+        const category = await fastify.prisma.category.findFirst({
           where: {
             id
           }
         })
 
-        const product = await prisma.offer.findFirst({
+        const product = await fastify.prisma.offer.findFirst({
           where: {
             categoryId: id
           }
@@ -64,26 +78,22 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
           throw reply.notFound('Category not found!')
         }
 
-        const deletedCategory = await prisma.category.delete({
+        await fastify.prisma.category.delete({
           where: {
             id
           }
         })
 
-        return reply.code(200).send({
-          ...deletedCategory,
-          updatedAt: deletedCategory.updatedAt.toISOString(),
-          createdAt: deletedCategory.createdAt.toISOString()
-        })
+        return reply.code(200).send()
       }
     )
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['ADMIN']) }, async (request, reply) => {
+    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
       const { id } = request.params
       const { img, name } = request.body
 
-      const category = await prisma.category.findFirst({
+      const category = await fastify.prisma.category.findFirst({
         where: {
           id
         }
@@ -93,7 +103,7 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         throw reply.notFound('Category not found!')
       }
 
-      const updatedCategory = await prisma.category.update({
+      await fastify.prisma.category.update({
         where: {
           id
         },
@@ -103,10 +113,8 @@ export const categoriesRoutes: FastifyPluginAsync = async fastify => {
         }
       })
 
-      return reply.code(200).send({
-        ...updatedCategory,
-        updatedAt: updatedCategory.updatedAt.toISOString(),
-        createdAt: updatedCategory.createdAt.toISOString()
-      })
+      return reply.code(204).send()
     })
 }
+
+export default categoriesPlugin

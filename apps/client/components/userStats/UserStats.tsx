@@ -2,45 +2,44 @@
 
 import { useState } from 'react'
 
-import { Announcement } from '../announcements/Announcement'
-import { PrimaryButton } from '../ui/PrimaryButton'
+import { PrimaryLink } from '../ui/primary-button/PrimaryLink'
 
 export const UserStats = () => {
-  const [selectedStatus, setIsSelectedStatus] = useState<'announcements' | 'observed'>('announcements')
+  const [selectedStatus, setIsSelectedStatus] = useState<'offers' | 'Followed'>('offers')
 
   return (
     <div className='grid grid-cols-2 max-lg:grid-cols-1  gap-4 text-white backdrop-blur blur-md'>
       <div className='flex flex-col gap-4'>
         <button
-          onClick={() => setIsSelectedStatus('announcements')}
+          onClick={() => setIsSelectedStatus('offers')}
           className={`flex items-center w-full justify-center rounded-2xl p-4 hover:bg-sky-500/10 bg-gray-900/75 backdrop-blur border-slate-300/10 border ${
-            selectedStatus === 'announcements' ? 'bg-sky-500/10' : 'bg-gray-900/75'
+            selectedStatus === 'offers' ? 'bg-sky-500/10' : 'bg-gray-900/75'
           }`}
         >
           <h4>Twoje ogłoszenia</h4>
         </button>
         <button
-          onClick={() => setIsSelectedStatus('observed')}
+          onClick={() => setIsSelectedStatus('Followed')}
           className={`flex items-center w-full justify-center rounded-2xl p-4 hover:bg-sky-500/10 bg-gray-900/75 backdrop-blur border-slate-300/10 border ${
-            selectedStatus === 'observed' ? 'bg-sky-500/10' : 'bg-gray-900/75'
+            selectedStatus === 'Followed' ? 'bg-sky-500/10' : 'bg-gray-900/75'
           }`}
         >
           <h4>Obserwowane ogłoszenia</h4>
         </button>
       </div>
 
-      {selectedStatus === 'announcements' && (
+      {selectedStatus === 'offers' && (
         <div className='grid grid-cols-1 gap-4 '>
-          <Announcement />
-          <PrimaryButton href='/announcements'>Zobacz wszystkie</PrimaryButton>
+          {/* <Offer createdAt={'xd'} id={'awd'} image={undefined} name={'awd'} price={0} /> */}
+          <PrimaryLink href='/offers'>Zobacz wszystkie</PrimaryLink>
         </div>
       )}
 
-      {selectedStatus === 'observed' && (
+      {selectedStatus === 'Followed' && (
         <div className='grid grid-cols-1 gap-4 '>
-          <Announcement />
-          <Announcement />
-          <PrimaryButton href='/observed'>Zobacz wszystkie</PrimaryButton>
+          {/* <Offer createdAt={'awdd'} id={'2323'} image={undefined} name={'awd'} price={0} /> */}
+          {/* <Offer createdAt={'ddd'} id={'4424'} image={undefined} name={'awdawd'} price={0} /> */}
+          <PrimaryLink href='/followed'>Zobacz wszystkie</PrimaryLink>
         </div>
       )}
     </div>
