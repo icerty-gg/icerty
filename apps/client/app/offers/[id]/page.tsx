@@ -89,12 +89,14 @@ const OfferDetails = async ({ params }: Props) => {
 
   return (
     <Layout>
-      <SecondaryButton className='absolute top-[-4%] left-0 flex items-center gap-2 max-w-[10rem]' href='/offers'>
-        <BiArrowBack className='text-xl' /> Offers
-      </SecondaryButton>
       <div className='grid grid-cols-[2fr,_1fr] max-lg:grid-cols-1 gap-4'>
         <div className='grid grid-cols-1 gap-4 max-lg:col-span-2'>
-          <Slider images={offer.images} />
+          <div className='grid gap-4 relative'>
+            <Slider images={offer.images} />
+            <SecondaryButton className='absolute left-4 top-4 flex items-center justify-center' href='/offers'>
+              <BiArrowBack className='text-xl' />
+            </SecondaryButton>
+          </div>
           <div className='grid grid-cols-1 gap-4 max-lg:grid-cols-1'>
             <Container>
               <Heading title='Description' className='pb-4' />

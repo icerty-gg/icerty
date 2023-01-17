@@ -1,5 +1,7 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
 import { z } from 'zod'
@@ -10,9 +12,12 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
+import { useUser } from '../../hooks/useUser'
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
 
+import type { Api } from '../../utils/fetcher'
+import type { ZodiosBodyByPath } from '@zodios/core'
 import type { SubmitHandler } from 'react-hook-form'
 
 const LoginSchema = z.object({
@@ -26,6 +31,11 @@ const LoginSchema = z.object({
 type FormSchemaType = z.infer<typeof LoginSchema>
 
 const Login = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+  const { user } = useUser()
+  console.log(user)
+
   const {
     formState: { errors },
     handleSubmit,
@@ -34,14 +44,22 @@ const Login = () => {
     resolver: zodResolver(LoginSchema)
   })
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async data => {
-    try {
-      const user = await api.post('/sessions/login', data)
-      console.log(user)
+  type User = ZodiosBodyByPath<Api, 'post', '/sessions/login'>
 
-    } catch (err) {
-      notify('User not found', 'error')
+  const { mutate } = useMutation({
+    mutationFn: (loginData: User) => api.post('/sessions/login', loginData),
+    onSuccess: loginData => {
+      router.push('/')
+      queryClient.setQueryData(['user'], loginData)
+      notify('Successfully login', 'success')
+    },
+    onError: () => {
+      notify('Error', 'error')
     }
+  })
+
+  const onSubmit: SubmitHandler<FormSchemaType> = data => {
+    mutate(data)
   }
 
   return (
