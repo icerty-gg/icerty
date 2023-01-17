@@ -17,7 +17,7 @@ export const getCategoriesSchema = {
   summary: 'Get all categories',
   response: {
     200: Type.Object({
-      data: Type.Array(CategorySchema)
+      categories: Type.Array(CategorySchema)
     })
   }
 } satisfies FastifySchema

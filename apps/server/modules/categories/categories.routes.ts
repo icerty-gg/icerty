@@ -15,7 +15,7 @@ const categoriesPlugin: FastifyPluginAsync = async fastify => {
     const categories = await fastify.prisma.category.findMany()
 
     return reply.code(200).send({
-      data: categories.map(c => ({
+      categories: categories.map(c => ({
         ...c,
         updatedAt: c.updatedAt.toISOString(),
         createdAt: c.createdAt.toISOString()

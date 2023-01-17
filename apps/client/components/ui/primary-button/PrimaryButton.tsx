@@ -1,32 +1,27 @@
+'use client'
+
 import clsx from 'clsx'
-import Link from 'next/link'
+
+import type { ReactNode } from 'react'
+
 interface Props {
-  readonly children: string
+  readonly children: ReactNode
   readonly className?: string
-  readonly href: string
-  readonly isFormTypeButton?: boolean
+  readonly onClick?: () => void
 }
 
-export const PrimaryButton = ({ children, className, href, isFormTypeButton }: Props) => {
-  return isFormTypeButton ? (
+export const PrimaryButton = ({ children, className, onClick }: Props) => {
+  return (
     <button
       className={clsx(
-        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-10 py-[0.6rem] rounded-full transition-all text-center font-bold text-sm',
+        'relative flex items-center justify-center gap-2 text-white bg-sky-500 px-6 py-[0.6rem] rounded-full text-center text-sm overflow-hidden group',
         className
       )}
       type='submit'
+      onClick={onClick}
     >
       {children}
+      <span className='absolute translate-x-[-50%,_-50%] w-0 h-0 bg-white/20 rounded-[50%] group-hover:w-[60rem] group-hover:h-[60rem] transition-all duration-500' />
     </button>
-  ) : (
-    <Link
-      className={clsx(
-        'shadow-[0_0px_43px_-15px_rgba(0,0,0,0.3)] shadow-sky-500 text-white border-transparent bg-sky-500 hover:bg-sky-400 px-10 py-[0.6rem] rounded-full transition-all text-center font-bold text-sm',
-        className
-      )}
-      href={href}
-    >
-      {children}
-    </Link>
   )
 }

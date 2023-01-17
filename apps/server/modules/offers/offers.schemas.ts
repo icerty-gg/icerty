@@ -31,29 +31,31 @@ export const getAllOffersSchema = {
   tags: ['offers'],
   summary: 'Get all offers',
   querystring: Type.Object({
-    city: Type.Optional(Type.String()),
-    name: Type.Optional(Type.String()),
+    city: Type.Optional(Type.String({ minLength: 1 })),
+    name: Type.Optional(Type.String({ minLength: 1 })),
     page: Type.Number({ minimum: 1, default: 1 }),
     price_from: Type.Optional(Type.Number({ minimum: 1 })),
     price_to: Type.Optional(Type.Number({ minimum: 1 })),
     count_from: Type.Optional(Type.Number({ minimum: 1 })),
     count_to: Type.Optional(Type.Number({ minimum: 1 })),
-    category: Type.Optional(Type.String()),
+    promoted: Type.Optional(Type.Boolean()),
+    category: Type.Optional(Type.String({ minLength: 1 })),
     order_direction: StringEnum(['asc', 'desc'], 'asc'),
     order_by: StringEnum(['price', 'createdAt'], 'createdAt')
   }),
   response: {
     200: Type.Object({
       maxPage: Type.Number({ minimum: 0 }),
-      data: Type.Array(
+      offers: Type.Array(
         Type.Intersect([
-          OfferSchema,
+          Type.Omit(OfferSchema, ['userId', 'categoryId']),
           Type.Object({
             user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
             category: Type.Pick(CategorySchema, ['id', 'name', 'img'])
           })
         ])
-      )
+      ),
+      count: Type.Number({ minimum: 0 })
     })
   }
 } satisfies FastifySchema
@@ -65,10 +67,13 @@ export const getOfferSchema = {
     id: Type.String()
   }),
   response: {
-    200: Type.Object({
-      offer: OfferSchema,
-      user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img', 'createdAt'])
-    })
+    200: Type.Intersect([
+      Type.Omit(OfferSchema, ['userId', 'categoryId']),
+      Type.Object({
+        user: Type.Pick(UserSchema, ['name', 'surname', 'img', 'email', 'createdAt']),
+        category: Type.Pick(CategorySchema, ['name', 'img'])
+      })
+    ])
   }
 } satisfies FastifySchema
 
@@ -147,7 +152,7 @@ export const getMyFollowedOffersSchema = {
   summary: 'Get my followed offers',
   response: {
     200: Type.Object({
-      data: Type.Array(OfferSchema)
+      offers: Type.Array(OfferSchema)
     })
   }
 } satisfies FastifySchema

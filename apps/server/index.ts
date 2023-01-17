@@ -22,7 +22,7 @@ await fastify.register(import('@fastify/swagger-ui'), {
   routePrefix: '/docs'
 })
 await fastify.register(import('@fastify/cors'), { origin: true, credentials: true })
-await fastify.register(import('./modules/db/db'))
+await fastify.register(import('./plugins/db/db'))
 await fastify.register(import('./modules/sessions/sessions'))
 await fastify.register(import('./modules/offers/offers.routes'), { prefix: '/api/offers' })
 await fastify.register(import('./modules/categories/categories.routes'), { prefix: '/api/categories' })

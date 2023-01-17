@@ -1,6 +1,6 @@
 import { api } from '../../utils/fetcher'
+import { CheckboxInput } from '../Form/checkbox-input/CheckboxInput'
 import { CategoryItem } from '../categories/CategoryItem'
-import { CheckboxInput } from '../form/checkbox-input/CheckboxInput'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
@@ -12,7 +12,7 @@ const SmallHeading = ({ children }: { readonly children: string }) => (
 )
 
 export const Filter = async () => {
-  const { data: categories } = await api.get('/categories/')
+  const { categories } = await api.get('/categories/')
 
   return (
     <div className='w-full h-full'>
@@ -69,9 +69,7 @@ export const Filter = async () => {
             </div>
           </Container>
 
-          <PrimaryButton isFormTypeButton={true} href='/' className='w-full fixed bottom-0 left-0'>
-            Apply filters
-          </PrimaryButton>
+          <PrimaryButton className='w-full fixed bottom-0 left-0'>Apply filters</PrimaryButton>
         </div>
       </Container>
     </div>

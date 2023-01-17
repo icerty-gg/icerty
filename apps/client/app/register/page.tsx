@@ -1,22 +1,23 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
 
-import { CheckboxInput } from '../../components/form/checkbox-input/CheckboxInput'
-import { Input } from '../../components/form/input/Input'
+import { CheckboxInput } from '../../components/Form/checkbox-input/CheckboxInput'
+import { Input } from '../../components/Form/input/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
-import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
+import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { api } from '../../utils/fetcher'
+import { notify } from '../../utils/notifications'
 
 import type { SubmitHandler } from 'react-hook-form'
 
-// tu wartości też poprawiłem na te ze swaggera
 const RegisterSchema = z
   .object({
     name: z
@@ -48,12 +49,13 @@ const RegisterSchema = z
         message: 'Passwords do not match'
       })
     }
-    // to działa, ale nie wiem jak dostać się do tego błędu, trzeba ogarnąć :D
   })
 
 type FormSchemaType = z.infer<typeof RegisterSchema>
 
 const Register = () => {
+  const router = useRouter()
+
   const {
     formState: { errors },
     handleSubmit,
@@ -65,10 +67,12 @@ const Register = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async ({ email, name, password, surname }) => {
     try {
       await api.post('/users/register', { email, surname, name, password })
+      console.log({ email, surname, name, password })
 
-      // zarejestrowano - zrób redirect lub co tam chcesz
+      router.push('/login')
+      notify('Successfully created account!', 'success')
     } catch (err) {
-      // nie zarejestrowano - obsłuż błąd (email taken)
+      notify('Account is already exists!', 'error')
     }
   }
 
@@ -124,9 +128,7 @@ const Register = () => {
               I Accept the Terms of Service
             </CheckboxInput>
 
-            <PrimaryButton isFormTypeButton={true} className='text-sm col-span-2' href='/'>
-              Register
-            </PrimaryButton>
+            <PrimaryButton className='text-sm col-span-2'>Register</PrimaryButton>
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>

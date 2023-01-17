@@ -6,7 +6,7 @@ import { Layout } from '../../components/ui/Layout'
 import { api } from '../../utils/fetcher'
 
 const Offers = async () => {
-  const { data: offers } = await api.get('/offers/')
+  const { offers } = await api.get('/offers/')
 
   return (
     <Layout>
@@ -20,9 +20,9 @@ const Offers = async () => {
           </div>
 
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur'>
-            {offers.map(o => (
-              <Offer key={o.id} image={o.images[0]?.img} {...o} />
-            ))}
+            {offers.map(o => {
+              return <Offer key={o.id} image={o.images[0]?.img} {...o} />
+            })}
           </ul>
         </Container>
       </div>

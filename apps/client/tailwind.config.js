@@ -5,6 +5,12 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['var(--font-inter)']
+      },
+      keyframes: {
+        ripple: {
+          '0%': { width: '0', height: '0', opacity: '1' },
+          '100%': { width: '80rem', height: '80rem', opacity: '0' }
+        }
       }
     }
   },
