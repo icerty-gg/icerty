@@ -1,7 +1,6 @@
 'use client'
 
 import clsx from 'clsx'
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -21,16 +20,13 @@ export const NavLink = ({ children, href }: Props) => {
   return (
     <Link
       className={clsx(
-        'gap-2 h-full max-lg:p-6 transition-all hover:text-sky-500 relative last-of-type:border-transparent text-xl',
+        'relative z-20 gap-[0.2rem] h-full transition-all duration-300 hover:text-sky-500 text-xl flex flex-col items-center p-4',
         pathname === href ? 'text-sky-500' : 'text-slate-200',
-        isSmallerNavbar ? 'p-6' : 'p-8'
+        isSmallerNavbar && 'pt-[22px] pb-0'
       )}
       href={href}
     >
       {children}
-      {pathname === href && (
-        <motion.span layoutId='rect' className='absolute w-full h-[0.2rem] bottom-0 left-0 rounded-full bg-sky-500' />
-      )}
     </Link>
   )
 }
