@@ -27,14 +27,13 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       page,
       price_from,
       price_to,
-      promoted
+      promoted,
+      take
     } = request.query
 
-    const OFFERS_SHOWN = 20
-
     const offers = await fastify.prisma.offer.findMany({
-      skip: (page - 1) * OFFERS_SHOWN,
-      take: OFFERS_SHOWN,
+      skip: (page - 1) * take,
+      take,
       orderBy: {
         [order_by]: order_direction
       },
@@ -113,7 +112,8 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
             mode: 'insensitive'
           }
         }
-      }
+      },
+      take
     })
 
     return reply.code(200).send({
@@ -123,7 +123,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         updatedAt: o.updatedAt.toISOString(),
         images: o.offerImage
       })),
-      maxPage: Math.ceil(offers.length / OFFERS_SHOWN),
+      maxPage: Math.ceil(offers.length / take),
       count
     })
   })
