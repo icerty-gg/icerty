@@ -21,7 +21,7 @@ const Offers = async () => {
 
           <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur'>
             {offers.map(o => {
-              return <Offer key={o.id} image={o.images[0]?.img} {...o} />
+              return <Offer isFollowed={true} key={o.id} image={o.images[0]?.img} {...o} />
             })}
           </ul>
         </Container>

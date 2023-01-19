@@ -62,7 +62,7 @@ const PopupLinksData = [
 const PopupLink = ({ href, icon, title }: PopupLinkProps) => {
   return (
     <li>
-      <Link className='text-white flex items-center gap-4 p-2 rounded-full hover:bg-gray-800/40' href={href}>
+      <Link className='text-white text-sm flex items-center gap-4 p-2 rounded-full hover:bg-gray-800/40' href={href}>
         {icon} {title}
       </Link>
     </li>
@@ -176,6 +176,11 @@ export const Navbar = () => {
                     return <PopupLink key={l.title} {...l} />
                   })}
                 </ul>
+                <div className='flex items-center justify-center gap-2 text-white'>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
+                  <p>or</p>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
+                </div>
                 <button
                   onClick={() => logout()}
                   className={clsx(
