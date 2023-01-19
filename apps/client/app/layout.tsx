@@ -3,9 +3,9 @@
 import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { Roboto } from '@next/font/google'
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
+import { QueryClientProvider, QueryClient } from 'react-query'
 import { ToastContainer } from 'react-toastify'
 
 import { Navbar } from '../components/navbar/Navbar'
@@ -28,7 +28,7 @@ const RootLayout = ({ children }: { readonly children: ReactNode }) => {
   return (
     <html className={`${roboto.variable} font-sans`} lang='en'>
       <body className='bg-gray-900 relative'>
-        <QueryClientProvider client={queryClient} >
+        <QueryClientProvider client={queryClient}>
           <Navbar />
           <Suspense fallback={<Loading />}>
             <main className='max-w-screen-2xl w-full my-0 mx-auto px-8 max-md:px-4 py-32'>
