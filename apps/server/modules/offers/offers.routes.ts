@@ -31,6 +31,13 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       take
     } = request.query
 
+    const followedOffers = await fastify.prisma.followedOffers.findMany({
+      select: {
+        offerId: true,
+        userId: true
+      }
+    })
+
     const offers = await fastify.prisma.offer.findMany({
       skip: (page - 1) * take,
       take,
@@ -121,7 +128,12 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         ...o,
         createdAt: o.createdAt.toISOString(),
         updatedAt: o.updatedAt.toISOString(),
-        images: o.offerImage
+        images: o.offerImage,
+        isFollowed: followedOffers.find(
+          ({ offerId, userId }) => offerId === o.id && userId === request.session.user?.id
+        )
+          ? true
+          : false
       })),
       maxPage: Math.ceil(offers.length / take),
       count
@@ -149,6 +161,12 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
             name: true,
             img: true
           }
+        },
+        followedOffers: {
+          select: {
+            userId: true,
+            offerId: true
+          }
         }
       }
     })
@@ -166,7 +184,12 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         ...offer.user,
         createdAt: offer.user.createdAt.toISOString()
       },
-      category: offer.category
+      category: offer.category,
+      isFollowed: offer.followedOffers.find(
+        ({ offerId, userId }) => offerId === offer.id && userId === request.session.user?.id
+      )
+        ? true
+        : false
     })
   })
 
@@ -271,6 +294,14 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/follow/:id', { schema: followOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      const { id } = request.params
+
+      const offer = await fastify.prisma.offer.findFirst({ where: { id } })
+
+      if (!offer) {
+        throw reply.notFound('Offer not found!')
+      }
+
       await fastify.prisma.followedOffers.create({
         data: { offerId: request.params.id, userId: request.session.user.id }
       })

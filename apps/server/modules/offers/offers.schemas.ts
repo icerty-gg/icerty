@@ -52,7 +52,8 @@ export const getAllOffersSchema = {
           Type.Omit(OfferSchema, ['userId', 'categoryId']),
           Type.Object({
             user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
-            category: Type.Pick(CategorySchema, ['id', 'name', 'img'])
+            category: Type.Pick(CategorySchema, ['id', 'name', 'img']),
+            isFollowed: Type.Boolean()
           })
         ])
       ),
@@ -72,7 +73,8 @@ export const getOfferSchema = {
       Type.Omit(OfferSchema, ['userId', 'categoryId']),
       Type.Object({
         user: Type.Pick(UserSchema, ['name', 'surname', 'img', 'email', 'createdAt']),
-        category: Type.Pick(CategorySchema, ['name', 'img'])
+        category: Type.Pick(CategorySchema, ['name', 'img']),
+        isFollowed: Type.Boolean()
       })
     ])
   }
