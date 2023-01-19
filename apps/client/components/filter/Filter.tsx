@@ -1,6 +1,7 @@
+import Image from 'next/image'
+
 import { api } from '../../utils/fetcher'
 import { CheckboxInput } from '../Form/checkbox-input/CheckboxInput'
-import { CategoryItem } from '../categories/CategoryItem'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
@@ -33,7 +34,20 @@ export const Filter = async () => {
             <SmallHeading>Category</SmallHeading>
             <ul className='grid grid-cols-1 gap-4 max-h-[25rem] overflow-y-scroll overflow-hidden w-full'>
               {categories.map(c => {
-                return <CategoryItem key={c.id} isSmall {...c} />
+                return (
+                  <li key={c.id}>
+                    <input type='checkbox' id={c.name} value='' className='hidden peer' />
+                    <label
+                      htmlFor={c.name}
+                      className='inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700'
+                    >
+                      <div className='block'>
+                        <Image src={c.img} width={100} height={100} alt={c.name} />
+                        <div className='w-full text-lg font-semibold'>{c.name}</div>
+                      </div>
+                    </label>
+                  </li>
+                )
               })}
             </ul>
           </Container>

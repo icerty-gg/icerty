@@ -1,11 +1,11 @@
 'use client'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
-import { CiHeart, CiDollar, CiHome, CiPaperplane, CiUser, CiStar, CiLogout, CiLogin } from 'react-icons/ci'
+import { CiHeart, CiDollar, CiHome, CiMedicalCross, CiUser, CiStar, CiLogout, CiLogin } from 'react-icons/ci'
+import { useMutation, useQueryClient } from 'react-query'
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useUser } from '../../hooks/useUser'
@@ -62,7 +62,7 @@ const PopupLinksData = [
 const PopupLink = ({ href, icon, title }: PopupLinkProps) => {
   return (
     <li>
-      <Link className='text-white flex items-center gap-4 p-2 rounded-full hover:bg-gray-800/40' href={href}>
+      <Link className='text-white text-sm flex items-center gap-4 p-2 rounded-full hover:bg-gray-800/40' href={href}>
         {icon} {title}
       </Link>
     </li>
@@ -95,7 +95,7 @@ const NavbarLinksData = [
   {
     title: 'Add offer',
     href: '/add-offer',
-    icon: <CiPaperplane className='text-2xl' />
+    icon: <CiMedicalCross className='text-2xl' />
   }
 ]
 
@@ -118,7 +118,7 @@ export const Navbar = () => {
   const isSmallerNavbar = useCheckScroll(80)
   const navbarRef = useRef<HTMLElement | null>(null)
 
-  const { mutate } = useMutation({
+  const { isLoading, mutate: logout } = useMutation({
     mutationFn: () => api.post('/sessions/logout', undefined),
     onSuccess: () => {
       router.push('/')
@@ -176,15 +176,25 @@ export const Navbar = () => {
                     return <PopupLink key={l.title} {...l} />
                   })}
                 </ul>
-                <button onClick={() => mutate()} className='flex items-center justify-center gap-2'>
-                  <CiLogout className='text-xl' /> Logout
+                <div className='flex items-center justify-center gap-2 text-white'>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
+                  <p>or</p>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
+                </div>
+                <button
+                  onClick={() => logout()}
+                  className={clsx(
+                    'flex items-center justify-center gap-2 text-sky-600 border bg-sky-400/10 border-slate-800 hover:bg-sky-400/20  hover:border-sky-500 transition-all px-10 py-[0.5rem] rounded-full text-center text-sm'
+                  )}
+                >
+                  <CiLogout className='text-xl' /> {isLoading ? 'Loading...' : 'Logout'}
                 </button>
               </div>
             </div>
           ) : (
-            <div className='flex gap-3 items-center text-sm max-lg:hidden'>
+            <div className='flex gap-3 items-center text-sm'>
               <PrimaryLink href='/login'>
-                <CiLogin className='text-xl' /> Login
+                <CiLogin className='text-xl' /> <p className='max-lg:hidden'>Login</p>
               </PrimaryLink>
             </div>
           )}

@@ -30,10 +30,6 @@ const parseDate = (date: string) => {
   return dateObj.toLocaleDateString('us-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-interface Props {
-  readonly params: { readonly id: string }
-}
-
 interface OfferProps {
   readonly className?: string
   readonly icon: ReactNode
@@ -53,9 +49,10 @@ const OfferParams = ({ className, icon, title, type }: OfferProps) => {
   )
 }
 
-const OfferDetails = async ({ params }: Props) => {
+const OfferDetails = async ({ params }: { readonly params: { readonly id: string } }) => {
   const offer = await api.get('/offers/:id', { params })
-  const { offers } = await api.get('/offers/')
+
+  // const { offers } = await api.get('/offers/')
   const createdDate = parseDate(offer.createdAt)
 
   const offerParamsData = [
@@ -107,7 +104,7 @@ const OfferDetails = async ({ params }: Props) => {
           <Container>
             <Heading title='Similar offers' className='pb-4' />
 
-            <SimilarOffers pageOfferId={offer.id} offers={offers} />
+            <SimilarOffers category={offer.category.name} />
           </Container>
         </div>
         <div className='relative w-full h-full'>
