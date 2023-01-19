@@ -129,6 +129,11 @@ const endpoints = makeApi([
     requestFormat: 'json',
     parameters: [
       {
+        name: 'take',
+        type: 'Query',
+        schema: z.number().gte(1).lte(50).default(20)
+      },
+      {
         name: 'city',
         type: 'Query',
         schema: z.string().min(1).optional()
@@ -205,7 +210,8 @@ const endpoints = makeApi([
             surname: z.string().min(3).max(20),
             img: z.string()
           }),
-          category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() })
+          category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() }),
+          isFollowed: z.boolean()
         })
       ),
       count: z.number()
@@ -254,7 +260,8 @@ const endpoints = makeApi([
         email: z.string().email(),
         createdAt: z.string()
       }),
-      category: z.object({ name: z.string().min(3), img: z.string() })
+      category: z.object({ name: z.string().min(3), img: z.string() }),
+      isFollowed: z.boolean()
     })
   },
   {

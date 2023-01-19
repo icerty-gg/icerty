@@ -1,6 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
@@ -166,9 +167,18 @@ export const Navbar = () => {
               </NavLink>
 
               <div className='absolute p-4 right-0 top-[98%] w-[20rem] -z-10 bg-gray-900 border border-slate-300/10 rounded-lg rounded-tr-none invisible opacity-0 flex flex-col gap-4 group-hover:visible group-hover:opacity-100 transition-all'>
-                <div className='flex flex-col items-start gap-[0.1rem]'>
-                  <p className='text-gray-500'>Hello</p>
-                  <p className='text-xl text-white first-letter:uppercase'>{user.name}</p>
+                <div className='flex items-center gap-4'>
+                  <Image src={user.img} alt={user.name} width={40} height={40} className='rounded-[50%]' />
+                  <div className='flex flex-col items-start'>
+                    <p className='text-gray-500'>Hello</p>
+                    <p className='text-xl text-white first-letter:uppercase'>{user.name}</p>
+                  </div>
+                </div>
+
+                <div className='flex items-center justify-center gap-2 text-white'>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
+                  <p>Account</p>
+                  <div className='w-full max-w-[2rem] h-[1px] bg-gray-700' />
                 </div>
 
                 <ul className='grid grid-cols-1'>

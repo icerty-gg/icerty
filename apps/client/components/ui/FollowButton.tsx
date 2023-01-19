@@ -17,16 +17,24 @@ export const FollowButton = ({ className, id, isFollowed }: Props) => {
   const { isLoading, mutate: addToList } = useMutation({
     mutationFn: () => api.post('/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
-      notify('Successfully added to lists', 'success')
+      notify('Successfully added to list', 'success')
     },
     onError: () => notify('Error', 'error')
   })
 
-  if (isLoading) return <p className='text-white'>...</p>
+  const { isLoading: isLoadingRemove, mutate: removeFromList } = useMutation({
+    mutationFn: () => api.delete('/offers/follow/:id', undefined, { params: { id: id } }),
+    onSuccess: () => {
+      notify('Successfully removed from list', 'success')
+    },
+    onError: () => notify('Error', 'error')
+  })
+
+  if (isLoading || isLoadingRemove) return <p className='text-white'>...</p>
 
   return (
     <button
-      onClick={() => addToList()}
+      onClick={() => (isFollowed ? removeFromList() : addToList())}
       className={clsx(
         'flex items-center justify-center rounded-full p-[0.65rem] text-sky-600 border bg-sky-400/10 border-slate-800 hover:bg-sky-400/20 hover:border-sky-500 transition-all',
         isFollowed && 'bg-sky-400/20',

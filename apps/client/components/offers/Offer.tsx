@@ -8,22 +8,20 @@ import { BiLocationPlus, BiCategoryAlt } from 'react-icons/bi'
 import { FollowButton } from '../ui/FollowButton'
 
 import type { Api } from '../../utils/fetcher'
-import type { ZodiosPathParamsByPath } from '@zodios/core'
+import type { ZodiosResponseByPath } from '@zodios/core'
 
-type OfferType = ZodiosPathParamsByPath<Api, 'get', '/offers/'>
+type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
 
-interface Props {
-  readonly category: { readonly id: string; readonly img: string; readonly name: string }
-  readonly city: string
-  readonly id: string
-  readonly image: any
-  readonly isFollowed: boolean
-  readonly isPromoted: boolean
-  readonly name: string
-  readonly price: number
-}
-
-export const Offer = ({ category, city, id, image, isFollowed, isPromoted, name, price }: OfferType) => {
+export const Offer = ({
+  category,
+  city,
+  id,
+  images,
+  isFollowed,
+  isPromoted,
+  name,
+  price
+}: Response['offers'][number]) => {
   return (
     <div className='relative'>
       <Link href={`/offers/${id}`}>
@@ -36,7 +34,7 @@ export const Offer = ({ category, city, id, image, isFollowed, isPromoted, name,
           <Image
             width={210}
             height={210}
-            src={image}
+            src={images[0]?.img}
             alt={name}
             className='rounded-md object-cover max-md:max-w-[8rem] pointer-events-none min-h-[14rem] max-h-[14rem]'
           />
