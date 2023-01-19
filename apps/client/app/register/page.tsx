@@ -123,10 +123,11 @@ const Register = () => {
               errorMessage={errors.repeatPassword?.message}
               {...register('repeatPassword')}
             />
-
-            <CheckboxInput errorMessage={errors.acceptPolicy?.message} {...register('acceptPolicy')}>
-              I Accept the Terms of Service
-            </CheckboxInput>
+            <div className='col-span-2'>
+              <CheckboxInput errorMessage={errors.acceptPolicy?.message} {...register('acceptPolicy')}>
+                I Accept the Terms of Service
+              </CheckboxInput>
+            </div>
 
             <PrimaryButton className='text-sm col-span-2'>Register</PrimaryButton>
           </form>

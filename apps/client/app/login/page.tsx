@@ -1,9 +1,9 @@
 'use client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend } from 'react-icons/bi'
+import { useMutation, useQueryClient } from 'react-query'
 import { z } from 'zod'
 
 import { Input } from '../../components/Form/input/Input'
@@ -46,20 +46,20 @@ const Login = () => {
 
   type User = ZodiosBodyByPath<Api, 'post', '/sessions/login'>
 
-  const { mutate } = useMutation({
+  const { isLoading, mutate: login } = useMutation({
     mutationFn: (loginData: User) => api.post('/sessions/login', loginData),
     onSuccess: loginData => {
       router.push('/')
       queryClient.setQueryData(['user'], loginData)
-      notify('Successfully login', 'success')
+      notify('Successfully logged in', 'success')
     },
     onError: () => {
-      notify('Error', 'error')
+      notify('User not found', 'error')
     }
   })
 
   const onSubmit: SubmitHandler<FormSchemaType> = data => {
-    mutate(data)
+    login(data)
   }
 
   return (
@@ -85,7 +85,7 @@ const Login = () => {
               {...register('password')}
             />
 
-            <PrimaryButton className='text-sm col-span-2'>Login</PrimaryButton>
+            <PrimaryButton className='text-sm col-span-2'>{isLoading ? 'Loading...' : 'Login'}</PrimaryButton>
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
