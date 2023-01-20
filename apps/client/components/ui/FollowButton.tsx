@@ -2,7 +2,7 @@
 
 import clsx from 'clsx'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
@@ -10,27 +10,36 @@ import { notify } from '../../utils/notifications'
 interface Props {
   readonly className?: string
   readonly id: string
-  readonly isFollowed: boolean
 }
 
-export const FollowButton = ({ className, id, isFollowed }: Props) => {
-  const { isLoading, mutate: addToList } = useMutation({
+export const FollowButton = ({ className, id }: Props) => {
+  const { data, refetch } = useQuery({
+    queryFn: () => api.get('/offers/followed'),
+    queryKey: ['followedOffers'],
+    select(data) {
+      return data.offers.map(o => o.id)
+    }
+  })
+
+  const isFollowed = data?.includes(id) ?? false
+
+  const { mutate: addToList } = useMutation({
     mutationFn: () => api.post('/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully added to list', 'success')
+      void refetch()
     },
     onError: () => notify('Error', 'error')
   })
 
-  const { isLoading: isLoadingRemove, mutate: removeFromList } = useMutation({
+  const { mutate: removeFromList } = useMutation({
     mutationFn: () => api.delete('/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully removed from list', 'success')
+      void refetch()
     },
     onError: () => notify('Error', 'error')
   })
-
-  if (isLoading || isLoadingRemove) return <p className='text-white'>...</p>
 
   return (
     <button

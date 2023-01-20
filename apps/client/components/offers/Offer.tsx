@@ -12,16 +12,11 @@ import type { ZodiosResponseByPath } from '@zodios/core'
 
 type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
 
-export const Offer = ({
-  category,
-  city,
-  id,
-  images,
-  isFollowed,
-  isPromoted,
-  name,
-  price
-}: Response['offers'][number]) => {
+export const Offer = ({ category, city, id, images, isPromoted, name, price }: Response['offers'][number]) => {
+  const img = images[0]?.img
+
+  if (!img) return null
+
   return (
     <div className='relative'>
       <Link href={`/offers/${id}`}>
@@ -34,7 +29,7 @@ export const Offer = ({
           <Image
             width={210}
             height={210}
-            src={images[0]?.img}
+            src={img}
             alt={name}
             className='rounded-md object-cover max-md:max-w-[8rem] pointer-events-none min-h-[14rem] max-h-[14rem]'
           />
@@ -68,7 +63,7 @@ export const Offer = ({
           </div>
         </li>
       </Link>
-      <FollowButton id={id} className='absolute top-4 right-4' isFollowed={isFollowed} />
+      <FollowButton id={id} className='absolute top-4 right-4' />
     </div>
   )
 }

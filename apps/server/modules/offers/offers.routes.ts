@@ -297,9 +297,16 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       const { id } = request.params
 
       const offer = await fastify.prisma.offer.findFirst({ where: { id } })
+      const followedOffer = await fastify.prisma.followedOffers.findFirst({
+        where: { offerId: id, userId: request.session.user.id }
+      })
 
       if (!offer) {
         throw reply.notFound('Offer not found!')
+      }
+
+      if (followedOffer) {
+        throw reply.badRequest('You already follow this offer!')
       }
 
       await fastify.prisma.followedOffers.create({
@@ -320,7 +327,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       })
 
       if (!followedOffer) {
-        throw reply.notFound('Offer not found!')
+        throw reply.notFound("Offer not found! Either you don't follow it or it doesn't exist!")
       }
 
       await fastify.prisma.followedOffers.delete({
