@@ -12,7 +12,8 @@ export const useUser = () => {
         return null
       }
     },
-    staleTime: Infinity
+    staleTime: Infinity,
+    retry: false
   })
 
   return { user }

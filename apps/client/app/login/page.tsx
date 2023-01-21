@@ -12,7 +12,6 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
-import { useUser } from '../../hooks/useUser'
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
 
@@ -33,8 +32,6 @@ type FormSchemaType = z.infer<typeof LoginSchema>
 const Login = () => {
   const queryClient = useQueryClient()
   const router = useRouter()
-  const { user } = useUser()
-  console.log(user)
 
   const {
     formState: { errors },
