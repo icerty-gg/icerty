@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { BiLockAlt, BiMailSend, BiUser } from 'react-icons/bi'
 import { z } from 'zod'
@@ -13,6 +14,7 @@ import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
+import { useUser } from '../../hooks/useUser'
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
 
@@ -55,6 +57,11 @@ type FormSchemaType = z.infer<typeof RegisterSchema>
 
 const Register = () => {
   const router = useRouter()
+  const { user } = useUser()
+
+  useEffect(() => {
+    if (user) router.push('/')
+  }, [router, user])
 
   const {
     formState: { errors },

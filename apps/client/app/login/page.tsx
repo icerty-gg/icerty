@@ -10,6 +10,7 @@ import { Input } from '../../components/Form/input/Input'
 import { Container } from '../../components/ui/Container'
 import { Heading } from '../../components/ui/Heading'
 import { Layout } from '../../components/ui/Layout'
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner'
 import { PrimaryButton } from '../../components/ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../../components/ui/secondary-button/SecondaryButton'
 import { useUser } from '../../hooks/useUser'
@@ -85,7 +86,9 @@ const Login = () => {
               {...register('password')}
             />
 
-            <PrimaryButton className='text-sm col-span-2'>{isLoading ? 'Loading...' : 'Login'}</PrimaryButton>
+            <PrimaryButton className='text-sm col-span-2'>
+              {isLoading ? <LoadingSpinner size='w-[18px] h-[18px]' /> : 'Login'}
+            </PrimaryButton>
           </form>
         </Container>
         <div className='flex flex-col gap-4 items-center p-4 rounded-xl border bg-gray-800/20 border-slate-800'>
