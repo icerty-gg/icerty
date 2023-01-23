@@ -3,7 +3,7 @@ import { useQuery } from 'react-query'
 import { api } from '../utils/fetcher'
 
 export const useUser = () => {
-  const { data: user } = useQuery({
+  const { data: user, isLoading } = useQuery({
     queryKey: ['user'],
     queryFn: () => {
       try {
@@ -12,8 +12,9 @@ export const useUser = () => {
         return null
       }
     },
-    staleTime: Infinity
+    staleTime: Infinity,
+    retry: false
   })
 
-  return { user }
+  return { user, isLoading }
 }
