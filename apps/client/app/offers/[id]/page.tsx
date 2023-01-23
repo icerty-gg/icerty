@@ -138,7 +138,7 @@ const OfferDetails = async ({ params }: { readonly params: { readonly id: string
                   </div>
                   <div className='flex items-center gap-4'>
                     <PrimaryButton className='w-full'>Buy</PrimaryButton>
-                    <FollowButton id={offer.id} isFollowed={true} />
+                    <FollowButton id={offer.id} />
                   </div>
                 </div>
               </Container>
