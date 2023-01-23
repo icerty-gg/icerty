@@ -4,8 +4,11 @@ import clsx from 'clsx'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
 import { useMutation, useQuery } from 'react-query'
 
+import { useUser } from '../../hooks/useUser'
 import { api } from '../../utils/fetcher'
 import { notify } from '../../utils/notifications'
+
+import { LoadingSpinner } from './LoadingSpinner'
 
 interface Props {
   readonly className?: string
@@ -13,6 +16,8 @@ interface Props {
 }
 
 export const FollowButton = ({ className, id }: Props) => {
+  const { user } = useUser()
+
   const { data, refetch } = useQuery({
     queryFn: () => api.get('/offers/followed'),
     queryKey: ['followedOffers'],
@@ -23,16 +28,23 @@ export const FollowButton = ({ className, id }: Props) => {
 
   const isFollowed = data?.includes(id) ?? false
 
-  const { mutate: addToList } = useMutation({
+  const { isLoading, mutate: addToList } = useMutation({
     mutationFn: () => api.post('/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully added to list', 'success')
       void refetch()
     },
-    onError: () => notify('Error', 'error')
+    onError: () => {
+      if (!user) {
+        notify('You need to login!', 'error')
+        return
+      }
+
+      notify('Too many requests', 'error')
+    }
   })
 
-  const { mutate: removeFromList } = useMutation({
+  const { isLoading: isSecondLoading, mutate: removeFromList } = useMutation({
     mutationFn: () => api.delete('/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully removed from list', 'success')
@@ -40,6 +52,18 @@ export const FollowButton = ({ className, id }: Props) => {
     },
     onError: () => notify('Error', 'error')
   })
+
+  if (isLoading || isSecondLoading)
+    return (
+      <div
+        className={clsx(
+          'flex items-center justify-center top-4 right-4 rounded-[50%] p-[0.65rem] text-sky-600 border bg-sky-400/10 border-slate-800 hover:bg-sky-400/20 hover:border-sky-500 transition-all',
+          className
+        )}
+      >
+        <LoadingSpinner size='w-[18px] h-[18px]' />
+      </div>
+    )
 
   return (
     <button
