@@ -23,7 +23,7 @@ export const Filter = async () => {
           <SecondaryButton href='/offers'>Clear</SecondaryButton>
         </div>
 
-        <div className='grid grid-cols-1 gap-6 max-h-[40rem] overflow-y-scroll overflow-hidden'>
+        <div className='grid grid-cols-1 gap-4 max-h-[40rem] overflow-y-scroll overflow-hidden'>
           <Container className='flex items-center flex-col z-20'>
             <SmallHeading>City</SmallHeading>
 
@@ -39,11 +39,13 @@ export const Filter = async () => {
                     <input type='checkbox' id={c.name} value='' className='hidden peer' />
                     <label
                       htmlFor={c.name}
-                      className='inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border-2 border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700'
+                      className='flex items-center justify-between w-full p-2 text-white border bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl peer-checked:border-sky-800 peer-checked:bg-sky-800/10 cursor-pointer'
                     >
-                      <div className='block'>
-                        <Image src={c.img} width={100} height={100} alt={c.name} />
-                        <div className='w-full text-lg font-semibold'>{c.name}</div>
+                      <div className='flex items-center gap-4'>
+                        <div className='flex items-center justify-center bg-sky-400/10 rounded-full'>
+                          <Image src={c.img} width={70} height={70} alt={c.name} className='pointer-events-none' />
+                        </div>
+                        <div className='text-lg pointer-events-none'>{c.name}</div>
                       </div>
                     </label>
                   </li>
