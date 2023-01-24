@@ -40,6 +40,7 @@ export const getAllOffersSchema = {
     count_from: Type.Optional(Type.Number({ minimum: 1 })),
     count_to: Type.Optional(Type.Number({ minimum: 1 })),
     promoted: Type.Optional(Type.Boolean()),
+    followed: Type.Optional(Type.Boolean()),
     category: Type.Optional(Type.String({ minLength: 1 })),
     order_direction: StringEnum(['asc', 'desc'], 'asc'),
     order_by: StringEnum(['price', 'createdAt'], 'createdAt')
@@ -49,12 +50,13 @@ export const getAllOffersSchema = {
       maxPage: Type.Number({ minimum: 0 }),
       offers: Type.Array(
         Type.Intersect([
-          Type.Omit(OfferSchema, ['userId', 'categoryId']),
+          Type.Omit(OfferSchema, ['userId', 'categoryId', 'images']),
+          Type.Object({ image: Type.String() }),
           Type.Object({
-            user: Type.Pick(UserSchema, ['id', 'name', 'surname', 'img']),
-            category: Type.Pick(CategorySchema, ['id', 'name', 'img']),
+            user: Type.Pick(UserSchema, ['name', 'surname', 'img']),
             isFollowed: Type.Boolean()
-          })
+          }),
+          Type.Object({ categoryName: CategorySchema.properties.name })
         ])
       ),
       count: Type.Number({ minimum: 0 })
@@ -147,15 +149,5 @@ export const unfollowOfferSchema = {
   }),
   response: {
     204: Type.Void()
-  }
-} satisfies FastifySchema
-
-export const getMyFollowedOffersSchema = {
-  tags: ['offers'],
-  summary: 'Get my followed offers',
-  response: {
-    200: Type.Object({
-      offers: Type.Array(OfferSchema)
-    })
   }
 } satisfies FastifySchema
