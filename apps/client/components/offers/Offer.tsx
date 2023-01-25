@@ -12,7 +12,7 @@ import type { ZodiosResponseByPath } from '@zodios/core'
 
 type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
 
-export const Offer = ({ category, city, id, images, isPromoted, name, price }: Response['offers'][number]) => {
+export const Offer = ({ categoryName, city, id, image, isPromoted, name, price }: Response['offers'][number]) => {
   return (
     <li
       className={clsx(
@@ -25,7 +25,7 @@ export const Offer = ({ category, city, id, images, isPromoted, name, price }: R
           <Image
             width={210}
             height={210}
-            src={images[0]?.img ?? ''}
+            src={image}
             alt={name}
             className='rounded-md object-cover max-md:max-w-[8rem] pointer-events-none min-h-[14rem] max-h-[14rem]'
           />
@@ -49,7 +49,7 @@ export const Offer = ({ category, city, id, images, isPromoted, name, price }: R
 
             <div className='absolute bottom-4 right-4 flex items-center gap-2'>
               <p className='flex items-center gap-2 text-sm text-sky-600 bg-sky-400/10 rounded-full py-2 px-4'>
-                <CiHashtag className='text-lg' /> {category.name}
+                <CiHashtag className='text-lg' /> {categoryName}
               </p>
 
               <p className='flex items-center gap-2 text-sm text-sky-600 bg-sky-400/10 rounded-full py-2 px-4'>

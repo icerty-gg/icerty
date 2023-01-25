@@ -62,7 +62,7 @@ const Home = async () => {
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
               {offers.map(o => (
-                <Offer image={o.images[0]?.img} key={o.id} {...o} />
+                <Offer key={o.id} {...o} />
               ))}
             </ul>
           </Container>
