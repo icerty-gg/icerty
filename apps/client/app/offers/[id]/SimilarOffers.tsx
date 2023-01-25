@@ -19,7 +19,7 @@ export const SimilarOffers = ({ category }: { readonly category: string }) => {
     queryKey: ['offers'],
     queryFn: () => api.get('/offers/', { queries: { take: visibleOffers } }),
     select(data) {
-      return data.offers.filter(d => d.category.name === category)
+      return data.offers.filter(d => d.categoryName === category)
     }
   })
 

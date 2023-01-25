@@ -1,25 +1,48 @@
+'use client'
+
 import { useQuery } from 'react-query'
 
 import { api } from '../utils/fetcher'
 
-export const useOffers = () => {
-  const {
-    data: offers ,
-    isError,
-    isLoading
-  } = useQuery({
+interface OffersParams {
+  readonly category?: string
+  readonly city?: string
+  readonly followed?: boolean
+  readonly order_by: 'createdAt' | 'price' | undefined
+  readonly order_direction: 'asc' | 'desc' | undefined
+  readonly page: number
+  readonly promoted?: boolean
+  readonly take: number
+}
+
+export const useOffers = ({
+  category,
+  city,
+  followed,
+  order_by,
+  order_direction,
+  page,
+  promoted,
+  take
+}: OffersParams) => {
+  const { data: offers, isLoading } = useQuery({
     queryKey: ['offers'],
-    queryFn: () => {
-      try {
-        return api.get('/offers/')
-      } catch (err) {
-        return null
-      }
-    },
-    staleTime: Infinity
+    queryFn: () =>
+      api.get('/offers/', {
+        queries: {
+          take: take,
+          page: page,
+          order_direction: order_direction,
+          order_by: order_by,
+          category: category ?? '',
+          followed: followed ?? false,
+          city: city ?? '',
+          promoted: promoted ?? false
+        }
+      }),
+    staleTime: 12000,
+    retry: 3
   })
 
-  console.log(offers)
-
-  return { offers, isLoading, isError }
+  return { offers, isLoading }
 }
