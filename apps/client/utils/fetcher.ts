@@ -174,6 +174,11 @@ const endpoints = makeApi([
         schema: z.boolean().optional()
       },
       {
+        name: 'followed',
+        type: 'Query',
+        schema: z.boolean().optional()
+      },
+      {
         name: 'category',
         type: 'Query',
         schema: z.string().min(1).optional()
@@ -203,15 +208,10 @@ const endpoints = makeApi([
           createdAt: z.string(),
           city: z.string().min(3).max(50),
           condition: z.enum(['new', 'used']),
-          images: z.array(z.object({ id: z.string(), img: z.string() })),
-          user: z.object({
-            id: z.string(),
-            name: z.string().min(3).max(16),
-            surname: z.string().min(3).max(20),
-            img: z.string()
-          }),
-          category: z.object({ id: z.string(), name: z.string().min(3), img: z.string() }),
-          isFollowed: z.boolean()
+          image: z.string(),
+          user: z.object({ name: z.string().min(3).max(16), surname: z.string().min(3).max(20), img: z.string() }),
+          isFollowed: z.boolean(),
+          categoryName: z.string().min(3)
         })
       ),
       count: z.number()
@@ -320,30 +320,6 @@ const endpoints = makeApi([
       }
     ],
     response: z.void()
-  },
-  {
-    method: 'get',
-    path: '/offers/followed',
-    requestFormat: 'json',
-    response: z.object({
-      offers: z.array(
-        z.object({
-          id: z.string(),
-          name: z.string().min(8).max(50),
-          description: z.string().min(50).max(1500),
-          categoryId: z.string(),
-          userId: z.string(),
-          count: z.number().gte(1),
-          price: z.number().gte(1),
-          isPromoted: z.boolean(),
-          updatedAt: z.string(),
-          createdAt: z.string(),
-          city: z.string().min(3).max(50),
-          condition: z.enum(['new', 'used']),
-          images: z.array(z.object({ id: z.string(), img: z.string() }))
-        })
-      )
-    })
   },
   {
     method: 'post',
