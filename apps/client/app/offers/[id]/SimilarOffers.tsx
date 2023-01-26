@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 
 import { Offer } from '../../../components/offers/Offer'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
+import { SecondaryLink } from '../../../components/ui/secondary-button/SecondaryLink'
 import { api } from '../../../utils/fetcher'
 
 import { LoadingSpinner } from './../../../components/ui/LoadingSpinner'
@@ -43,7 +43,7 @@ export const SimilarOffers = ({ category }: { readonly category: string }) => {
         {isLoading ? <LoadingSpinner size='w-[18px] h-[18px]' /> : <p>Show more</p>}
       </PrimaryButton>
 
-      <SecondaryButton href='/offers'>All offers</SecondaryButton>
+      <SecondaryLink href='/offers'>All offers</SecondaryLink>
     </ul>
   )
 }

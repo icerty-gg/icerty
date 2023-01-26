@@ -2,9 +2,9 @@ import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { Roboto } from '@next/font/google'
 import { Suspense } from 'react'
-// import { ToastContainer } from 'react-toastify'
 
 import { Providers } from '../components/Providers'
+// import { ToastContainer } from '../components/ToastContainer'
 import { Navbar } from '../components/navbar/Navbar'
 
 import Loading from './loading'

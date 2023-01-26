@@ -14,23 +14,18 @@ const SmallHeading = ({ children }: { readonly children: string }) => (
   <h4 className='text-white text-lg pb-4'>{children}</h4>
 )
 
-<<<<<<< HEAD
-export const Filter = async () => {
-  const { categories } = await api.get('/api/categories/')
-=======
 export const Filter = () => {
   const { data: categories, isLoading } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => api.get('/categories/')
+    queryFn: () => api.get('/api/categories/')
   })
->>>>>>> fb30f42326af0a4bae9dcd154c07ce63d56404f9
 
   return (
     <div className='w-full h-full'>
       <Container className='sticky top-[6rem] max-lg:col-span-2'>
         <div className='flex items-center justify-center gap-4 pb-6'>
           <Heading title='Filters' />
-          <SecondaryButton href='/offers'>Clear</SecondaryButton>
+          <SecondaryButton>Clear</SecondaryButton>
         </div>
 
         <div className='grid grid-cols-1 gap-4 max-h-[40rem] overflow-y-scroll overflow-hidden'>

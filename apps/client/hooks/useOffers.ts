@@ -41,22 +41,13 @@ export const useOffers = ({
           page: page,
           order_direction: order_direction,
           order_by: order_by,
-<<<<<<< HEAD
-          category,
-          followed,
-          city,
-          promoted
-=======
           category: category,
           followed: followed,
           city: city,
           promoted: promoted,
           name: title
->>>>>>> fb30f42326af0a4bae9dcd154c07ce63d56404f9
         }
-      }),
-    staleTime: 0,
-    retry: 3
+      })
   })
 
   return { offers, isLoading, refetch, isFetching }

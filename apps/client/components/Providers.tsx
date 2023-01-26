@@ -1,10 +1,11 @@
 'use client'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { isAxiosError } from 'axios'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
+import type { QueryOptions } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
-import type { QueryOptions } from 'react-query'
 
 const customRetry: QueryOptions['retry'] = (failureCount, error) => {
   if (failureCount > 3) {
@@ -33,5 +34,10 @@ export const Providers = ({ children }: { readonly children: ReactNode }) => {
       }
     }
   })
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  )
 }
