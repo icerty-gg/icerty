@@ -1,7 +1,7 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
-import { useQuery } from 'react-query'
 
 import { Offer } from '../../../components/offers/Offer'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'

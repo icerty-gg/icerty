@@ -14,7 +14,7 @@ import { api } from '../utils/fetcher'
 
 const Home = async () => {
   const { categories } = await api.get('/categories/')
-  const { offers } = await api.get('/offers/')
+  const { offers } = await api.get('/offers/', { queries: { promoted: true } })
 
   return (
     <Layout>

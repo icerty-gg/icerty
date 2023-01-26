@@ -1,9 +1,9 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useQuery } from 'react-query'
 
 import { EmptyContent } from '../../../components/ui/EmptyContent'
 import { FollowButton } from '../../../components/ui/FollowButton'
@@ -18,8 +18,8 @@ export const Lists = () => {
   })
 
   // const groupedByCategory = offers?.offers.reduce((acc, offer) => {
-  //   acc[offer.category] ??= [];
-  //   acc[offer.category].push(offer);
+  //   acc[offer.categoryName] ??= [];
+  //   acc[offer.categoryName].push(offer);
   //   return acc;
   // }, {});
 

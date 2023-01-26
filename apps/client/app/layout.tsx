@@ -3,9 +3,9 @@
 import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { Roboto } from '@next/font/google'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { Suspense } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
-import { QueryClientProvider, QueryClient } from 'react-query'
 import { ToastContainer } from 'react-toastify'
 
 import { Navbar } from '../components/navbar/Navbar'

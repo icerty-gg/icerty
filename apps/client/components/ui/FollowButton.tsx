@@ -1,8 +1,8 @@
 'use client'
 
+import { useMutation, useQuery } from '@tanstack/react-query'
 import clsx from 'clsx'
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'
-import { useMutation, useQuery } from 'react-query'
 
 import { useUser } from '../../hooks/useUser'
 import { api } from '../../utils/fetcher'
@@ -19,7 +19,7 @@ export const FollowButton = ({ className, id }: Props) => {
   const { user } = useUser()
 
   const { data, refetch } = useQuery({
-    queryFn: () => api.get('/offers/followed'),
+    queryFn: () => api.get('/offers/', { queries: { followed: true } }),
     queryKey: ['followedOffers'],
     select(data) {
       return data.offers.map(o => o.id)
@@ -64,6 +64,8 @@ export const FollowButton = ({ className, id }: Props) => {
         <LoadingSpinner size='w-[18px] h-[18px]' />
       </div>
     )
+
+  if (!user) return null
 
   return (
     <button
