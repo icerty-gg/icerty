@@ -13,7 +13,7 @@ const SmallHeading = ({ children }: { readonly children: string }) => (
 )
 
 export const Filter = async () => {
-  const { categories } = await api.get('/categories/')
+  const { categories } = await api.get('/api/categories/')
 
   return (
     <div className='w-full h-full'>

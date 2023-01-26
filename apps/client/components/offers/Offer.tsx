@@ -10,7 +10,7 @@ import { FollowButton } from '../ui/FollowButton'
 import type { Api } from '../../utils/fetcher'
 import type { ZodiosResponseByPath } from '@zodios/core'
 
-type Response = ZodiosResponseByPath<Api, 'get', '/offers/'>
+type Response = ZodiosResponseByPath<Api, 'get', '/api/offers/'>
 
 export const Offer = ({ categoryName, city, id, image, isPromoted, name, price }: Response['offers'][number]) => {
   return (

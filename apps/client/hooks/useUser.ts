@@ -7,7 +7,7 @@ export const useUser = () => {
     queryKey: ['user'],
     queryFn: () => {
       try {
-        return api.get('/sessions/me')
+        return api.get('/api/sessions/me')
       } catch (err) {
         return null
       }

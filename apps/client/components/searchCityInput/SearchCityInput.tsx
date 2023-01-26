@@ -19,7 +19,7 @@ export const SearchCityInput = ({ className }: Props) => {
 
   useEffect(() => {
     const getCities = async () => {
-      const { offers } = await api.get('/offers/')
+      const { offers } = await api.get('/api/offers/')
       const allCities = offers.map(o => o.city)
 
       const filteredCities = allCities.filter((city, index) => allCities.indexOf(city) === index)

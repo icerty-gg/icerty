@@ -93,7 +93,7 @@ export const Navbar = () => {
   const navbarRef = useRef<HTMLElement | null>(null)
 
   const { isLoading: logoutLoading, mutate: logout } = useMutation({
-    mutationFn: () => api.post('/sessions/logout', undefined),
+    mutationFn: () => api.post('/api/sessions/logout', undefined),
     onSuccess: () => {
       router.push('/')
       queryClient.setQueryData(['user'], null)

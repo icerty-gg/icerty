@@ -28,16 +28,16 @@ export const useOffers = ({
   const { data: offers, isLoading } = useQuery({
     queryKey: ['offers'],
     queryFn: () =>
-      api.get('/offers/', {
+      api.get('/api/offers/', {
         queries: {
           take: take,
           page: page,
           order_direction: order_direction,
           order_by: order_by,
-          category: category ?? '',
-          followed: followed ?? false,
-          city: city ?? '',
-          promoted: promoted ?? false
+          category,
+          followed,
+          city,
+          promoted
         }
       }),
     staleTime: 12000,

@@ -42,10 +42,10 @@ const Login = () => {
     resolver: zodResolver(LoginSchema)
   })
 
-  type User = ZodiosBodyByPath<Api, 'post', '/sessions/login'>
+  type User = ZodiosBodyByPath<Api, 'post', '/api/sessions/login'>
 
   const { isLoading, mutate: login } = useMutation({
-    mutationFn: (loginData: User) => api.post('/sessions/login', loginData),
+    mutationFn: (loginData: User) => api.post('/api/sessions/login', loginData),
     onSuccess: loginData => {
       router.push('/')
       queryClient.setQueryData(['user'], loginData)

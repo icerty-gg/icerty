@@ -73,7 +73,7 @@ const Register = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async ({ email, name, password, surname }) => {
     try {
-      await api.post('/users/register', { email, surname, name, password })
+      await api.post('/api/users/register', { email, surname, name, password })
       console.log({ email, surname, name, password })
 
       router.push('/login')

@@ -17,7 +17,7 @@ export const SimilarOffers = ({ category }: { readonly category: string }) => {
 
   const { data, isError, isLoading, refetch } = useQuery({
     queryKey: ['offers'],
-    queryFn: () => api.get('/offers/', { queries: { take: visibleOffers } }),
+    queryFn: () => api.get('/api/offers/', { queries: { take: visibleOffers } }),
     select(data) {
       return data.offers.filter(d => d.categoryName === category)
     }

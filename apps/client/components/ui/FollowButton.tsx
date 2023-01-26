@@ -19,7 +19,7 @@ export const FollowButton = ({ className, id }: Props) => {
   const { user } = useUser()
 
   const { data, refetch } = useQuery({
-    queryFn: () => api.get('/offers/followed'),
+    queryFn: () => api.get('/api/offers/followed'),
     queryKey: ['followedOffers'],
     select(data) {
       return data.offers.map(o => o.id)
@@ -29,7 +29,7 @@ export const FollowButton = ({ className, id }: Props) => {
   const isFollowed = data?.includes(id) ?? false
 
   const { isLoading, mutate: addToList } = useMutation({
-    mutationFn: () => api.post('/offers/follow/:id', undefined, { params: { id: id } }),
+    mutationFn: () => api.post('/api/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully added to list', 'success')
       void refetch()
@@ -45,7 +45,7 @@ export const FollowButton = ({ className, id }: Props) => {
   })
 
   const { isLoading: isSecondLoading, mutate: removeFromList } = useMutation({
-    mutationFn: () => api.delete('/offers/follow/:id', undefined, { params: { id: id } }),
+    mutationFn: () => api.delete('/api/offers/follow/:id', undefined, { params: { id: id } }),
     onSuccess: () => {
       notify('Successfully removed from list', 'success')
       void refetch()

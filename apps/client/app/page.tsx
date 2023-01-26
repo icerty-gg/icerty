@@ -13,8 +13,8 @@ import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
 const Home = async () => {
-  const { categories } = await api.get('/categories/')
-  const { offers } = await api.get('/offers/')
+  const { categories } = await api.get('/api/categories/')
+  const { offers } = await api.get('/api/offers/')
 
   return (
     <Layout>
@@ -62,7 +62,7 @@ const Home = async () => {
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
               {offers.map(o => (
-                <Offer key={o.id} {...o} />
+                <Offer {...o} key={o.id} />
               ))}
             </ul>
           </Container>

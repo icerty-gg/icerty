@@ -14,7 +14,7 @@ import { api } from '../../../utils/fetcher'
 export const Lists = () => {
   const { data: offers, isLoading } = useQuery({
     queryKey: ['followedOffers'],
-    queryFn: () => api.get('/offers/', { queries: { followed: true } })
+    queryFn: () => api.get('/api/offers/', { queries: { followed: true } })
   })
 
   // const groupedByCategory = offers?.offers.reduce((acc, offer) => {
@@ -33,7 +33,7 @@ export const Lists = () => {
       <div className='w-full h-full flex items-center justify-center'>
         {isLoading ? (
           <LoadingSpinner size='w-10 h-10' />
-        ) : !offers?.offers.length ? (
+        ) : offers?.offers ? (
           <EmptyContent />
         ) : (
           <ul className='grid grid-cols-1 gap-4 w-full'>

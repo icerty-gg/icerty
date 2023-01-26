@@ -17,7 +17,7 @@ import { SimilarOffers } from './SimilarOffers'
 import type { ReactNode } from 'react'
 
 export const generateStaticParams = async () => {
-  const { offers } = await api.get('/offers/')
+  const { offers } = await api.get('/api/offers/')
 
   return offers.map(o => ({
     id: o.id
@@ -50,7 +50,7 @@ const OfferParams = ({ className, icon, title, type }: OfferProps) => {
 }
 
 const OfferDetails = async ({ params }: { readonly params: { readonly id: string } }) => {
-  const offer = await api.get('/offers/:id', { params })
+  const offer = await api.get('/api/offers/:id', { params })
 
   // const { offers } = await api.get('/offers/')
   const createdDate = parseDate(offer.createdAt)

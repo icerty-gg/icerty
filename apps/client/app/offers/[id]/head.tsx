@@ -2,7 +2,7 @@ import { api } from '../../../utils/fetcher'
 import { DefaultTags } from '../../defaultTags'
 
 const Head = async ({ params }: { readonly params: { readonly id: string } }) => {
-  const offer = await api.get('/offers/:id', { params })
+  const offer = await api.get('/api/offers/:id', { params })
 
   return (
     <>
