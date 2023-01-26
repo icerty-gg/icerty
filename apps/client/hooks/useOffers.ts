@@ -1,6 +1,6 @@
 'use client'
 
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import { api } from '../utils/fetcher'
 
@@ -13,6 +13,7 @@ interface OffersParams {
   readonly page: number
   readonly promoted?: boolean
   readonly take: number
+  readonly title?: string
 }
 
 export const useOffers = ({
@@ -23,9 +24,15 @@ export const useOffers = ({
   order_direction,
   page,
   promoted,
-  take
+  take,
+  title
 }: OffersParams) => {
-  const { data: offers, isLoading } = useQuery({
+  const {
+    data: offers,
+    isFetching,
+    isLoading,
+    refetch
+  } = useQuery({
     queryKey: ['offers'],
     queryFn: () =>
       api.get('/offers/', {
@@ -34,15 +41,16 @@ export const useOffers = ({
           page: page,
           order_direction: order_direction,
           order_by: order_by,
-          category: category ?? '',
-          followed: followed ?? false,
-          city: city ?? '',
-          promoted: promoted ?? false
+          category: category,
+          followed: followed,
+          city: city,
+          promoted: promoted,
+          name: title
         }
       }),
-    staleTime: 12000,
+    staleTime: 0,
     retry: 3
   })
 
-  return { offers, isLoading }
+  return { offers, isLoading, refetch, isFetching }
 }
