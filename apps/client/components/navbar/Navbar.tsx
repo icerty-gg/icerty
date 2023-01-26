@@ -1,12 +1,12 @@
 'use client'
 
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useRef } from 'react'
 import { CiHeart, CiDollar, CiHome, CiMedicalCross, CiUser, CiLogout, CiLogin, CiStar } from 'react-icons/ci'
-import { useMutation, useQueryClient } from 'react-query'
 
 import { useCheckScroll } from '../../hooks/useCheckScroll'
 import { useUser } from '../../hooks/useUser'
@@ -119,7 +119,7 @@ export const Navbar = () => {
           )}
         >
           <Link className={clsx('text-xl text-white font-bold max-lg:hidden flex items-center gap-4')} href='/'>
-            <Logotype className={clsx('transition-all w-12', isSmallerNavbar && 'w-10')} />
+            <Logotype className={clsx('transition-all w-10')} />
             <h1 className={clsx('transition-opacity', isSmallerNavbar && 'opacity-0')}>Icerty</h1>
           </Link>
           <div className='flex items-center'>

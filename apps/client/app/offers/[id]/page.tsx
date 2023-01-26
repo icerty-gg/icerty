@@ -1,14 +1,14 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BiAddToQueue, BiBadgeCheck, BiLocationPlus, BiSmile, BiData, BiCategoryAlt, BiArrowBack } from 'react-icons/bi'
+import { BiAddToQueue, BiBadgeCheck, BiLocationPlus, BiSmile, BiData, BiCategoryAlt } from 'react-icons/bi'
 
 import { Container } from '../../../components/ui/Container'
 import { FollowButton } from '../../../components/ui/FollowButton'
+import { GetBackButton } from '../../../components/ui/GetBackButton'
 import { Heading } from '../../../components/ui/Heading'
 import { Layout } from '../../../components/ui/Layout'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
 import { Slider } from '../../../components/ui/slider/Slider'
 import { api } from '../../../utils/fetcher'
 
@@ -90,9 +90,7 @@ const OfferDetails = async ({ params }: { readonly params: { readonly id: string
         <div className='grid grid-cols-1 gap-4 max-lg:col-span-2'>
           <div className='grid gap-4 relative'>
             <Slider images={offer.images} />
-            <SecondaryButton className='absolute left-4 top-4 flex items-center justify-center' href='/offers'>
-              <BiArrowBack className='text-xl' />
-            </SecondaryButton>
+            <GetBackButton />
           </div>
           <div className='grid grid-cols-1 gap-4 max-lg:grid-cols-1'>
             <Container>
