@@ -19,7 +19,7 @@ export const FollowButton = ({ className, id }: Props) => {
   const { user } = useUser()
 
   const { data, refetch } = useQuery({
-    queryFn: () => api.get('/api/offers/followed'),
+    queryFn: () => api.get('/api/offers/', { queries: { followed: true } }),
     queryKey: ['followedOffers'],
     select(data) {
       return data.offers.map(o => o.id)

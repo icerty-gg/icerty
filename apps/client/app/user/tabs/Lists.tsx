@@ -33,7 +33,7 @@ export const Lists = () => {
       <div className='w-full h-full flex items-center justify-center'>
         {isLoading ? (
           <LoadingSpinner size='w-10 h-10' />
-        ) : offers?.offers ? (
+        ) : !offers?.offers.length ? (
           <EmptyContent />
         ) : (
           <ul className='grid grid-cols-1 gap-4 w-full'>
