@@ -3,7 +3,7 @@ import { DefaultTags } from '../defaultTags'
 const Head = () => {
   return (
     <>
-      <title key='title'>Lists</title>
+      <title key='title'>User</title>
       <DefaultTags />
     </>
   )

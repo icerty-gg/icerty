@@ -1,28 +1,49 @@
 'use client'
 
-// import { useSearchParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import { useState, useEffect } from 'react'
+
 import { Offer } from '../../../components/offers/Offer'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
-import { useOffers } from '../../../hooks/useOffers'
+import { SecondaryLink } from '../../../components/ui/secondary-button/SecondaryLink'
+import { api } from '../../../utils/fetcher'
+
+import { LoadingSpinner } from './../../../components/ui/LoadingSpinner'
 
 export const SimilarOffers = ({ category }: { readonly category: string }) => {
-  // const takeOffersParams = useSearchParams()
-  const { isError, isLoading, offers } = useOffers()
+  const [visibleOffers, setVisibleOffers] = useState(5)
+
+  console.log(visibleOffers)
+
+  const { data, isError, isLoading, refetch } = useQuery({
+    queryKey: ['offers'],
+    queryFn: () => api.get('/api/offers/', { queries: { take: visibleOffers } }),
+    select(data) {
+      return data.offers.filter(d => d.categoryName === category)
+    }
+  })
+
+  useEffect(() => void refetch(), [refetch, visibleOffers])
 
   if (isLoading) return <p>Loading...</p>
 
   if (isError) return <p>An error occured</p>
 
-  const filtered = offers?.offers.filter(o => o.category.name === category)
-
   return (
     <ul className='grid grid-cols-1 gap-4'>
-      {filtered?.map(o => {
-        return <Offer key={o.id} image={o.images[0]?.img} {...o} />
+      {data?.map(o => {
+        return <Offer key={o.id} {...o} />
       })}
-      <PrimaryButton>Show more</PrimaryButton>
-      <SecondaryButton href='/offers'>All offers</SecondaryButton>
+
+      <PrimaryButton
+        onClick={() => {
+          setVisibleOffers(p => p + 5)
+        }}
+      >
+        {isLoading ? <LoadingSpinner size='w-[18px] h-[18px]' /> : <p>Show more</p>}
+      </PrimaryButton>
+
+      <SecondaryLink href='/offers'>All offers</SecondaryLink>
     </ul>
   )
 }

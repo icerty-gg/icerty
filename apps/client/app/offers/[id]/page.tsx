@@ -1,14 +1,14 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BiAddToQueue, BiBadgeCheck, BiLocationPlus, BiSmile, BiData, BiCategoryAlt, BiArrowBack } from 'react-icons/bi'
+import { BiAddToQueue, BiBadgeCheck, BiLocationPlus, BiSmile, BiData, BiCategoryAlt } from 'react-icons/bi'
 
 import { Container } from '../../../components/ui/Container'
 import { FollowButton } from '../../../components/ui/FollowButton'
+import { GetBackButton } from '../../../components/ui/GetBackButton'
 import { Heading } from '../../../components/ui/Heading'
 import { Layout } from '../../../components/ui/Layout'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
 import { Slider } from '../../../components/ui/slider/Slider'
 import { api } from '../../../utils/fetcher'
 
@@ -17,7 +17,7 @@ import { SimilarOffers } from './SimilarOffers'
 import type { ReactNode } from 'react'
 
 export const generateStaticParams = async () => {
-  const { offers } = await api.get('/offers/')
+  const { offers } = await api.get('/api/offers/')
 
   return offers.map(o => ({
     id: o.id
@@ -50,7 +50,7 @@ const OfferParams = ({ className, icon, title, type }: OfferProps) => {
 }
 
 const OfferDetails = async ({ params }: { readonly params: { readonly id: string } }) => {
-  const offer = await api.get('/offers/:id', { params })
+  const offer = await api.get('/api/offers/:id', { params })
 
   // const { offers } = await api.get('/offers/')
   const createdDate = parseDate(offer.createdAt)
@@ -90,9 +90,7 @@ const OfferDetails = async ({ params }: { readonly params: { readonly id: string
         <div className='grid grid-cols-1 gap-4 max-lg:col-span-2'>
           <div className='grid gap-4 relative'>
             <Slider images={offer.images} />
-            <SecondaryButton className='absolute left-4 top-4 flex items-center justify-center' href='/offers'>
-              <BiArrowBack className='text-xl' />
-            </SecondaryButton>
+            <GetBackButton />
           </div>
           <div className='grid grid-cols-1 gap-4 max-lg:grid-cols-1'>
             <Container>
@@ -138,7 +136,7 @@ const OfferDetails = async ({ params }: { readonly params: { readonly id: string
                   </div>
                   <div className='flex items-center gap-4'>
                     <PrimaryButton className='w-full'>Buy</PrimaryButton>
-                    <FollowButton id={offer.id} isFollowed={true} />
+                    <FollowButton id={offer.id} />
                   </div>
                 </div>
               </Container>
