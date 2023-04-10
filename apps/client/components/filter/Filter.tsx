@@ -1,9 +1,12 @@
+import { useQuery } from '@tanstack/react-query'
+import Image from 'next/image'
+
 import { api } from '../../utils/fetcher'
 import { CheckboxInput } from '../Form/checkbox-input/CheckboxInput'
-import { CategoryItem } from '../categories/CategoryItem'
 import { SearchCityInput } from '../searchCityInput/SearchCityInput'
 import { Container } from '../ui/Container'
 import { Heading } from '../ui/Heading'
+import { LoadingSpinner } from '../ui/LoadingSpinner'
 import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
 import { SecondaryButton } from '../ui/secondary-button/SecondaryButton'
 
@@ -11,18 +14,21 @@ const SmallHeading = ({ children }: { readonly children: string }) => (
   <h4 className='text-white text-lg pb-4'>{children}</h4>
 )
 
-export const Filter = async () => {
-  const { categories } = await api.get('/categories/')
+export const Filter = () => {
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => api.get('/api/categories/')
+  })
 
   return (
     <div className='w-full h-full'>
       <Container className='sticky top-[6rem] max-lg:col-span-2'>
         <div className='flex items-center justify-center gap-4 pb-6'>
           <Heading title='Filters' />
-          <SecondaryButton href='/offers'>Clear</SecondaryButton>
+          <SecondaryButton>Clear</SecondaryButton>
         </div>
 
-        <div className='grid grid-cols-1 gap-6 max-h-[40rem] overflow-y-scroll overflow-hidden'>
+        <div className='grid grid-cols-1 gap-4 max-h-[40rem] overflow-y-scroll overflow-hidden'>
           <Container className='flex items-center flex-col z-20'>
             <SmallHeading>City</SmallHeading>
 
@@ -31,11 +37,30 @@ export const Filter = async () => {
 
           <Container className='flex items-center flex-col'>
             <SmallHeading>Category</SmallHeading>
-            <ul className='grid grid-cols-1 gap-4 max-h-[25rem] overflow-y-scroll overflow-hidden w-full'>
-              {categories.map(c => {
-                return <CategoryItem key={c.id} isSmall {...c} />
-              })}
-            </ul>
+            {isLoading ? (
+              <LoadingSpinner size='w-10 h-10' />
+            ) : (
+              <ul className='grid grid-cols-1 gap-4 max-h-[25rem] overflow-y-scroll overflow-hidden w-full'>
+                {categories?.categories.map(c => {
+                  return (
+                    <li key={c.id}>
+                      <input type='checkbox' id={c.name} value={c.name} className='hidden peer' />
+                      <label
+                        htmlFor={c.name}
+                        className='flex items-center justify-between w-full p-2 text-white border bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl peer-checked:border-sky-800 peer-checked:bg-sky-800/10 cursor-pointer'
+                      >
+                        <div className='flex items-center gap-4'>
+                          <div className='flex items-center justify-center bg-sky-400/10 rounded-full'>
+                            <Image src={c.img} width={70} height={70} alt={c.name} className='pointer-events-none' />
+                          </div>
+                          <div className='text-lg pointer-events-none'>{c.name}</div>
+                        </div>
+                      </label>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </Container>
 
           <Container className='flex items-center flex-col'>
@@ -46,7 +71,7 @@ export const Filter = async () => {
             </div>
           </Container>
 
-          <Container className='flex items-center flex-col mb-12'>
+          <Container className='flex items-center flex-col'>
             <SmallHeading>Price</SmallHeading>
 
             <div className='flex items-center gap-2'>

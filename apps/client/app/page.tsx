@@ -8,13 +8,13 @@ import { Heading } from '../components/ui/Heading'
 import { Layout } from '../components/ui/Layout'
 import { PrimaryButton } from '../components/ui/primary-button/PrimaryButton'
 import { PrimaryLink } from '../components/ui/primary-button/PrimaryLink'
-import { SecondaryButton } from '../components/ui/secondary-button/SecondaryButton'
+import { SecondaryLink } from '../components/ui/secondary-button/SecondaryLink'
 import { UserStats } from '../components/userStats/UserStats'
 import { api } from '../utils/fetcher'
 
 const Home = async () => {
-  const { categories } = await api.get('/categories/')
-  const { offers } = await api.get('/offers/')
+  const { categories } = await api.get('/api/categories/')
+  const { offers } = await api.get('/api/offers/')
 
   return (
     <Layout>
@@ -57,12 +57,12 @@ const Home = async () => {
           <Container>
             <div className='flex items-center justify-center gap-4 pb-6'>
               <Heading title='Promoted offers' />
-              <SecondaryButton href='/offers'>Check all</SecondaryButton>
+              <SecondaryLink href='/offers'>Check all</SecondaryLink>
             </div>
 
             <ul className='sticky grid grid-cols-1 gap-4 backdrop-blur max-h-[35rem] overflow-hidden overflow-y-scroll min-w-[20rem]'>
               {offers.map(o => (
-                <Offer image={o.images[0]?.img} key={o.id} {...o} />
+                <Offer {...o} key={o.id} />
               ))}
             </ul>
           </Container>

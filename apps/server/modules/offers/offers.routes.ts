@@ -6,12 +6,12 @@ import {
   updateOfferSchema,
   getAllOffersSchema,
   getOfferSchema,
-  getMyFollowedOffersSchema,
   followOfferSchema,
   unfollowOfferSchema
 } from './offers.schemas'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
+import type { Prisma } from '@prisma/client'
 import type { FastifyPluginAsync } from 'fastify'
 
 const offersPlugin: FastifyPluginAsync = async fastify => {
@@ -21,109 +21,113 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       city,
       count_from,
       count_to,
+      followed,
       name,
       order_by,
       order_direction,
       page,
       price_from,
       price_to,
-      promoted
+      promoted,
+      take
     } = request.query
 
-    const OFFERS_SHOWN = 20
+    const offersWhereConditions: Prisma.OfferWhereInput = {
+      name: {
+        contains: name,
+        mode: 'insensitive'
+      },
+      city: {
+        contains: city,
+        mode: 'insensitive'
+      },
+      count: {
+        gte: count_from,
+        lte: count_to
+      },
+      price: {
+        gte: price_from,
+        lte: price_to
+      },
+      isPromoted: promoted,
+      category: {
+        name: {
+          contains: category,
+          mode: 'insensitive'
+        }
+      },
+      followedOffers: followed
+        ? {
+            some: {
+              userId: request.session.user?.id
+            }
+          }
+        : undefined
+    }
 
     const offers = await fastify.prisma.offer.findMany({
-      skip: (page - 1) * OFFERS_SHOWN,
-      take: OFFERS_SHOWN,
+      skip: (page - 1) * take,
+      take,
       orderBy: {
         [order_by]: order_direction
       },
-      where: {
-        name: {
-          contains: name,
-          mode: 'insensitive'
-        },
-        city: {
-          contains: city,
-          mode: 'insensitive'
-        },
-        count: {
-          gte: count_from,
-          lte: count_to
-        },
-        price: {
-          gte: price_from,
-          lte: price_to
-        },
-        isPromoted: promoted,
-        category: {
-          name: {
-            contains: category,
-            mode: 'insensitive'
-          }
-        }
-      },
+      where: offersWhereConditions,
       include: {
         offerImage: {
           select: {
-            id: true,
             img: true
           }
         },
         category: {
           select: {
-            id: true,
-            name: true,
-            img: true
+            name: true
           }
         },
         user: {
           select: {
-            id: true,
             name: true,
             surname: true,
             img: true
+          }
+        },
+        followedOffers: {
+          select: {
+            offerId: true,
+            userId: true
           }
         }
       }
     })
 
     const count = await fastify.prisma.offer.count({
-      where: {
-        name: {
-          contains: name,
-          mode: 'insensitive'
-        },
-        city: {
-          contains: city,
-          mode: 'insensitive'
-        },
-        count: {
-          gte: count_from,
-          lte: count_to
-        },
-        price: {
-          gte: price_from,
-          lte: price_to
-        },
-        isPromoted: promoted,
-        category: {
-          name: {
-            contains: category,
-            mode: 'insensitive'
-          }
-        }
+      where: offersWhereConditions,
+      take
+    })
+
+    const mappedOffers = offers.map(o => {
+      const firstOfferImage = o.offerImage[0]
+
+      if (!firstOfferImage) {
+        throw reply.internalServerError(`Offer with id: ${o.id} was created without images!`)
+      }
+
+      return {
+        ...o,
+        categoryName: o.category.name,
+        createdAt: o.createdAt.toISOString(),
+        updatedAt: o.updatedAt.toISOString(),
+        image: firstOfferImage.img,
+        isFollowed: o.followedOffers.find(
+          ({ offerId, userId }) => offerId === o.id && userId === request.session.user?.id
+        )
+          ? true
+          : false
       }
     })
 
     return reply.code(200).send({
-      offers: offers.map(o => ({
-        ...o,
-        createdAt: o.createdAt.toISOString(),
-        updatedAt: o.updatedAt.toISOString(),
-        images: o.offerImage
-      })),
-      maxPage: Math.ceil(offers.length / OFFERS_SHOWN),
+      offers: mappedOffers,
+      maxPage: Math.ceil(offers.length / take),
       count
     })
   })
@@ -149,6 +153,12 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
             name: true,
             img: true
           }
+        },
+        followedOffers: {
+          select: {
+            userId: true,
+            offerId: true
+          }
         }
       }
     })
@@ -166,7 +176,12 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
         ...offer.user,
         createdAt: offer.user.createdAt.toISOString()
       },
-      category: offer.category
+      category: offer.category,
+      isFollowed: offer.followedOffers.find(
+        ({ offerId, userId }) => offerId === offer.id && userId === request.session.user?.id
+      )
+        ? true
+        : false
     })
   })
 
@@ -271,6 +286,21 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
   fastify
     .withTypeProvider<TypeBoxTypeProvider>()
     .post('/follow/:id', { schema: followOfferSchema, preValidation: fastify.auth() }, async (request, reply) => {
+      const { id } = request.params
+
+      const offer = await fastify.prisma.offer.findFirst({ where: { id } })
+      const followedOffer = await fastify.prisma.followedOffers.findFirst({
+        where: { offerId: id, userId: request.session.user.id }
+      })
+
+      if (!offer) {
+        throw reply.notFound('Offer not found!')
+      }
+
+      if (followedOffer) {
+        throw reply.badRequest('You already follow this offer!')
+      }
+
       await fastify.prisma.followedOffers.create({
         data: { offerId: request.params.id, userId: request.session.user.id }
       })
@@ -289,7 +319,7 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       })
 
       if (!followedOffer) {
-        throw reply.notFound('Offer not found!')
+        throw reply.notFound("Offer not found! Either you don't follow it or it doesn't exist!")
       }
 
       await fastify.prisma.followedOffers.delete({
@@ -297,30 +327,6 @@ const offersPlugin: FastifyPluginAsync = async fastify => {
       })
 
       return reply.code(204).send()
-    })
-
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .get('/followed', { schema: getMyFollowedOffersSchema, preValidation: fastify.auth() }, async (request, reply) => {
-      const followedOffers = await fastify.prisma.followedOffers.findMany({
-        where: { userId: request.session.user.id },
-        include: {
-          offer: {
-            include: {
-              offerImage: true
-            }
-          }
-        }
-      })
-
-      return reply.code(200).send({
-        offers: followedOffers.map(o => ({
-          ...o.offer,
-          createdAt: o.offer.createdAt.toISOString(),
-          updatedAt: o.offer.updatedAt.toISOString(),
-          images: o.offer.offerImage
-        }))
-      })
     })
 }
 

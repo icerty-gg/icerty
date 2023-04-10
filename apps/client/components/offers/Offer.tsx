@@ -3,29 +3,25 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import Link from 'next/link'
-import { BiLocationPlus, BiCategoryAlt } from 'react-icons/bi'
+import { CiHashtag, CiLocationOn } from 'react-icons/ci'
 
 import { FollowButton } from '../ui/FollowButton'
-interface Props {
-  readonly category: { readonly id: string; readonly img: string; readonly name: string }
-  readonly city: string
-  readonly id: string
-  readonly image: any
-  readonly isPromoted: boolean
-  readonly name: string
-  readonly price: number
-}
 
-export const Offer = ({ category, city, id, image, isPromoted, name, price }: Props) => {
+import type { Api } from '../../utils/fetcher'
+import type { ZodiosResponseByPath } from '@zodios/core'
+
+type Response = ZodiosResponseByPath<Api, 'get', '/api/offers/'>
+
+export const Offer = ({ categoryName, city, id, image, isPromoted, name, price }: Response['offers'][number]) => {
   return (
-    <div className='relative'>
-      <Link href={`/offers/${id}`}>
-        <li
-          className={clsx(
-            'flex items-center gap-6 border transition-colors bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl',
-            isPromoted && 'border bg-sky-800/10 hover:bg-sky-800/20 border-sky-500/40'
-          )}
-        >
+    <li
+      className={clsx(
+        'flex items-center gap-6 border transition-colors bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl relative',
+        isPromoted && 'border bg-sky-800/10 hover:bg-sky-800/20 border-sky-500/40'
+      )}
+    >
+      <div className='relative w-full h-full'>
+        <Link href={`/offers/${id}`} className='flex items-center w-full h-full'>
           <Image
             width={210}
             height={210}
@@ -53,17 +49,17 @@ export const Offer = ({ category, city, id, image, isPromoted, name, price }: Pr
 
             <div className='absolute bottom-4 right-4 flex items-center gap-2'>
               <p className='flex items-center gap-2 text-sm text-sky-600 bg-sky-400/10 rounded-full py-2 px-4'>
-                <BiCategoryAlt className='text-lg' /> {category.name}
+                <CiHashtag className='text-lg' /> {categoryName}
               </p>
 
               <p className='flex items-center gap-2 text-sm text-sky-600 bg-sky-400/10 rounded-full py-2 px-4'>
-                <BiLocationPlus className='text-lg' /> {city}
+                <CiLocationOn className='text-lg' /> {city}
               </p>
             </div>
           </div>
-        </li>
-      </Link>
-      <FollowButton id={id} className='absolute top-4 right-4' isFollowed={true} />
-    </div>
+        </Link>
+        <FollowButton id={id} className='absolute top-4 right-4' />
+      </div>
+    </li>
   )
 }

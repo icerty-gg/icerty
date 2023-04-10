@@ -1,56 +1,49 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useState, useEffect } from 'react'
 
 import { Offer } from '../../../components/offers/Offer'
 import { PrimaryButton } from '../../../components/ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../../../components/ui/secondary-button/SecondaryButton'
+import { SecondaryLink } from '../../../components/ui/secondary-button/SecondaryLink'
+import { api } from '../../../utils/fetcher'
 
-interface Offers {
-  readonly city: string
-  readonly createdAt: string
-  readonly description: string
-  readonly id: string
-  readonly images: readonly { readonly id: string; readonly img: string }[]
-  readonly isPromoted: boolean
-  readonly name: string
-  readonly price: number
-  readonly updatedAt: string
-}
+import { LoadingSpinner } from './../../../components/ui/LoadingSpinner'
 
-interface Props {
-  readonly offers: readonly Offers[]
-  readonly pageOfferId: string
-}
+export const SimilarOffers = ({ category }: { readonly category: string }) => {
+  const [visibleOffers, setVisibleOffers] = useState(5)
 
-export const SimilarOffers = ({ offers, pageOfferId }: Props) => {
-  const [visibleOffers, setvisibleOffers] = useState(2)
-  const [fullOffers, setFullOffers] = useState(false)
+  console.log(visibleOffers)
 
-  const similarOffers = offers.filter(o => o.id !== pageOfferId)
+  const { data, isError, isLoading, refetch } = useQuery({
+    queryKey: ['offers'],
+    queryFn: () => api.get('/api/offers/', { queries: { take: visibleOffers } }),
+    select(data) {
+      return data.offers.filter(d => d.categoryName === category)
+    }
+  })
 
-  useEffect(() => {
-    if (similarOffers.length === visibleOffers || similarOffers.length < visibleOffers) setFullOffers(true)
-  }, [similarOffers.length, visibleOffers])
+  useEffect(() => void refetch(), [refetch, visibleOffers])
+
+  if (isLoading) return <p>Loading...</p>
+
+  if (isError) return <p>An error occured</p>
 
   return (
     <ul className='grid grid-cols-1 gap-4'>
-      {similarOffers.slice(0, visibleOffers).map(o => {
-        return <Offer key={o.id} image={o.images[0]?.img} {...o} />
+      {data?.map(o => {
+        return <Offer key={o.id} {...o} />
       })}
+
       <PrimaryButton
         onClick={() => {
-          setvisibleOffers(p => p + 2)
-
-          if (fullOffers) {
-            setvisibleOffers(2)
-            setFullOffers(false)
-          }
+          setVisibleOffers(p => p + 5)
         }}
       >
-        {fullOffers ? 'Hide all' : 'Show more'}
+        {isLoading ? <LoadingSpinner size='w-[18px] h-[18px]' /> : <p>Show more</p>}
       </PrimaryButton>
-      {fullOffers && <SecondaryButton href='/offers'>All offers</SecondaryButton>}
+
+      <SecondaryLink href='/offers'>All offers</SecondaryLink>
     </ul>
   )
 }
