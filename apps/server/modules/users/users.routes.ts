@@ -6,7 +6,7 @@ import {
   deleteUserByIdSchema,
   updateEmailSchema,
   updatePasswordSchema
-} from './users.schemas'
+} from './users.schemas.js'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'

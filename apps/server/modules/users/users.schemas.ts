@@ -1,6 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-import { StringEnum } from '../../utils/schema'
+import { StringEnum } from '../../utils/schema.js'
 
 import type { Static } from '@sinclair/typebox'
 import type { FastifySchema } from 'fastify'

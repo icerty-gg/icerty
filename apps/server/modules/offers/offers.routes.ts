@@ -8,7 +8,7 @@ import {
   getOfferSchema,
   followOfferSchema,
   unfollowOfferSchema
-} from './offers.schemas'
+} from './offers.schemas.js'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { Prisma } from '@prisma/client'

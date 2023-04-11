@@ -15,9 +15,9 @@ const session: FastifyPluginAsync = async fastify => {
       maxAge: ms('7 days')
     }
   })
-  await fastify.register(import('./sessions.decorators'))
+  await fastify.register(import('./sessions.decorators.js'))
 
-  await fastify.register(import('./sessions.routes'), { prefix: '/api/sessions' })
+  await fastify.register(import('./sessions.routes.js'), { prefix: '/api/sessions' })
 }
 
 const sessionsPlugin = FP(session)

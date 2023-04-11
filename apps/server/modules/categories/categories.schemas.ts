@@ -1,6 +1,6 @@
 import { Type } from '@sinclair/typebox'
 
-import { BufferType } from '../../utils/schema'
+import { BufferType } from '../../utils/schema.js'
 
 import type { FastifySchema } from 'fastify'
 

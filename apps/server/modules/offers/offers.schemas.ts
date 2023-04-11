@@ -1,8 +1,8 @@
 import { Type } from '@sinclair/typebox'
 
-import { BufferType, StringEnum } from '../../utils/schema'
-import { CategorySchema } from '../categories/categories.schemas'
-import { UserSchema } from '../users/users.schemas'
+import { BufferType, StringEnum } from '../../utils/schema.js'
+import { CategorySchema } from '../categories/categories.schemas.js'
+import { UserSchema } from '../users/users.schemas.js'
 
 import type { FastifySchema } from 'fastify'
 

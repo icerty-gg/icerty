@@ -5,7 +5,7 @@ import {
   deleteCategorySchema,
   updateCategorySchema,
   getCategoriesSchema
-} from './categories.schemas'
+} from './categories.schemas.js'
 
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
 import type { FastifyPluginAsync } from 'fastify'
