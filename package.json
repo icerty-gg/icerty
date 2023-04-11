@@ -10,15 +10,12 @@
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint --parallel",
     "lint:fix": "turbo run lint:fix --parallel",
-    "format": "prettier --write .",
-    "start:backend": "cd apps/server && npm start"
+    "format": "prettier --write ."
   },
   "devDependencies": {
-    "client": "^0.0.0",
-    "prettier": "latest",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
+    "prettier": "^2.8.7",
+    "prettier-plugin-tailwindcss": "^0.2.7",
+    "turbo": "^1.9.0",
+    "typescript": "^5.0.4"
   }
 }
