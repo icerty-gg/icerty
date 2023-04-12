@@ -1,6 +1,6 @@
-import type { ApiOf } from "@zodios/core";
 import { createApiClient, schemas } from "./apiSchemas";
 
+import type { ApiOf } from "@zodios/core";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 

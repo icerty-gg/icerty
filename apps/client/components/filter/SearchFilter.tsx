@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 
-import type { ChangeEvent, FormEvent } from "react";
 import { PrimaryButton } from "../../components/ui/primary-button/PrimaryButton";
 import { useParams } from "../../hooks/useParams";
 
+import type { ChangeEvent, FormEvent } from "react";
 
 export const SearchFilter = () => {
 	const [searchInputValue, setSearchInputValue] = useState<string | null>(null);

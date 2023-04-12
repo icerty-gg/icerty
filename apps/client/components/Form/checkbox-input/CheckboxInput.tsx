@@ -1,7 +1,8 @@
 import { forwardRef } from "react";
 
-import type { ReactNode, InputHTMLAttributes } from "react";
 import { ErrorMessage } from "../error-message/ErrorMessage";
+
+import type { ReactNode, InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	readonly children?: ReactNode;

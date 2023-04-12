@@ -16,8 +16,21 @@ module.exports = {
 	},
 	ignorePatterns: ["build/", ".turbo/", "dist/", "node_modules/", "*.js", "*.jsx"],
 	rules: {
-		"import/order": "error",
+		// import order rules
+		"import/order": [
+			"error",
+			{
+				"newlines-between": "always",
+				alphabetize: { order: "asc" },
+				groups: ["builtin", "external", "parent", "sibling", "index", "type"],
+			},
+		],
+
+		// react rules
 		"react/display-name": "off",
+
+		// Fastify async plugins
+		"@typescript-eslint/require-await": "off",
 
 		// This fixes React hook form handleSubmit(onSubmit)
 		"@typescript-eslint/no-misused-promises": [

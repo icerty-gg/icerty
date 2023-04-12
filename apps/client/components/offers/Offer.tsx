@@ -5,10 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { CiHashtag, CiLocationOn } from "react-icons/ci";
 
-import type { ZodiosResponseByPath } from "@zodios/core";
 import { FollowButton } from "../ui/FollowButton";
 
 import type { Api } from "../../utils/fetcher";
+import type { ZodiosResponseByPath } from "@zodios/core";
 
 type Response = ZodiosResponseByPath<Api, "get", "/api/offers/">;
 

@@ -11,6 +11,7 @@
 			"inputs": ["**/*.tsx", "**/*.ts"]
 		},
 		"lint": {},
+		"lint:fix": {},
 		"dev": {
 			"cache": false
 		}

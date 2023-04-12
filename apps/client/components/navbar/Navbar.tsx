@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
 	CiHeart,
 	CiDollar,
@@ -17,7 +17,6 @@ import {
 	CiStar,
 } from "react-icons/ci";
 
-import type { ReactNode } from "react";
 import { useCheckScroll } from "../../hooks/useCheckScroll";
 import { useUser } from "../../hooks/useUser";
 import Logotype from "../../public/logo.svg";
@@ -28,6 +27,7 @@ import { PrimaryLink } from "../ui/primary-button/PrimaryLink";
 
 import { NavLink } from "./NavLink";
 
+import type { ReactNode } from "react";
 
 interface NavbarLinkProps {
 	readonly href: string;
@@ -129,7 +129,7 @@ export const Navbar = () => {
 			>
 				<div
 					className={clsx(
-						"my-0 mx-auto flex w-full max-w-screen-2xl flex-wrap items-center justify-between px-8 transition-all max-lg:justify-center",
+						"mx-auto my-0 flex w-full max-w-screen-2xl flex-wrap items-center justify-between px-8 transition-all max-lg:justify-center",
 					)}
 				>
 					<Link

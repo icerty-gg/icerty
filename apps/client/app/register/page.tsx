@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { BiLockAlt, BiMailSend, BiUser } from "react-icons/bi";
 import { z } from "zod";
 
-import type { SubmitHandler } from "react-hook-form";
 import { CheckboxInput } from "../../components/Form/checkbox-input/CheckboxInput";
 import { Input } from "../../components/Form/input/Input";
 import { Container } from "../../components/ui/Container";
@@ -19,6 +18,7 @@ import { useUser } from "../../hooks/useUser";
 import { api } from "../../utils/fetcher";
 import { notify } from "../../utils/notifications";
 
+import type { SubmitHandler } from "react-hook-form";
 
 const RegisterSchema = z
 	.object({
