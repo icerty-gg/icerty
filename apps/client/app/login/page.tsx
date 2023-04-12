@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { BiLockAlt, BiMailSend } from "react-icons/bi";
 import { z } from "zod";
 
+import type { ZodiosBodyByPath } from "@zodios/core";
+import type { SubmitHandler } from "react-hook-form";
 import { Input } from "../../components/Form/input/Input";
 import { Container } from "../../components/ui/Container";
 import { Heading } from "../../components/ui/Heading";
@@ -17,8 +19,6 @@ import { api } from "../../utils/fetcher";
 import { notify } from "../../utils/notifications";
 
 import type { Api } from "../../utils/fetcher";
-import type { ZodiosBodyByPath } from "@zodios/core";
-import type { SubmitHandler } from "react-hook-form";
 
 const LoginSchema = z.object({
 	email: z.string().email(),
@@ -56,9 +56,11 @@ const Login = () => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<FormSchemaType> = (data) => {
+	const onSubmit: SubmitHandler<FormSchemaType> = (data: FormSchemaType) => {
 		login(data);
 	};
+
+	const x = handleSubmit(onSubmit);
 
 	return (
 		<Layout>

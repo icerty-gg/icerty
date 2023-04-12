@@ -4,9 +4,9 @@ import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { BiLocationPlus } from "react-icons/bi";
 
+import type { ChangeEvent } from "react";
 import { api } from "../../utils/fetcher";
 
-import type { ChangeEvent } from "react";
 
 interface Props {
 	readonly className?: string;

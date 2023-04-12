@@ -17,6 +17,7 @@ import {
 	CiStar,
 } from "react-icons/ci";
 
+import type { ReactNode } from "react";
 import { useCheckScroll } from "../../hooks/useCheckScroll";
 import { useUser } from "../../hooks/useUser";
 import Logotype from "../../public/logo.svg";
@@ -27,7 +28,6 @@ import { PrimaryLink } from "../ui/primary-button/PrimaryLink";
 
 import { NavLink } from "./NavLink";
 
-import type { ReactNode } from "react";
 
 interface NavbarLinkProps {
 	readonly href: string;

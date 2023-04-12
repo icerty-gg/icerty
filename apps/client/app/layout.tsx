@@ -3,13 +3,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { Roboto } from "@next/font/google";
 import { Suspense } from "react";
 
+import type { ReactNode } from "react";
 import { Providers } from "../components/Providers";
 // import { ToastContainer } from '../components/ToastContainer'
 import { Navbar } from "../components/navbar/Navbar";
 
 import Loading from "./loading";
 
-import type { ReactNode } from "react";
 
 const roboto = Roboto({
 	subsets: ["latin"],

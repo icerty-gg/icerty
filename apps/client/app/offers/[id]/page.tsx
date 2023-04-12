@@ -10,6 +10,7 @@ import {
 	BiCategoryAlt,
 } from "react-icons/bi";
 
+import type { ReactNode } from "react";
 import { Container } from "../../../components/ui/Container";
 import { FollowButton } from "../../../components/ui/FollowButton";
 import { GetBackButton } from "../../../components/ui/GetBackButton";
@@ -21,7 +22,6 @@ import { api } from "../../../utils/fetcher";
 
 import { SimilarOffers } from "./SimilarOffers";
 
-import type { ReactNode } from "react";
 
 export const generateStaticParams = async () => {
 	const { offers } = await api.get("/api/offers/");

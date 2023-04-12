@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { forwardRef } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
+import type { InputHTMLAttributes } from "react";
 import { useToggle } from "../../../hooks/useToggle";
 import { ErrorMessage } from "../error-message/ErrorMessage";
 
-import type { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	readonly className?: string;
