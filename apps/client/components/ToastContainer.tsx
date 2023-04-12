@@ -1,3 +1,3 @@
-'use client'
+"use client";
 
-export const ToastContainer = () => <ToastContainer />
+export const ToastContainer = () => <ToastContainer />;

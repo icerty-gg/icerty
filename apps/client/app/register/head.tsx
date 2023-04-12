@@ -1,12 +1,12 @@
-import { DefaultTags } from '../defaultTags'
+import { DefaultTags } from "../defaultTags";
 
 const Head = () => {
-  return (
-    <>
-      <title key='title'>Register</title>
-      <DefaultTags />
-    </>
-  )
-}
+	return (
+		<>
+			<title key="title">Register</title>
+			<DefaultTags />
+		</>
+	);
+};
 
-export default Head
+export default Head;

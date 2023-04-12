@@ -1,21 +1,21 @@
 {
-  "name": "icerty",
-  "version": "0.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*"
-  ],
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "lint": "turbo run lint --parallel",
-    "lint:fix": "turbo run lint:fix --parallel",
-    "format": "prettier --write ."
-  },
-  "devDependencies": {
-    "prettier": "^2.8.7",
-    "prettier-plugin-tailwindcss": "^0.2.7",
-    "turbo": "^1.9.0",
-    "typescript": "^5.0.4"
-  }
+	"name": "icerty",
+	"version": "0.0.0",
+	"private": true,
+	"workspaces": [
+		"apps/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev --parallel",
+		"lint": "turbo run lint --parallel",
+		"lint:fix": "turbo run lint:fix --parallel",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"prettier": "^2.8.7",
+		"prettier-plugin-tailwindcss": "^0.2.7",
+		"turbo": "^1.9.0",
+		"typescript": "^5.0.4"
+	}
 }

@@ -1,17 +1,17 @@
-import { Meta, StoryObj } from '@storybook/react'
-import { BiLockAlt } from 'react-icons/bi'
-import { ErrorMessage } from './ErrorMessage'
+import { Meta, StoryObj } from "@storybook/react";
+import { BiLockAlt } from "react-icons/bi";
+import { ErrorMessage } from "./ErrorMessage";
 
 const meta: Meta<typeof ErrorMessage> = {
-  title: 'Form/ErrorMessage',
-  component: ErrorMessage,
-  args: {
-    children: 'Error message'
-  }
-}
+	title: "Form/ErrorMessage",
+	component: ErrorMessage,
+	args: {
+		children: "Error message",
+	},
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof ErrorMessage>
+type Story = StoryObj<typeof ErrorMessage>;
 
-export const Default: Story = {}
+export const Default: Story = {};

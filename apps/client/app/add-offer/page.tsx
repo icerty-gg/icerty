@@ -1,9 +1,9 @@
 const AddOffer = () => {
-  return (
-    <div className='flex items-center justify-center w-full h-full'>
-      <h1 className='text-3xl text-left'>essa</h1>
-    </div>
-  )
-}
+	return (
+		<div className="flex h-full w-full items-center justify-center">
+			<h1 className="text-left text-3xl">essa</h1>
+		</div>
+	);
+};
 
-export default AddOffer
+export default AddOffer;

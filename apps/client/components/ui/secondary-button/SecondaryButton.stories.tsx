@@ -1,20 +1,20 @@
-import { Meta, StoryObj } from '@storybook/react'
-import { SecondaryButton } from './SecondaryButton'
+import { Meta, StoryObj } from "@storybook/react";
+import { SecondaryButton } from "./SecondaryButton";
 
 const meta: Meta<typeof SecondaryButton> = {
-  title: 'SecondaryButton',
-  component: SecondaryButton,
-  args: {
-    children: 'SecondaryButton'
-  }
-}
+	title: "SecondaryButton",
+	component: SecondaryButton,
+	args: {
+		children: "SecondaryButton",
+	},
+};
 
-export default meta
+export default meta;
 
-type Story = StoryObj<typeof SecondaryButton>
+type Story = StoryObj<typeof SecondaryButton>;
 
 export const Button: Story = {
-  args: {
-    href: '/'
-  }
-}
+	args: {
+		href: "/",
+	},
+};

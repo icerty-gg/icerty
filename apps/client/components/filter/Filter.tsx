@@ -1,102 +1,108 @@
-import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 
-import { api } from '../../utils/fetcher'
-import { CheckboxInput } from '../Form/checkbox-input/CheckboxInput'
-import { SearchCityInput } from '../searchCityInput/SearchCityInput'
-import { Container } from '../ui/Container'
-import { Heading } from '../ui/Heading'
-import { LoadingSpinner } from '../ui/LoadingSpinner'
-import { PrimaryButton } from '../ui/primary-button/PrimaryButton'
-import { SecondaryButton } from '../ui/secondary-button/SecondaryButton'
+import { api } from "../../utils/fetcher";
+import { CheckboxInput } from "../Form/checkbox-input/CheckboxInput";
+import { SearchCityInput } from "../searchCityInput/SearchCityInput";
+import { Container } from "../ui/Container";
+import { Heading } from "../ui/Heading";
+import { LoadingSpinner } from "../ui/LoadingSpinner";
+import { PrimaryButton } from "../ui/primary-button/PrimaryButton";
+import { SecondaryButton } from "../ui/secondary-button/SecondaryButton";
 
 const SmallHeading = ({ children }: { readonly children: string }) => (
-  <h4 className='text-white text-lg pb-4'>{children}</h4>
-)
+	<h4 className="pb-4 text-lg text-white">{children}</h4>
+);
 
 export const Filter = () => {
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ['categories'],
-    queryFn: () => api.get('/api/categories/')
-  })
+	const { data: categories, isLoading } = useQuery({
+		queryKey: ["categories"],
+		queryFn: () => api.get("/api/categories/"),
+	});
 
-  return (
-    <div className='w-full h-full'>
-      <Container className='sticky top-[6rem] max-lg:col-span-2'>
-        <div className='flex items-center justify-center gap-4 pb-6'>
-          <Heading title='Filters' />
-          <SecondaryButton>Clear</SecondaryButton>
-        </div>
+	return (
+		<div className="h-full w-full">
+			<Container className="sticky top-[6rem] max-lg:col-span-2">
+				<div className="flex items-center justify-center gap-4 pb-6">
+					<Heading title="Filters" />
+					<SecondaryButton>Clear</SecondaryButton>
+				</div>
 
-        <div className='grid grid-cols-1 gap-4 max-h-[40rem] overflow-y-scroll overflow-hidden'>
-          <Container className='flex items-center flex-col z-20'>
-            <SmallHeading>City</SmallHeading>
+				<div className="grid max-h-[40rem] grid-cols-1 gap-4 overflow-hidden overflow-y-scroll">
+					<Container className="z-20 flex flex-col items-center">
+						<SmallHeading>City</SmallHeading>
 
-            <SearchCityInput />
-          </Container>
+						<SearchCityInput />
+					</Container>
 
-          <Container className='flex items-center flex-col'>
-            <SmallHeading>Category</SmallHeading>
-            {isLoading ? (
-              <LoadingSpinner size='w-10 h-10' />
-            ) : (
-              <ul className='grid grid-cols-1 gap-4 max-h-[25rem] overflow-y-scroll overflow-hidden w-full'>
-                {categories?.categories.map(c => {
-                  return (
-                    <li key={c.id}>
-                      <input type='checkbox' id={c.name} value={c.name} className='hidden peer' />
-                      <label
-                        htmlFor={c.name}
-                        className='flex items-center justify-between w-full p-2 text-white border bg-gray-800/20 border-slate-800 hover:bg-sky-800/10 rounded-xl peer-checked:border-sky-800 peer-checked:bg-sky-800/10 cursor-pointer'
-                      >
-                        <div className='flex items-center gap-4'>
-                          <div className='flex items-center justify-center bg-sky-400/10 rounded-full'>
-                            <Image src={c.img} width={70} height={70} alt={c.name} className='pointer-events-none' />
-                          </div>
-                          <div className='text-lg pointer-events-none'>{c.name}</div>
-                        </div>
-                      </label>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </Container>
+					<Container className="flex flex-col items-center">
+						<SmallHeading>Category</SmallHeading>
+						{isLoading ? (
+							<LoadingSpinner size="w-10 h-10" />
+						) : (
+							<ul className="grid max-h-[25rem] w-full grid-cols-1 gap-4 overflow-hidden overflow-y-scroll">
+								{categories?.categories.map((c) => {
+									return (
+										<li key={c.id}>
+											<input type="checkbox" id={c.name} value={c.name} className="peer hidden" />
+											<label
+												htmlFor={c.name}
+												className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-800 bg-gray-800/20 p-2 text-white hover:bg-sky-800/10 peer-checked:border-sky-800 peer-checked:bg-sky-800/10"
+											>
+												<div className="flex items-center gap-4">
+													<div className="flex items-center justify-center rounded-full bg-sky-400/10">
+														<Image
+															src={c.img}
+															width={70}
+															height={70}
+															alt={c.name}
+															className="pointer-events-none"
+														/>
+													</div>
+													<div className="pointer-events-none text-lg">{c.name}</div>
+												</div>
+											</label>
+										</li>
+									);
+								})}
+							</ul>
+						)}
+					</Container>
 
-          <Container className='flex items-center flex-col'>
-            <SmallHeading>Item condition</SmallHeading>
-            <div className='flex flex-col gap-4'>
-              <CheckboxInput>Used</CheckboxInput>
-              <CheckboxInput>New</CheckboxInput>
-            </div>
-          </Container>
+					<Container className="flex flex-col items-center">
+						<SmallHeading>Item condition</SmallHeading>
+						<div className="flex flex-col gap-4">
+							<CheckboxInput>Used</CheckboxInput>
+							<CheckboxInput>New</CheckboxInput>
+						</div>
+					</Container>
 
-          <Container className='flex items-center flex-col'>
-            <SmallHeading>Price</SmallHeading>
+					<Container className="flex flex-col items-center">
+						<SmallHeading>Price</SmallHeading>
 
-            <div className='flex items-center gap-2'>
-              <div className='flex items-center relative'>
-                <input
-                  type='text'
-                  className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-16 w-full'
-                />
-                <span className='text-white absolute left-[1.2rem] pointer-events-none'>USD</span>
-              </div>
+						<div className="flex items-center gap-2">
+							<div className="relative flex items-center">
+								<input
+									type="text"
+									className="w-full rounded-xl border border-slate-800 bg-gray-800/20 p-4 pl-16 text-white hover:border-sky-400/20 focus:border-sky-400/20 focus:outline-none"
+								/>
+								<span className="pointer-events-none absolute left-[1.2rem] text-white">USD</span>
+							</div>
 
-              <p className='text-white'>-</p>
-              <div className='flex items-center relative'>
-                <input
-                  type='text'
-                  className='border bg-gray-800/20 border-slate-800 hover:border-sky-400/20 rounded-xl p-4 focus:outline-none focus:border-sky-400/20 text-white pl-16 w-full'
-                />
-                <span className='text-white absolute left-[1.2rem] pointer-events-none'>USD</span>
-              </div>
-            </div>
-          </Container>
+							<p className="text-white">-</p>
+							<div className="relative flex items-center">
+								<input
+									type="text"
+									className="w-full rounded-xl border border-slate-800 bg-gray-800/20 p-4 pl-16 text-white hover:border-sky-400/20 focus:border-sky-400/20 focus:outline-none"
+								/>
+								<span className="pointer-events-none absolute left-[1.2rem] text-white">USD</span>
+							</div>
+						</div>
+					</Container>
 
-          <PrimaryButton className='w-full fixed bottom-0 left-0'>Apply filters</PrimaryButton>
-        </div>
-      </Container>
-    </div>
-  )
-}
+					<PrimaryButton className="fixed bottom-0 left-0 w-full">Apply filters</PrimaryButton>
+				</div>
+			</Container>
+		</div>
+	);
+};

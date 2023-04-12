@@ -1,120 +1,134 @@
-import { randomUUID } from 'crypto'
+import { randomUUID } from "crypto";
 
 import {
-  createCategorySchema,
-  deleteCategorySchema,
-  updateCategorySchema,
-  getCategoriesSchema
-} from './categories.schemas.js'
+	createCategorySchema,
+	deleteCategorySchema,
+	updateCategorySchema,
+	getCategoriesSchema,
+} from "./categories.schemas.js";
 
-import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox'
-import type { FastifyPluginAsync } from 'fastify'
+import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import type { FastifyPluginAsync } from "fastify";
 
-const categoriesPlugin: FastifyPluginAsync = async fastify => {
-  fastify.withTypeProvider<TypeBoxTypeProvider>().get('/', { schema: getCategoriesSchema }, async (request, reply) => {
-    const categories = await fastify.prisma.category.findMany()
+const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
+	fastify
+		.withTypeProvider<TypeBoxTypeProvider>()
+		.get("/", { schema: getCategoriesSchema }, async (request, reply) => {
+			const categories = await fastify.prisma.category.findMany();
 
-    return reply.code(200).send({
-      categories: categories.map(c => ({
-        ...c,
-        updatedAt: c.updatedAt.toISOString(),
-        createdAt: c.createdAt.toISOString()
-      }))
-    })
-  })
+			return reply.code(200).send({
+				categories: categories.map((c) => ({
+					...c,
+					updatedAt: c.updatedAt.toISOString(),
+					createdAt: c.createdAt.toISOString(),
+				})),
+			});
+		});
 
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .post('/', { schema: createCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
-      const { img, name } = request.body
+	fastify
+		.withTypeProvider<TypeBoxTypeProvider>()
+		.post(
+			"/",
+			{ schema: createCategorySchema, preValidation: fastify.auth(["admin"]) },
+			async (request, reply) => {
+				const { img, name } = request.body;
 
-      if (img.some(file => !['image/png', 'image/jpeg'].includes(file.mimetype))) {
-        throw reply.badRequest('Invalid image mimetype! Supported mimetypes: image/png, image/jpeg')
-      }
+				if (img.some((file) => !["image/png", "image/jpeg"].includes(file.mimetype))) {
+					throw reply.badRequest(
+						"Invalid image mimetype! Supported mimetypes: image/png, image/jpeg",
+					);
+				}
 
-      if (img.length > 1 || !img[0]) {
-        throw reply.badRequest('Image must be a single file!')
-      }
+				if (img.length > 1 || !img[0]) {
+					throw reply.badRequest("Image must be a single file!");
+				}
 
-      const { data, error } = await fastify.supabase.storage.from('categories').upload(randomUUID(), img[0].data, {
-        contentType: img[0].mimetype
-      })
+				const { data, error } = await fastify.supabase.storage
+					.from("categories")
+					.upload(randomUUID(), img[0].data, {
+						contentType: img[0].mimetype,
+					});
 
-      if (error) {
-        throw reply.internalServerError(error.message)
-      }
+				if (error) {
+					throw reply.internalServerError(error.message);
+				}
 
-      const { data: url } = fastify.supabase.storage.from('categories').getPublicUrl(data.path)
+				const { data: url } = fastify.supabase.storage.from("categories").getPublicUrl(data.path);
 
-      await fastify.prisma.category.create({ data: { name, img: url.publicUrl } })
+				await fastify.prisma.category.create({ data: { name, img: url.publicUrl } });
 
-      return reply.code(204).send()
-    })
+				return reply.code(204).send();
+			},
+		);
 
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .delete(
-      '/:id',
-      { schema: deleteCategorySchema, preValidation: fastify.auth(['admin']) },
-      async (request, reply) => {
-        const { id } = request.params
-        const category = await fastify.prisma.category.findFirst({
-          where: {
-            id
-          }
-        })
+	fastify
+		.withTypeProvider<TypeBoxTypeProvider>()
+		.delete(
+			"/:id",
+			{ schema: deleteCategorySchema, preValidation: fastify.auth(["admin"]) },
+			async (request, reply) => {
+				const { id } = request.params;
+				const category = await fastify.prisma.category.findFirst({
+					where: {
+						id,
+					},
+				});
 
-        const product = await fastify.prisma.offer.findFirst({
-          where: {
-            categoryId: id
-          }
-        })
+				const product = await fastify.prisma.offer.findFirst({
+					where: {
+						categoryId: id,
+					},
+				});
 
-        if (product) {
-          throw reply.forbidden('This category is used in some products!')
-        }
+				if (product) {
+					throw reply.forbidden("This category is used in some products!");
+				}
 
-        if (!category) {
-          throw reply.notFound('Category not found!')
-        }
+				if (!category) {
+					throw reply.notFound("Category not found!");
+				}
 
-        await fastify.prisma.category.delete({
-          where: {
-            id
-          }
-        })
+				await fastify.prisma.category.delete({
+					where: {
+						id,
+					},
+				});
 
-        return reply.code(200).send()
-      }
-    )
-  fastify
-    .withTypeProvider<TypeBoxTypeProvider>()
-    .put('/:id', { schema: updateCategorySchema, preValidation: fastify.auth(['admin']) }, async (request, reply) => {
-      const { id } = request.params
-      const { img, name } = request.body
+				return reply.code(200).send();
+			},
+		);
+	fastify
+		.withTypeProvider<TypeBoxTypeProvider>()
+		.put(
+			"/:id",
+			{ schema: updateCategorySchema, preValidation: fastify.auth(["admin"]) },
+			async (request, reply) => {
+				const { id } = request.params;
+				const { img, name } = request.body;
 
-      const category = await fastify.prisma.category.findFirst({
-        where: {
-          id
-        }
-      })
+				const category = await fastify.prisma.category.findFirst({
+					where: {
+						id,
+					},
+				});
 
-      if (!category) {
-        throw reply.notFound('Category not found!')
-      }
+				if (!category) {
+					throw reply.notFound("Category not found!");
+				}
 
-      await fastify.prisma.category.update({
-        where: {
-          id
-        },
-        data: {
-          name,
-          img
-        }
-      })
+				await fastify.prisma.category.update({
+					where: {
+						id,
+					},
+					data: {
+						name,
+						img,
+					},
+				});
 
-      return reply.code(204).send()
-    })
-}
+				return reply.code(204).send();
+			},
+		);
+};
 
-export default categoriesPlugin
+export default categoriesPlugin;

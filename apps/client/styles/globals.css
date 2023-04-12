@@ -3,28 +3,27 @@
 @tailwind utilities;
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 * {
-  scroll-behavior: smooth;
-
+	scroll-behavior: smooth;
 }
 
 *::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 2rem;
+	width: 0.5rem;
+	height: 2rem;
 }
 
 *::-webkit-scrollbar-track {
-  border-radius: 100vh;
-  background: #111827;
+	border-radius: 100vh;
+	background: #111827;
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #1f2937;
-  border-radius: 100vh;
-  border: 1px solid #374151;
+	background: #1f2937;
+	border-radius: 100vh;
+	border: 1px solid #374151;
 }
