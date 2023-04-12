@@ -82,6 +82,9 @@ importers:
       slick-carousel:
         specifier: ^1.8.1
         version: 1.8.1(jquery@3.6.4)
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       zod:
         specifier: ^3.20.2
         version: 3.20.2
@@ -173,6 +176,9 @@ importers:
       prisma:
         specifier: ^4.8.0
         version: 4.8.0
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
     devDependencies:
       '@types/bcryptjs':
         specifier: ^2.4.2
@@ -189,6 +195,8 @@ importers:
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@18.7.14)(typescript@5.0.4)
+
+  packages/tsconfig: {}
 
 packages:
 
