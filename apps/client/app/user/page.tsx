@@ -1,6 +1,7 @@
 "use client";
 
 import clsx from "clsx";
+import { Metadata } from "next";
 import Link from "next/link";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -10,6 +11,10 @@ import { Container } from "../../components/ui/Container";
 import { useUser } from "../../hooks/useUser";
 
 import { Lists } from "./tabs/Lists";
+
+// export const metadata: Metadata = {
+// 	title: "User",
+// };
 
 const User = () => {
 	const { user } = useUser();
@@ -27,7 +32,7 @@ const User = () => {
 	return (
 		<div className="grid grid-cols-[1fr,_2fr] gap-4">
 			<div className="relative h-full w-full">
-				<Container className="sticky top-[6rem] left-0 flex flex-col">
+				<Container className="sticky left-0 top-[6rem] flex flex-col">
 					<ul className="flex flex-col">
 						{UserLinksData.map((l) => {
 							return (

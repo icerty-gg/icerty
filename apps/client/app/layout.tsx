@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Roboto } from "@next/font/google";
+import { Metadata } from "next";
 import { Suspense } from "react";
 
 import { Providers } from "../components/Providers";
@@ -17,6 +18,11 @@ const roboto = Roboto({
 	variable: "--font-inter",
 });
 
+export const metadata: Metadata = {
+	description:
+		"E-commerce platforms in Poland. The portal belongs to Icerty Sp. z o. o., owned by three investment funds - Mid Europa Partners. The site was listed in Alex's post at 259",
+};
+
 const RootLayout = ({ children }: { readonly children: ReactNode }) => {
 	return (
 		<html className={`${roboto.variable} font-sans`} lang="en">
@@ -24,9 +30,9 @@ const RootLayout = ({ children }: { readonly children: ReactNode }) => {
 				<Providers>
 					<Navbar />
 					<Suspense fallback={<Loading />}>
-						<main className="my-0 mx-auto w-full max-w-screen-2xl px-8 py-32 max-md:px-4">
+						<main className="mx-auto my-0 w-full max-w-screen-2xl px-8 py-32 max-md:px-4">
 							{children}
-							<div className="pointer-events-none absolute top-28 right-0 h-[50rem] w-[50rem] rounded-full bg-sky-500 opacity-10 blur-[250px]" />
+							<div className="pointer-events-none absolute right-0 top-28 h-[50rem] w-[50rem] rounded-full bg-sky-500 opacity-10 blur-[250px]" />
 						</main>
 					</Suspense>
 					{/* <ToastContainer /> */}
