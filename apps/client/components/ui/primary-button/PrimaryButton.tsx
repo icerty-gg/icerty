@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 import type { ReactNode } from "react";
 
@@ -13,7 +13,7 @@ interface Props {
 export const PrimaryButton = ({ children, className, onClick }: Props) => {
 	return (
 		<button
-			className={clsx(
+			className={twMerge(
 				"group relative flex items-center justify-center gap-2 overflow-hidden rounded-full bg-sky-500 px-6 py-[0.6rem] text-center text-sm text-white",
 				className,
 			)}

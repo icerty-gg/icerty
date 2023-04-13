@@ -1,5 +1,5 @@
-import clsx from "clsx";
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 
 import type { ReactNode } from "react";
 
@@ -13,7 +13,7 @@ interface Props {
 export const PrimaryLink = ({ children, className, href, onClick }: Props) => {
 	return (
 		<Link
-			className={clsx(
+			className={twMerge(
 				"group relative flex items-center justify-center gap-2 overflow-hidden rounded-full bg-sky-500 px-6 py-[0.6rem] text-center text-sm text-white transition-all",
 				className,
 			)}

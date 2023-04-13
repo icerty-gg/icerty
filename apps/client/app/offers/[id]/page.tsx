@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -9,6 +8,7 @@ import {
 	BiData,
 	BiCategoryAlt,
 } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 import { Container } from "../../../components/ui/Container";
 import { FollowButton } from "../../../components/ui/FollowButton";
@@ -52,8 +52,8 @@ interface OfferProps {
 const OfferParams = ({ className, icon, title, type }: OfferProps) => {
 	return (
 		<p
-			className={clsx(
-				"flex items-center gap-4 rounded-lg bg-sky-400/10 py-2 px-4 text-sm text-sky-600",
+			className={twMerge(
+				"flex items-center gap-4 rounded-lg bg-sky-400/10 px-4 py-2 text-sm text-sky-600",
 				className,
 			)}
 		>

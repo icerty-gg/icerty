@@ -1,10 +1,10 @@
 "use client";
 
-import clsx from "clsx";
 import { Metadata } from "next";
 import Link from "next/link";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { twMerge } from "tailwind-merge";
 
 import { UserLinksData } from "../../components/navbar/Navbar";
 import { Container } from "../../components/ui/Container";
@@ -38,7 +38,7 @@ const User = () => {
 							return (
 								<li key={l.title}>
 									<Link
-										className={clsx(
+										className={twMerge(
 											"flex items-center gap-4 rounded-full p-2 text-sm text-white hover:bg-gray-800/40",
 											`${pathname}?tab=${tabSearchParams}` === l.href && "bg-gray-800/40",
 										)}

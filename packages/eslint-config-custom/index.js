@@ -26,6 +26,9 @@ module.exports = {
 			},
 		],
 
+		// Using nextjs appdir
+		"@next/next/no-html-link-for-pages": "off",
+
 		// react rules
 		"react/display-name": "off",
 

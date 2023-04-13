@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { twMerge } from "tailwind-merge";
 
 import { useUser } from "../../hooks/useUser";
 import { api } from "../../utils/fetcher";
@@ -56,8 +56,8 @@ export const FollowButton = ({ className, id }: Props) => {
 	if (isLoading || isSecondLoading)
 		return (
 			<div
-				className={clsx(
-					"top-4 right-4 flex items-center justify-center rounded-[50%] border border-slate-800 bg-sky-400/10 p-[0.65rem] text-sky-600 transition-all hover:border-sky-500 hover:bg-sky-400/20",
+				className={twMerge(
+					"right-4 top-4 flex items-center justify-center rounded-[50%] border border-slate-800 bg-sky-400/10 p-[0.65rem] text-sky-600 transition-all hover:border-sky-500 hover:bg-sky-400/20",
 					className,
 				)}
 			>
@@ -70,7 +70,7 @@ export const FollowButton = ({ className, id }: Props) => {
 	return (
 		<button
 			onClick={() => (isFollowed ? removeFromList() : addToList())}
-			className={clsx(
+			className={twMerge(
 				"flex items-center justify-center rounded-full border border-slate-800 bg-sky-400/10 p-[0.65rem] text-sky-600 transition-all hover:border-sky-500 hover:bg-sky-400/20",
 				isFollowed && "bg-sky-400/20",
 				className,

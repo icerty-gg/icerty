@@ -17,15 +17,14 @@ import {
 } from "react-icons/ci";
 import { twMerge } from "tailwind-merge";
 
-import { useCheckScroll } from "../../hooks/useCheckScroll";
-import { useUser } from "../../hooks/useUser";
-import Logotype from "../../public/logo.svg";
-import { api } from "../../utils/fetcher";
-import { notify } from "../../utils/notifications";
-import { LoadingSpinner } from "../ui/LoadingSpinner";
-import { PrimaryLink } from "../ui/primary-button/PrimaryLink";
-
-import { NavLink } from "./NavLink";
+import { NavLink } from "../../../components/navbar/NavLink";
+import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
+import { PrimaryLink } from "../../../components/ui/primary-button/PrimaryLink";
+import { useCheckScroll } from "../../../hooks/useCheckScroll";
+import { useUser } from "../../../hooks/useUser";
+import Logotype from "../../../public/logo.svg";
+import { api } from "../../../utils/fetcher";
+import { notify } from "../../../utils/notifications";
 
 import type { ReactNode } from "react";
 

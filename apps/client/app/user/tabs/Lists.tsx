@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
+import { twMerge } from "tailwind-merge";
 
 import { EmptyContent } from "../../../components/ui/EmptyContent";
 import { FollowButton } from "../../../components/ui/FollowButton";
@@ -40,7 +40,7 @@ export const Lists = () => {
 						{offers?.offers.map((o) => (
 							<li
 								key={o.id}
-								className={clsx(
+								className={twMerge(
 									"relative flex items-center gap-6 rounded-xl border border-slate-800 bg-gray-800/20 transition-colors hover:bg-sky-800/10",
 								)}
 							>
@@ -67,7 +67,7 @@ export const Lists = () => {
 											</div>
 										</div>
 									</Link>
-									<FollowButton id={o.id} className="absolute top-4 right-4" />
+									<FollowButton id={o.id} className="absolute right-4 top-4" />
 								</div>
 							</li>
 						))}

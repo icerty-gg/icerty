@@ -1,9 +1,9 @@
 "use client";
 
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { CiHashtag, CiLocationOn } from "react-icons/ci";
+import { twMerge } from "tailwind-merge";
 
 import { FollowButton } from "../ui/FollowButton";
 
@@ -23,7 +23,7 @@ export const Offer = ({
 }: Response["offers"][number]) => {
 	return (
 		<li
-			className={clsx(
+			className={twMerge(
 				"relative flex items-center gap-6 rounded-xl border border-slate-800 bg-gray-800/20 transition-colors hover:bg-sky-800/10",
 				isPromoted && "border border-sky-500/40 bg-sky-800/10 hover:bg-sky-800/20",
 			)}
@@ -42,9 +42,9 @@ export const Offer = ({
 						<div className="flex w-full items-center justify-between">
 							<div className="flex flex-col gap-2 text-white">
 								<div className="flex items-center gap-4">
-									<h3 className="line-clamp-none md:line-clamp-2 text-xl">{name}</h3>
+									<h3 className="line-clamp-none text-xl md:line-clamp-2">{name}</h3>
 									{isPromoted && (
-										<p className="z-10 rounded-full border border-sky-500/90 bg-sky-500/60 py-2 px-4 text-center text-sm text-white max-lg:text-xs">
+										<p className="z-10 rounded-full border border-sky-500/90 bg-sky-500/60 px-4 py-2 text-center text-sm text-white max-lg:text-xs">
 											Promoted offer
 										</p>
 									)}
@@ -56,17 +56,17 @@ export const Offer = ({
 						</div>
 
 						<div className="absolute bottom-4 right-4 flex items-center gap-2">
-							<p className="flex items-center gap-2 rounded-full bg-sky-400/10 py-2 px-4 text-sm text-sky-600">
+							<p className="flex items-center gap-2 rounded-full bg-sky-400/10 px-4 py-2 text-sm text-sky-600">
 								<CiHashtag className="text-lg" /> {categoryName}
 							</p>
 
-							<p className="flex items-center gap-2 rounded-full bg-sky-400/10 py-2 px-4 text-sm text-sky-600">
+							<p className="flex items-center gap-2 rounded-full bg-sky-400/10 px-4 py-2 text-sm text-sky-600">
 								<CiLocationOn className="text-lg" /> {city}
 							</p>
 						</div>
 					</div>
 				</Link>
-				<FollowButton id={id} className="absolute top-4 right-4" />
+				<FollowButton id={id} className="absolute right-4 top-4" />
 			</div>
 		</li>
 	);

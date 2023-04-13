@@ -10,10 +10,6 @@ import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { PrimaryButton } from "../ui/primary-button/PrimaryButton";
 import { SecondaryButton } from "../ui/secondary-button/SecondaryButton";
 
-const SmallHeading = ({ children }: { readonly children: string }) => (
-	<h4 className="pb-4 text-lg text-white">{children}</h4>
-);
-
 export const Filter = () => {
 	const { data: categories, isLoading } = useQuery({
 		queryKey: ["categories"],
@@ -30,13 +26,13 @@ export const Filter = () => {
 
 				<div className="grid max-h-[40rem] grid-cols-1 gap-4 overflow-hidden overflow-y-scroll">
 					<Container className="z-20 flex flex-col items-center">
-						<SmallHeading>City</SmallHeading>
+						<h4 className="pb-4 text-lg text-white">City</h4>
 
 						<SearchCityInput />
 					</Container>
 
 					<Container className="flex flex-col items-center">
-						<SmallHeading>Category</SmallHeading>
+						<h4 className="pb-4 text-lg text-white">Category</h4>
 						{isLoading ? (
 							<LoadingSpinner size="w-10 h-10" />
 						) : (
@@ -70,7 +66,7 @@ export const Filter = () => {
 					</Container>
 
 					<Container className="flex flex-col items-center">
-						<SmallHeading>Item condition</SmallHeading>
+						<h4 className="pb-4 text-lg text-white">Item condition</h4>
 						<div className="flex flex-col gap-4">
 							<CheckboxInput>Used</CheckboxInput>
 							<CheckboxInput>New</CheckboxInput>
@@ -78,7 +74,7 @@ export const Filter = () => {
 					</Container>
 
 					<Container className="flex flex-col items-center">
-						<SmallHeading>Price</SmallHeading>
+						<h4 className="pb-4 text-lg text-white">Price</h4>
 
 						<div className="flex items-center gap-2">
 							<div className="relative flex items-center">

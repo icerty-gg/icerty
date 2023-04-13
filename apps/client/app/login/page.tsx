@@ -60,8 +60,6 @@ const Login = () => {
 		login(data);
 	};
 
-	const x = handleSubmit(onSubmit);
-
 	return (
 		<Layout>
 			<div className="m-auto grid w-full max-w-[35rem] grid-cols-1 gap-4">

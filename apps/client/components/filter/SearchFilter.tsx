@@ -1,8 +1,8 @@
 "use client";
 
-import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
+import { twMerge } from "tailwind-merge";
 
 import { PrimaryButton } from "../../components/ui/primary-button/PrimaryButton";
 import { useParams } from "../../hooks/useParams";
@@ -37,7 +37,7 @@ export const SearchFilter = () => {
 					id="searchInput"
 					type="search"
 					placeholder="Search offer..."
-					className={clsx(
+					className={twMerge(
 						"w-full rounded-full border border-slate-800 bg-gray-800/20 p-4 pl-12 text-white hover:border-sky-400/20 focus:border-sky-400/20 focus:outline-none",
 					)}
 					onChange={changeSearchValueHandler}
@@ -48,7 +48,7 @@ export const SearchFilter = () => {
 				</label>
 			</div>
 
-			<PrimaryButton className={clsx(!searchInputValue && "pointer-events-none opacity-50")}>
+			<PrimaryButton className={twMerge(!searchInputValue && "pointer-events-none opacity-50")}>
 				Search
 			</PrimaryButton>
 		</form>

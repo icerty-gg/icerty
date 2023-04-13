@@ -1,8 +1,8 @@
 "use client";
 
-import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { BiLocationPlus } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 import { api } from "../../utils/fetcher";
 
@@ -44,7 +44,7 @@ export const SearchCityInput = ({ className }: Props) => {
 				id="searchCityInput"
 				type="search"
 				placeholder="Everywhere"
-				className={clsx(
+				className={twMerge(
 					"w-full rounded-full border border-slate-800 bg-gray-800/20 p-4 pl-12 text-white hover:border-sky-400/20 focus:border-sky-400/20 focus:outline-none",
 					className,
 				)}
@@ -58,7 +58,7 @@ export const SearchCityInput = ({ className }: Props) => {
 			</label>
 
 			<div
-				className={`absolute top-[100%] left-0 w-full overflow-hidden rounded-xl bg-gray-800 ${
+				className={`absolute left-0 top-[100%] w-full overflow-hidden rounded-xl bg-gray-800 ${
 					isOpenDropdown ? "grid" : "hidden"
 				}`}
 			>
