@@ -9,11 +9,10 @@ import { z } from "zod";
 
 import { CheckboxInput } from "../../components/Form/checkbox-input/CheckboxInput";
 import { Input } from "../../components/Form/input/Input";
+import { Button, ButtonLink } from "../../components/common/Button";
 import { Container } from "../../components/ui/Container";
 import { Heading } from "../../components/ui/Heading";
 import { Layout } from "../../components/ui/Layout";
-import { PrimaryButton } from "../../components/ui/primary-button/PrimaryButton";
-import { SecondaryButton } from "../../components/ui/secondary-button/SecondaryButton";
 import { useUser } from "../../hooks/useUser";
 import { api } from "../../utils/fetcher";
 import { notify } from "../../utils/notifications";
@@ -139,13 +138,15 @@ const Register = () => {
 							</CheckboxInput>
 						</div>
 
-						<PrimaryButton className="col-span-2 text-sm">Register</PrimaryButton>
+						<Button className="col-span-2 text-sm">Register</Button>
 					</form>
 				</Container>
 				<div className="flex flex-col items-center gap-4 rounded-xl border border-slate-800 bg-gray-800/20 p-4">
 					<p className="text-white">Already have an account?</p>
 
-					<SecondaryButton href="/login">Login to your account!</SecondaryButton>
+					<ButtonLink intent="secondary" href="/login">
+						Login to your account!
+					</ButtonLink>
 				</div>
 			</div>
 		</Layout>

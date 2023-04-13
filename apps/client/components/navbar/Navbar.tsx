@@ -22,8 +22,8 @@ import { useUser } from "../../hooks/useUser";
 import Logotype from "../../public/logo.svg";
 import { api } from "../../utils/fetcher";
 import { notify } from "../../utils/notifications";
+import { ButtonLink } from "../common/Button";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
-import { PrimaryLink } from "../ui/primary-button/PrimaryLink";
 
 import { NavLink } from "./NavLink";
 
@@ -223,9 +223,9 @@ export const Navbar = () => {
 							</div>
 						) : (
 							<div className="flex items-center gap-3 text-sm">
-								<PrimaryLink href="/login">
+								<ButtonLink href="/login">
 									<CiLogin className="text-xl" /> <p className="max-lg:hidden">Login</p>
-								</PrimaryLink>
+								</ButtonLink>
 							</div>
 						)
 					) : (

@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { twMerge } from "tailwind-merge";
 
-import { PrimaryButton } from "../../components/ui/primary-button/PrimaryButton";
 import { useParams } from "../../hooks/useParams";
+import { Button } from "../common/Button";
 
 import type { ChangeEvent, FormEvent } from "react";
 
@@ -48,9 +48,9 @@ export const SearchFilter = () => {
 				</label>
 			</div>
 
-			<PrimaryButton className={twMerge(!searchInputValue && "pointer-events-none opacity-50")}>
+			<Button className={twMerge(!searchInputValue && "pointer-events-none opacity-50")}>
 				Search
-			</PrimaryButton>
+			</Button>
 		</form>
 	);
 };

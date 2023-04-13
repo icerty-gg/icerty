@@ -3,9 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";
 
+import { Button, ButtonLink } from "../../../components/common/Button";
 import { Offer } from "../../../components/offers/Offer";
-import { PrimaryButton } from "../../../components/ui/primary-button/PrimaryButton";
-import { SecondaryLink } from "../../../components/ui/secondary-button/SecondaryLink";
 import { api } from "../../../utils/fetcher";
 
 import { LoadingSpinner } from "./../../../components/ui/LoadingSpinner";
@@ -35,15 +34,13 @@ export const SimilarOffers = ({ category }: { readonly category: string }) => {
 				return <Offer key={o.id} {...o} />;
 			})}
 
-			<PrimaryButton
-				onClick={() => {
-					setVisibleOffers((p) => p + 5);
-				}}
-			>
+			<Button onClick={() => setVisibleOffers((p) => p + 5)}>
 				{isLoading ? <LoadingSpinner size="w-[18px] h-[18px]" /> : <p>Show more</p>}
-			</PrimaryButton>
+			</Button>
 
-			<SecondaryLink href="/offers">All offers</SecondaryLink>
+			<ButtonLink intent="secondary" href="/offers">
+				All offers
+			</ButtonLink>
 		</ul>
 	);
 };

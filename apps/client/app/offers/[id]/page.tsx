@@ -10,12 +10,12 @@ import {
 } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 
+import { Button } from "../../../components/common/Button";
 import { Container } from "../../../components/ui/Container";
 import { FollowButton } from "../../../components/ui/FollowButton";
 import { GetBackButton } from "../../../components/ui/GetBackButton";
 import { Heading } from "../../../components/ui/Heading";
 import { Layout } from "../../../components/ui/Layout";
-import { PrimaryButton } from "../../../components/ui/primary-button/PrimaryButton";
 import { Slider } from "../../../components/ui/slider/Slider";
 import { api } from "../../../utils/fetcher";
 
@@ -152,7 +152,7 @@ const OfferDetails = async ({ params }: { readonly params: { readonly id: string
 										</div>
 									</div>
 									<div className="flex items-center gap-4">
-										<PrimaryButton className="w-full">Buy</PrimaryButton>
+										<Button className="w-full">Buy</Button>
 										<FollowButton id={offer.id} />
 									</div>
 								</div>

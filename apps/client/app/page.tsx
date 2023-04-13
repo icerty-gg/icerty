@@ -1,14 +1,12 @@
 import { BiLockAlt, BiSearchAlt2 } from "react-icons/bi";
 
 import { CategoryItem } from "../components/categories/CategoryItem";
+import { Button, ButtonLink } from "../components/common/Button";
 import { Offer } from "../components/offers/Offer";
 import { SearchCityInput } from "../components/searchCityInput/SearchCityInput";
 import { Container } from "../components/ui/Container";
 import { Heading } from "../components/ui/Heading";
 import { Layout } from "../components/ui/Layout";
-import { PrimaryButton } from "../components/ui/primary-button/PrimaryButton";
-import { PrimaryLink } from "../components/ui/primary-button/PrimaryLink";
-import { SecondaryLink } from "../components/ui/secondary-button/SecondaryLink";
 import { UserStats } from "../components/userStats/UserStats";
 import { api } from "../utils/fetcher";
 
@@ -36,9 +34,9 @@ const Home = async () => {
 							</div>
 							<div className="flex items-center gap-4 max-md:flex-col">
 								<SearchCityInput />
-								<PrimaryButton>
+								<Button>
 									<BiSearchAlt2 className="text-2xl" /> Find
-								</PrimaryButton>
+								</Button>
 							</div>
 						</div>
 					</form>
@@ -57,7 +55,9 @@ const Home = async () => {
 					<Container>
 						<div className="flex items-center justify-center gap-4 pb-6">
 							<Heading title="Promoted offers" />
-							<SecondaryLink href="/offers">Check all</SecondaryLink>
+							<ButtonLink intent="secondary" href="/offers">
+								Check all
+							</ButtonLink>
 						</div>
 
 						<ul className="sticky grid max-h-[35rem] min-w-[20rem] grid-cols-1 gap-4 overflow-hidden overflow-y-scroll backdrop-blur">
@@ -73,11 +73,11 @@ const Home = async () => {
 					<div className="relative">
 						<UserStats />
 
-						<div className="absolute top-0 left-0 flex h-full w-full flex-col items-center justify-center gap-6">
+						<div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-6">
 							<p className="flex items-center gap-4 text-center text-xl font-bold text-white">
 								<BiLockAlt className="text-2xl" /> You need to login!
 							</p>
-							<PrimaryLink href="/login">Login</PrimaryLink>
+							<ButtonLink href="/login">Login</ButtonLink>
 						</div>
 					</div>
 				</Container>

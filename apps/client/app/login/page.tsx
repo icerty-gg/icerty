@@ -7,12 +7,11 @@ import { BiLockAlt, BiMailSend } from "react-icons/bi";
 import { z } from "zod";
 
 import { Input } from "../../components/Form/input/Input";
+import { Button, ButtonLink } from "../../components/common/Button";
 import { Container } from "../../components/ui/Container";
 import { Heading } from "../../components/ui/Heading";
 import { Layout } from "../../components/ui/Layout";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
-import { PrimaryButton } from "../../components/ui/primary-button/PrimaryButton";
-import { SecondaryButton } from "../../components/ui/secondary-button/SecondaryButton";
 import { api } from "../../utils/fetcher";
 import { notify } from "../../utils/notifications";
 
@@ -83,15 +82,17 @@ const Login = () => {
 							{...register("password")}
 						/>
 
-						<PrimaryButton className="col-span-2 text-sm">
+						<Button className="col-span-2 text-sm">
 							{isLoading ? <LoadingSpinner size="w-[18px] h-[18px]" /> : "Login"}
-						</PrimaryButton>
+						</Button>
 					</form>
 				</Container>
 				<div className="flex flex-col items-center gap-4 rounded-xl border border-slate-800 bg-gray-800/20 p-4">
 					<p className="text-white">You dont have an account?</p>
 
-					<SecondaryButton href="/register">Create new account!</SecondaryButton>
+					<ButtonLink href="/register" intent="secondary">
+						Create new account!
+					</ButtonLink>
 				</div>
 			</div>
 		</Layout>

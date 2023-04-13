@@ -17,9 +17,9 @@ import {
 } from "react-icons/ci";
 import { twMerge } from "tailwind-merge";
 
+import { ButtonLink } from "../../../components/common/Button";
 import { NavLink } from "../../../components/navbar/NavLink";
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
-import { PrimaryLink } from "../../../components/ui/primary-button/PrimaryLink";
 import { useCheckScroll } from "../../../hooks/useCheckScroll";
 import { useUser } from "../../../hooks/useUser";
 import Logotype from "../../../public/logo.svg";
@@ -222,9 +222,9 @@ export const Navbar = () => {
 							</div>
 						) : (
 							<div className="flex items-center gap-3 text-sm">
-								<PrimaryLink href="/login">
+								<ButtonLink href="/login">
 									<CiLogin className="text-xl" /> <p className="max-lg:hidden">Login</p>
-								</PrimaryLink>
+								</ButtonLink>
 							</div>
 						)
 					) : (

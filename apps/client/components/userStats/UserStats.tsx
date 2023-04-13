@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { PrimaryLink } from "../ui/primary-button/PrimaryLink";
+import { ButtonLink } from "../common/Button";
 
 export const UserStats = () => {
 	const [selectedStatus, setIsSelectedStatus] = useState<"offers" | "Followed">("offers");
@@ -31,7 +31,7 @@ export const UserStats = () => {
 			{selectedStatus === "offers" && (
 				<div className="grid grid-cols-1 gap-4 ">
 					{/* <Offer createdAt={'xd'} id={'awd'} image={undefined} name={'awd'} price={0} /> */}
-					<PrimaryLink href="/offers">Zobacz wszystkie</PrimaryLink>
+					<ButtonLink href="/offers">Zobacz wszystkie</ButtonLink>
 				</div>
 			)}
 
@@ -39,7 +39,7 @@ export const UserStats = () => {
 				<div className="grid grid-cols-1 gap-4 ">
 					{/* <Offer createdAt={'awdd'} id={'2323'} image={undefined} name={'awd'} price={0} /> */}
 					{/* <Offer createdAt={'ddd'} id={'4424'} image={undefined} name={'awdawd'} price={0} /> */}
-					<PrimaryLink href="/followed">Zobacz wszystkie</PrimaryLink>
+					<ButtonLink href="/followed">Zobacz wszystkie</ButtonLink>
 				</div>
 			)}
 		</div>

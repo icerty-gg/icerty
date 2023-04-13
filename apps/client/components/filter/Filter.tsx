@@ -3,12 +3,11 @@ import Image from "next/image";
 
 import { api } from "../../utils/fetcher";
 import { CheckboxInput } from "../Form/checkbox-input/CheckboxInput";
+import { Button } from "../common/Button";
 import { SearchCityInput } from "../searchCityInput/SearchCityInput";
 import { Container } from "../ui/Container";
 import { Heading } from "../ui/Heading";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
-import { PrimaryButton } from "../ui/primary-button/PrimaryButton";
-import { SecondaryButton } from "../ui/secondary-button/SecondaryButton";
 
 export const Filter = () => {
 	const { data: categories, isLoading } = useQuery({
@@ -21,7 +20,7 @@ export const Filter = () => {
 			<Container className="sticky top-[6rem] max-lg:col-span-2">
 				<div className="flex items-center justify-center gap-4 pb-6">
 					<Heading title="Filters" />
-					<SecondaryButton>Clear</SecondaryButton>
+					<Button intent="secondary">Clear</Button>
 				</div>
 
 				<div className="grid max-h-[40rem] grid-cols-1 gap-4 overflow-hidden overflow-y-scroll">
@@ -96,7 +95,7 @@ export const Filter = () => {
 						</div>
 					</Container>
 
-					<PrimaryButton className="fixed bottom-0 left-0 w-full">Apply filters</PrimaryButton>
+					<Button className="fixed bottom-0 left-0 w-full">Apply filters</Button>
 				</div>
 			</Container>
 		</div>
