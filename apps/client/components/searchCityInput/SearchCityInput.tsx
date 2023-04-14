@@ -9,11 +9,11 @@ import { api } from "../../utils/fetcher";
 import type { ChangeEvent } from "react";
 
 interface Props {
-	readonly className?: string;
+	className?: string;
 }
 
 export const SearchCityInput = ({ className }: Props) => {
-	const [cities, setCities] = useState<readonly string[]>([]);
+	const [cities, setCities] = useState<string[]>([]);
 	const [singleCity, setSingleCity] = useState("");
 	const [isOpenDropdown, setIsOpenDropdown] = useState(!!singleCity);
 

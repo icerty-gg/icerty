@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
 
 interface Props {
-	readonly className?: string;
-	readonly title: string;
+	className?: string;
+	title: string;
 }
 
 // zmienić title na children !!!

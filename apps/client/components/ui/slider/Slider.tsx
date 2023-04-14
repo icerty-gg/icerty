@@ -8,12 +8,12 @@ import { Container } from "../Container";
 import { Heading } from "../Heading";
 
 interface Images {
-	readonly id: string;
-	readonly img: string;
+	id: string;
+	img: string;
 }
 
 interface Props {
-	readonly images: readonly Images[];
+	images: Images[];
 }
 
 export const Slider = ({ images }: Props) => {

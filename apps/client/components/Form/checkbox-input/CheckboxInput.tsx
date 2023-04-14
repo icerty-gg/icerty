@@ -5,8 +5,8 @@ import { ErrorMessage } from "../error-message/ErrorMessage";
 import type { ReactNode, InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-	readonly children?: ReactNode;
-	readonly errorMessage?: string;
+	children?: ReactNode;
+	errorMessage?: string;
 }
 
 export const CheckboxInput = forwardRef<HTMLInputElement, Props>(

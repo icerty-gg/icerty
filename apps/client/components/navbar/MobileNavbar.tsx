@@ -1,8 +1,8 @@
 import { BiX } from "react-icons/bi";
 
 interface Props {
-	readonly isOpened: boolean;
-	readonly onOpenNav: () => void;
+	isOpened: boolean;
+	onOpenNav: () => void;
 }
 
 export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
@@ -10,7 +10,7 @@ export const MobileNavbar = ({ isOpened, onOpenNav }: Props) => {
 		<div
 			className={`${
 				isOpened ? "translate-x-[0]" : "translate-x-[100%]"
-			} fixed top-0 right-0 z-[22929] h-full w-96 border-l border-slate-300/10 bg-gray-900 backdrop-blur-md transition-transform`}
+			} fixed right-0 top-0 z-[22929] h-full w-96 border-l border-slate-300/10 bg-gray-900 backdrop-blur-md transition-transform`}
 		>
 			<div className="p-6">
 				<button

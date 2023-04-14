@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 		"E-commerce platforms in Poland. The portal belongs to Icerty Sp. z o. o., owned by three investment funds - Mid Europa Partners. The site was listed in Alex's post at 259",
 };
 
-const RootLayout = ({ children }: { readonly children: ReactNode }) => {
+const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html className={`${roboto.variable} font-sans`} lang="en">
 			<body className="relative bg-gray-900">

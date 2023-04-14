@@ -23,7 +23,7 @@ const customRetry: QueryOptions["retry"] = (failureCount, error) => {
 	return false;
 };
 
-export const Providers = ({ children }: { readonly children: ReactNode }) => {
+export const Providers = ({ children }: { children: ReactNode }) => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {

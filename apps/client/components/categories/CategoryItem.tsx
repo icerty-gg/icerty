@@ -2,8 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
-	readonly img: string;
-	readonly name: string;
+	img: string;
+	name: string;
 }
 
 export const CategoryItem = ({ img, name }: Props) => {

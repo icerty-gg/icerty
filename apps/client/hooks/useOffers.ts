@@ -5,15 +5,15 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../utils/fetcher";
 
 interface OffersParams {
-	readonly category?: string;
-	readonly city?: string;
-	readonly followed?: boolean;
-	readonly order_by: "createdAt" | "price" | undefined;
-	readonly order_direction: "asc" | "desc" | undefined;
-	readonly page: number;
-	readonly promoted?: boolean;
-	readonly take: number;
-	readonly title?: string;
+	category?: string;
+	city?: string;
+	followed?: boolean;
+	order_by: "createdAt" | "price" | undefined;
+	order_direction: "asc" | "desc" | undefined;
+	page: number;
+	promoted?: boolean;
+	take: number;
+	title?: string;
 }
 
 export const useOffers = ({

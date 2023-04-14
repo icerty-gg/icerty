@@ -10,9 +10,9 @@ import { ErrorMessage } from "../error-message/ErrorMessage";
 import type { InputHTMLAttributes } from "react";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
-	readonly className?: string;
-	readonly errorMessage?: string;
-	readonly icon: JSX.Element;
+	className?: string;
+	errorMessage?: string;
+	icon: JSX.Element;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(

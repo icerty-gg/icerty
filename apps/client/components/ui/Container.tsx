@@ -1,8 +1,8 @@
 import { twMerge } from "tailwind-merge";
 
 interface Props {
-	readonly children: React.ReactNode;
-	readonly className?: string;
+	children: React.ReactNode;
+	className?: string;
 }
 
 export const Container = ({ children, className }: Props) => {

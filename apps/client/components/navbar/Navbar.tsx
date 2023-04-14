@@ -30,10 +30,10 @@ import { NavLink } from "./NavLink";
 import type { ReactNode } from "react";
 
 interface NavbarLinkProps {
-	readonly href: string;
-	readonly icon: ReactNode;
-	readonly isSmallerNavbar: boolean;
-	readonly title: string;
+	href: string;
+	icon: ReactNode;
+	isSmallerNavbar: boolean;
+	title: string;
 }
 
 const NavbarLinksData = [

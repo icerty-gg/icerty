@@ -11,8 +11,8 @@ import { notify } from "../../utils/notifications";
 import { LoadingSpinner } from "./LoadingSpinner";
 
 interface Props {
-	readonly className?: string;
-	readonly id: string;
+	className?: string;
+	id: string;
 }
 
 export const FollowButton = ({ className, id }: Props) => {

@@ -9,7 +9,7 @@ import { api } from "../../../utils/fetcher";
 
 import { LoadingSpinner } from "./../../../components/ui/LoadingSpinner";
 
-export const SimilarOffers = ({ category }: { readonly category: string }) => {
+export const SimilarOffers = ({ category }: { category: string }) => {
 	const [visibleOffers, setVisibleOffers] = useState(5);
 
 	console.log(visibleOffers);

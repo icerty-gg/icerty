@@ -9,8 +9,8 @@ import { useCheckScroll } from "../../hooks/useCheckScroll";
 import type { ReactNode } from "react";
 
 interface Props {
-	readonly children: ReactNode;
-	readonly href: string;
+	children: ReactNode;
+	href: string;
 }
 
 export const NavLink = ({ children, href }: Props) => {

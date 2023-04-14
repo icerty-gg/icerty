@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-export const LoadingSpinner = ({ size }: { readonly size: string }) => {
+export const LoadingSpinner = ({ size }: { size: string }) => {
 	return (
 		<svg
 			aria-hidden="true"

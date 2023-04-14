@@ -43,10 +43,10 @@ const parseDate = (date: string) => {
 };
 
 interface OfferProps {
-	readonly className?: string;
-	readonly icon: ReactNode;
-	readonly title: string;
-	readonly type: string;
+	className?: string;
+	icon: ReactNode;
+	title: string;
+	type: string;
 }
 
 const OfferParams = ({ className, icon, title, type }: OfferProps) => {
@@ -66,7 +66,7 @@ const OfferParams = ({ className, icon, title, type }: OfferProps) => {
 	);
 };
 
-const OfferDetails = async ({ params }: { readonly params: { readonly id: string } }) => {
+const OfferDetails = async ({ params }: { params: { id: string } }) => {
 	const offer = await api.get("/api/offers/:id", { params });
 
 	// const { offers } = await api.get('/offers/')

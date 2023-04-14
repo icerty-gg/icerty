@@ -8,7 +8,7 @@ const variants = {
 	exit: { opacity: 0, x: 0, y: -200 },
 };
 
-export const Layout = ({ children }: { readonly children: React.ReactNode }) => {
+export const Layout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<motion.div
 			variants={variants}
