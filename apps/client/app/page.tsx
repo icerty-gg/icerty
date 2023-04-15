@@ -1,6 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
 import { BiLockAlt, BiSearchAlt2 } from "react-icons/bi";
 
-import { CategoryItem } from "../components/categories/CategoryItem";
 import { Button, ButtonLink } from "../components/common/Button";
 import { Offer } from "../components/offers/Offer";
 import { SearchCityInput } from "../components/searchCityInput/SearchCityInput";
@@ -47,7 +48,27 @@ const Home = async () => {
 						<Heading title="Categories" className="pb-6" />
 						<ul className="sticky grid max-h-[35rem] grid-cols-2 gap-4 overflow-hidden overflow-y-scroll backdrop-blur max-lg:grid-cols-2 max-md:grid-cols-1">
 							{categories.map((c) => (
-								<CategoryItem key={c.id} {...c} />
+								<li
+									key={c.id}
+									className="rounded-xl border border-slate-800 bg-gray-800/20 hover:bg-sky-800/10"
+								>
+									<Link
+										className={`flex flex-col items-center gap-6 p-4`}
+										href={`/offers?category=${c.name.toLowerCase()}`}
+									>
+										<div className="flex items-center justify-center rounded-full bg-sky-400/10">
+											<Image
+												className="pointer-events-none rounded-md"
+												width={100}
+												height={100}
+												src={c.img}
+												alt={c.name}
+											/>
+										</div>
+
+										<h3 className="text-center text-white">{c.name}</h3>
+									</Link>
+								</li>
 							))}
 						</ul>
 					</Container>
