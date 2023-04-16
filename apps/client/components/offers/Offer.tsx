@@ -7,7 +7,7 @@ import { twMerge } from "tailwind-merge";
 
 import { FollowButton } from "../ui/FollowButton";
 
-import type { Api } from "../../utils/fetcher";
+import type { Api } from "../../utils/api";
 import type { ZodiosResponseByPath } from "@zodios/core";
 
 type Response = ZodiosResponseByPath<Api, "get", "/api/offers/">;
@@ -42,7 +42,7 @@ export const Offer = ({
 						<div className="flex w-full items-center justify-between">
 							<div className="flex flex-col gap-2 text-white">
 								<div className="flex items-center gap-4">
-									<h3 className="line-clamp-none md:line-clamp-2 text-xl">{name}</h3>
+									<h3 className="line-clamp-none text-xl md:line-clamp-2">{name}</h3>
 									{isPromoted && (
 										<p className="z-10 rounded-full border border-sky-500/90 bg-sky-500/60 px-4 py-2 text-center text-sm text-white max-lg:text-xs">
 											Promoted offer

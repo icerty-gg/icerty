@@ -17,7 +17,7 @@ import { GetBackButton } from "../../../components/ui/GetBackButton";
 import { Heading } from "../../../components/ui/Heading";
 import { Layout } from "../../../components/ui/Layout";
 import { Slider } from "../../../components/ui/slider/Slider";
-import { api } from "../../../utils/fetcher";
+import { api } from "../../../utils/api";
 
 import { SimilarOffers } from "./SimilarOffers";
 

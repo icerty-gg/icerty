@@ -20,7 +20,7 @@ import { twMerge } from "tailwind-merge";
 import { useCheckScroll } from "../../hooks/useCheckScroll";
 import { useUser } from "../../hooks/useUser";
 import Logotype from "../../public/logo.svg";
-import { api } from "../../utils/fetcher";
+import { api } from "../../utils/api";
 import { notify } from "../../utils/notifications";
 import { ButtonLink } from "../common/Button";
 import { LoadingSpinner } from "../ui/LoadingSpinner";

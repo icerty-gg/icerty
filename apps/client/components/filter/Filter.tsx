@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 
-import { api } from "../../utils/fetcher";
+import { api } from "../../utils/api";
 import { CheckboxInput } from "../Form/checkbox-input/CheckboxInput";
 import { Button } from "../common/Button";
 import { SearchCityInput } from "../searchCityInput/SearchCityInput";

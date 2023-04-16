@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 import { Button, ButtonLink } from "../../../components/common/Button";
 import { Offer } from "../../../components/offers/Offer";
-import { api } from "../../../utils/fetcher";
+import { api } from "../../../utils/api";
 
 import { LoadingSpinner } from "./../../../components/ui/LoadingSpinner";
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { BiLocationPlus } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 
-import { api } from "../../utils/fetcher";
+import { api } from "../../utils/api";
 
 import type { ChangeEvent } from "react";
 

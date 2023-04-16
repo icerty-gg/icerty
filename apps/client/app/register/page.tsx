@@ -14,7 +14,7 @@ import { Container } from "../../components/ui/Container";
 import { Heading } from "../../components/ui/Heading";
 import { Layout } from "../../components/ui/Layout";
 import { useUser } from "../../hooks/useUser";
-import { api } from "../../utils/fetcher";
+import { api } from "../../utils/api";
 import { notify } from "../../utils/notifications";
 
 import type { SubmitHandler } from "react-hook-form";

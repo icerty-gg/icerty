@@ -9,7 +9,7 @@ import { Container } from "../components/ui/Container";
 import { Heading } from "../components/ui/Heading";
 import { Layout } from "../components/ui/Layout";
 import { UserStats } from "../components/userStats/UserStats";
-import { api } from "../utils/fetcher";
+import { api } from "../utils/api";
 
 const Home = async () => {
 	const { categories } = await api.get("/api/categories/");

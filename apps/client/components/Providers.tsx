@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { isAxiosError } from "axios";
+import { ToastContainer } from "react-toastify";
 
 import type { QueryOptions } from "@tanstack/react-query";
 import type { ReactNode } from "react";
@@ -38,6 +39,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
 		<QueryClientProvider client={queryClient}>
 			{children}
 			<ReactQueryDevtools initialIsOpen={false} />
+			<ToastContainer />
 		</QueryClientProvider>
 	);
 };

@@ -9,7 +9,7 @@ import { EmptyContent } from "../../../components/ui/EmptyContent";
 import { FollowButton } from "../../../components/ui/FollowButton";
 import { Heading } from "../../../components/ui/Heading";
 import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
-import { api } from "../../../utils/fetcher";
+import { api } from "../../../utils/api";
 
 export const Lists = () => {
 	const { data: offers, isLoading } = useQuery({
@@ -58,7 +58,7 @@ export const Lists = () => {
 											<div className="flex w-full items-center justify-between">
 												<div className="flex flex-col gap-2 text-white">
 													<div className="flex items-center gap-4">
-														<h3 className="line-clamp-none md:line-clamp-2 text-xl">{o.name}</h3>
+														<h3 className="line-clamp-none text-xl md:line-clamp-2">{o.name}</h3>
 													</div>
 													<p className="text-2xl font-bold text-white">
 														{o.price} <span className="text-sm">USD</span>

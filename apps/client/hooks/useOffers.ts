@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { api } from "../utils/fetcher";
+import { api } from "../utils/api";
 
 interface OffersParams {
 	category?: string;
