@@ -7,7 +7,8 @@
 		"dev": "prisma generate && prisma db seed && nodemon index.ts",
 		"start": "node dist/index.js",
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix --quiet"
+		"lint:fix": "eslint . --fix --quiet",
+		"test": "jest"
 	},
 	"prisma": {
 		"seed": "node --loader ts-node/esm prisma/seed.ts"

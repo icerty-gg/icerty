@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import { comparePasswords, hashPassword } from "../../utils/password.js";
 
 import {
 	createUserSchema,
@@ -23,7 +23,7 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				throw reply.conflict("This email is already taken!");
 			}
 
-			const hashedPassword = await bcrypt.hash(password, 10);
+			const hashedPassword = await hashPassword(password);
 
 			const user = await fastify.prisma.user.create({
 				data: { name, surname, email: email.toLowerCase(), password: hashedPassword },
@@ -73,11 +73,11 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				const { newPassword, oldPassword } = request.body;
 				const { user } = request.session;
 
-				if (!(await bcrypt.compare(oldPassword, user.password))) {
+				if (!(await comparePasswords(oldPassword, user.password))) {
 					throw reply.conflict("Invalid old password provided!");
 				}
 
-				const hashedPassword = await bcrypt.hash(newPassword, 10);
+				const hashedPassword = await hashPassword(newPassword);
 
 				await fastify.prisma.user.update({
 					where: { id: user.id },

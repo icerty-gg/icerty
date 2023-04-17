@@ -8,6 +8,7 @@
 		"start": "next start",
 		"lint": "next lint --dir .",
 		"lint:fix": "next lint --dir . --fix",
+		"test": "ts-jest",
 		"generateApiSchema": "openapi-zod-client http://localhost:3001/docs/json --output utils/apiSchemas.ts"
 	},
 	"dependencies": {

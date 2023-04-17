@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import { comparePasswords } from "../../utils/password.js";
 
 import { getSessionSchema, loginSchema, logoutSchema } from "./sessions.schemas.js";
 
@@ -21,7 +21,7 @@ const sessionsPlugin: FastifyPluginAsync = async (fastify) => {
 				},
 			});
 
-			if (!user || !(await bcrypt.compare(password, user.password))) {
+			if (!user || !(await comparePasswords(password, user.password))) {
 				throw reply.notFound("Invalid email or password!");
 			}
 
