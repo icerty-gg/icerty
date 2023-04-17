@@ -18,6 +18,12 @@
 			"ts": "node --loader ts-node/esm"
 		}
 	},
+	"jest": {
+		"preset": "ts-jest",
+		"testMatch": [
+			"./**/*.test.ts"
+		]
+	},
 	"dependencies": {
 		"@fastify/cookie": "^8.3.0",
 		"@fastify/cors": "^8.2.1",
