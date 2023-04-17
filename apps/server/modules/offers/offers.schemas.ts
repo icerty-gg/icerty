@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "@fastify/type-provider-typebox";
 
 import { BufferType, StringEnum } from "../../utils/schema.js";
 import { CategorySchema } from "../categories/categories.schemas.js";

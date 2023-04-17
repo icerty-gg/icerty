@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "@fastify/type-provider-typebox";
 import Fastify from "fastify";
 
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";

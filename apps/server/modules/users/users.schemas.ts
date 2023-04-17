@@ -1,8 +1,7 @@
-import { Type } from "@sinclair/typebox";
+import { Type, Static } from "@fastify/type-provider-typebox";
 
 import { StringEnum } from "../../utils/schema.js";
 
-import type { Static } from "@sinclair/typebox";
 import type { FastifySchema } from "fastify";
 
 export const PasswordSchema = Type.String({ minLength: 8, maxLength: 20 });

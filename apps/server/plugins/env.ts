@@ -1,11 +1,11 @@
 import fastifyEnv from "@fastify/env";
-import { Type } from "@sinclair/typebox";
+import { Type } from "@fastify/type-provider-typebox";
 import fp from "fastify-plugin";
 
-import type { Static } from "@sinclair/typebox";
+import type { Static } from "@fastify/type-provider-typebox";
 import type { FastifyPluginAsync } from "fastify";
 
-const schema = Type.Object({
+const EnvSchema = Type.Object({
 	PORT: Type.Number(),
 	COOKIE_SECRET: Type.String(),
 	NODE_ENV: Type.Union([Type.Literal("development"), Type.Literal("production")]),
@@ -15,13 +15,13 @@ const schema = Type.Object({
 
 declare module "fastify" {
 	interface FastifyInstance {
-		config: Static<typeof schema>;
+		config: Static<typeof EnvSchema>;
 	}
 }
 
 const envPlugin: FastifyPluginAsync = async (fastify) => {
 	await fastify.register(fastifyEnv, {
-		schema,
+		schema: EnvSchema,
 		dotenv: true,
 	});
 };
