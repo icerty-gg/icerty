@@ -8,7 +8,7 @@
 		"start": "node dist/index.js",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix --quiet",
-		"test": "jest"
+		"test": "dotenv -e .env.test -- jest -i"
 	},
 	"prisma": {
 		"seed": "node --loader ts-node/esm prisma/seed.ts"
@@ -37,7 +37,6 @@
 		"@prisma/client": "^4.12.0",
 		"@supabase/supabase-js": "^2.20.0",
 		"bcryptjs": "^2.4.3",
-		"dotenv": "^16.0.3",
 		"fastify": "^4.15.0",
 		"fastify-plugin": "^4.5.0",
 		"ms": "^2.1.3"
@@ -46,6 +45,7 @@
 		"@types/bcryptjs": "^2.4.2",
 		"@types/ms": "^0.7.31",
 		"@types/node": "^18.7.14",
+		"dotenv-cli": "^7.2.1",
 		"eslint-config-custom": "workspace:*",
 		"nodemon": "^2.0.22",
 		"prisma": "^4.12.0",

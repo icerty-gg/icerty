@@ -8,7 +8,11 @@ import type { FastifyPluginAsync } from "fastify";
 const EnvSchema = Type.Object({
 	PORT: Type.Number(),
 	COOKIE_SECRET: Type.String(),
-	NODE_ENV: Type.Union([Type.Literal("development"), Type.Literal("production")]),
+	NODE_ENV: Type.Union([
+		Type.Literal("development"),
+		Type.Literal("production"),
+		Type.Literal("test"),
+	]),
 	SUPABASE_API_SECRET: Type.String(),
 	SUPABASE_URL: Type.String(),
 });
