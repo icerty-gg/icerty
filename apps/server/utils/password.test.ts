@@ -1,3 +1,5 @@
+import { describe, expect, it } from "vitest";
+
 import { comparePasswords, hashPassword } from "./password";
 
 describe("Tests password utils", () => {

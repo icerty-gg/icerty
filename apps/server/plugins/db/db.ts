@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/index.js";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import FP from "fastify-plugin";
 
 import { PrismaErrorCode } from "./prismaErrors.js";
