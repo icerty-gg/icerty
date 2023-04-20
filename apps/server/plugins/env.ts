@@ -26,7 +26,9 @@ declare module "fastify" {
 const envPlugin: FastifyPluginAsync = async (fastify) => {
 	await fastify.register(fastifyEnv, {
 		schema: EnvSchema,
-		dotenv: true,
+		dotenv: {
+			path: process.env.NODE_ENV === "test" ? ".env.test" : ".env",
+		},
 	});
 };
 
