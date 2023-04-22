@@ -10,7 +10,7 @@
 		"lint:fix": "eslint . --fix --quiet",
 		"docker:up": "docker compose up --wait",
 		"docker:down": "docker compose down",
-		"test": "pnpm docker:up && dotenv -e .env.test -- prisma migrate dev && vitest run && pnpm docker:down",
+		"test": "pnpm docker:up && dotenv -e .env.test -- prisma migrate deploy && vitest run && pnpm docker:down",
 		"test:ui": "vitest --ui",
 		"test:run": "vitest run"
 	},
