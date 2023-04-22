@@ -3,7 +3,6 @@ import { describe, expect, it, beforeAll, afterAll } from "vitest";
 
 import fastify from "../../app";
 
-
 beforeAll(async () => {
 	await fastify.ready();
 	await fastify.prisma.category.createMany({

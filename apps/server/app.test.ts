@@ -1,9 +1,11 @@
 import supertest from "supertest";
-import { afterAll, expect, it } from "vitest";
+import { afterAll, beforeAll, expect, it } from "vitest";
 
 import fastify from "./app";
 
-await fastify.ready();
+beforeAll(async () => {
+	await fastify.ready();
+});
 
 it("Tests if server is running correctly", async () => {
 	await supertest(fastify.server)
