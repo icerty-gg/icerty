@@ -24,7 +24,7 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				throw reply.conflict("This email is already taken!");
 			}
 
-			const user = await createUser(fastify, {
+			const user = await createUser({
 				email: email.toLocaleLowerCase(),
 				name,
 				password,

@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { describe, expect, it, beforeAll, afterAll, beforeEach } from "vitest";
+import { describe, expect, it, beforeAll, afterAll, afterEach } from "vitest";
 
 import fastify from "../../app";
 
@@ -16,13 +16,13 @@ beforeAll(async () => {
 	await fastify.ready();
 });
 
-beforeEach(async () => {
+afterEach(async () => {
 	await fastify.prisma.user.deleteMany();
 });
 
 describe("Tests users utils", () => {
 	it("Creates an user", async () => {
-		const user = await createUser(fastify, DEMO_USER);
+		const user = await createUser(DEMO_USER);
 
 		expect(user.name).toBe(DEMO_USER.name);
 		expect(user.surname).toBe(DEMO_USER.surname);
