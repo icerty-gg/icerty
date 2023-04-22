@@ -35,14 +35,7 @@ module.exports = {
 		// Fastify async plugins
 		"@typescript-eslint/require-await": "off",
 
-		// This fixes React hook form handleSubmit(onSubmit)
-		"@typescript-eslint/no-misused-promises": [
-			2,
-			{
-				checksVoidReturn: {
-					attributes: false,
-				},
-			},
-		],
+		// Doesn't work well with React hook form handleSubmit(onSubmit) and fastify
+		"@typescript-eslint/no-misused-promises": "off",
 	},
 };

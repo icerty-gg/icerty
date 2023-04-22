@@ -1,6 +1,5 @@
 "use client";
 
-import { Metadata } from "next";
 import Link from "next/link";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -21,7 +20,7 @@ const User = () => {
 	const pathname = usePathname();
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const tabSearchParams = searchParams.get("tab");
+	const tabSearchParams = searchParams.get("tab") || "";
 
 	useEffect(() => {
 		if (!tabSearchParams) router.push("/user?tab=account");
