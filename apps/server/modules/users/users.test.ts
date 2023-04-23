@@ -3,6 +3,7 @@ import { describe, expect, it, beforeAll, afterAll, afterEach } from "vitest";
 
 import fastify from "../../app";
 
+import { User } from "./users.schemas";
 import { createUser } from "./users.utils";
 
 export const DEMO_USER = {
@@ -43,15 +44,7 @@ describe("Tests users routes routes", () => {
 			.expect(201)
 			.expect("Content-Type", "application/json; charset=utf-8")
 			.then((res) => {
-				const body = res.body as {
-					name: string;
-					password: string;
-					email: string;
-					surname: string;
-					createdAt: string;
-					img: string;
-					id: string;
-				};
+				const body = res.body as User;
 
 				expect(body.name).toBe(DEMO_USER.name);
 				expect(body.surname).toBe(DEMO_USER.surname);
