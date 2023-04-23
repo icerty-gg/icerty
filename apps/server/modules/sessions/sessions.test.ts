@@ -28,9 +28,9 @@ export const logInAndReturnCookie = async ({
 	return cookie as string[];
 };
 
-describe("Tests sessions routes routes", () => {
-	describe("Tests login route", () => {
-		it("POST /sessions/login and failes because there is no such a user created", async () => {
+describe("Tests sessions routes", () => {
+	describe("POST /sessions/login", () => {
+		it("Fails because there is no such a user", async () => {
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
 				.send({ email: DEMO_USER.email, password: DEMO_USER.password })
@@ -38,7 +38,7 @@ describe("Tests sessions routes routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("POST /sessions/login and failes because there is wrong password provided", async () => {
+		it("Fails because there is wrong password provided", async () => {
 			const user = await createUser(DEMO_USER);
 
 			await supertest(fastify.server)
@@ -48,7 +48,7 @@ describe("Tests sessions routes routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("POST /sessions/login and failes because there is wrong email provided", async () => {
+		it("Fails because email is wrong", async () => {
 			await createUser(DEMO_USER);
 
 			await supertest(fastify.server)
@@ -58,7 +58,7 @@ describe("Tests sessions routes routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("POST /sessions/login logs in successfully then logs in again and errors because you're already logged in", async () => {
+		it("Logs in successfully then logs in again and errors because you're already logged in", async () => {
 			const user = await createUser(DEMO_USER);
 
 			const cookie = await logInAndReturnCookie({
@@ -74,7 +74,7 @@ describe("Tests sessions routes routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("POST /sessions/login successfully logs in and sets cookie", async () => {
+		it("Successfully logs in and sets cookie", async () => {
 			const user = await createUser(DEMO_USER);
 
 			await supertest(fastify.server)
@@ -91,15 +91,15 @@ describe("Tests sessions routes routes", () => {
 		});
 	});
 
-	describe("Tests logout route", () => {
-		it("POST /sessions/logout and get an error because you are not logged in", async () => {
+	describe("POST /sessions/logout", () => {
+		it("Errors because you are not logged in", async () => {
 			await supertest(fastify.server)
 				.post("/api/sessions/logout")
 				.expect(401)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("POST /sessions/logout and logs out", async () => {
+		it("Logs out successfully", async () => {
 			const user = await createUser(DEMO_USER);
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
@@ -118,15 +118,15 @@ describe("Tests sessions routes routes", () => {
 		});
 	});
 
-	describe("Tests get me route", () => {
-		it("GET /sessions/me and throws because you are not logged in", async () => {
+	describe("GET /sessions/me", () => {
+		it("Throws because you are not logged in", async () => {
 			await supertest(fastify.server)
 				.get("/api/sessions/me")
 				.expect(401)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("GET /sessions/me and returns current user", async () => {
+		it("Returns current user", async () => {
 			const user = await createUser(DEMO_USER);
 			const cookie = await logInAndReturnCookie({
 				email: user.email,

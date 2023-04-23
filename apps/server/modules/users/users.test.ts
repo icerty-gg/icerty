@@ -37,7 +37,7 @@ describe("Tests users utils", () => {
 	});
 });
 
-describe("Tests users routes routes", () => {
+describe("Tests users routes", () => {
 	describe("POST /users/register ", () => {
 		it("Fails because email is taken", async () => {
 			await supertest(fastify.server).post("/api/users/register").send(DEMO_USER);
