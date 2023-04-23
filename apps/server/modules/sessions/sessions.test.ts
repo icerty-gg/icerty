@@ -110,6 +110,11 @@ describe("Tests sessions routes routes", () => {
 				.post("/api/sessions/logout")
 				.expect(204)
 				.set("Cookie", cookie);
+
+			await supertest(fastify.server)
+				.get("/api/sessions/me")
+				.expect(401)
+				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 	});
 
