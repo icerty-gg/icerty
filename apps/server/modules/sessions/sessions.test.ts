@@ -1,17 +1,9 @@
 import supertest from "supertest";
-import { describe, expect, it, beforeAll, afterAll, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
 import { DEMO_USER } from "../users/users.test";
 import { createUser } from "../users/users.utils";
-
-beforeAll(async () => {
-	await fastify.ready();
-});
-
-afterEach(async () => {
-	await fastify.prisma.user.deleteMany();
-});
 
 export const logInAndReturnCookie = async ({
 	email,
@@ -144,8 +136,4 @@ describe("Tests sessions routes", () => {
 				});
 		});
 	});
-});
-
-afterAll(async () => {
-	await fastify.close();
 });

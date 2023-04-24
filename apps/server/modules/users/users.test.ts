@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { describe, expect, it, beforeAll, afterAll, afterEach } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
 import { logInAndReturnCookie } from "../sessions/sessions.test";
@@ -13,14 +13,6 @@ export const DEMO_USER = {
 	surname: "Kowalski",
 	password: "passwordpassword",
 };
-
-beforeAll(async () => {
-	await fastify.ready();
-});
-
-afterEach(async () => {
-	await fastify.prisma.user.deleteMany();
-});
 
 describe("Tests users utils", () => {
 	it("Creates an user", async () => {
@@ -208,8 +200,4 @@ describe("Tests users routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 	});
-});
-
-afterAll(async () => {
-	await fastify.close();
 });
