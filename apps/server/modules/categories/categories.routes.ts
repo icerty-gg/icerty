@@ -74,14 +74,14 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 					},
 				});
 
-				const product = await fastify.prisma.offer.findFirst({
+				const offer = await fastify.prisma.offer.findFirst({
 					where: {
 						categoryId: id,
 					},
 				});
 
-				if (product) {
-					throw reply.forbidden("This category is used in some products!");
+				if (offer) {
+					throw reply.forbidden("This category is used in some offers!");
 				}
 
 				if (!category) {

@@ -1,20 +1,32 @@
-// import supertest from "supertest";
-// import { describe, expect, it } from "vitest";
+import supertest from "supertest";
+import { describe, expect, it } from "vitest";
 
-// import fastify from "../../app";
+import fastify from "../../app";
 
-// describe("Tests categories routes", () => {
-// 	it("GET /categories", async () => {
-// 		await supertest(fastify.server)
-// 			.get("/api/categories")
-// 			.expect(200)
-// 			.expect("Content-Type", "application/json; charset=utf-8")
-// 			.then((res) => {
-// 				const body = res.body as { categories: { name: string; img: string }[] };
+describe("Tests categories routes", () => {
+	describe("GET /categories", () => {
+		it("Returns empty array of categories", async () => {
+			await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8")
+				.then((res) => {
+					expect(res.body).toEqual({
+						categories: [],
+					});
+				});
+		});
 
-// 				expect(body.categories.length).toEqual(3);
-// 				expect(body.categories[0]?.name).toEqual("Football");
-// 				expect(body.categories[0]?.img).toEqual("football.png");
-// 			});
-// 	});
-// });
+		it("Returns empty array of categories", async () => {
+			await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8")
+				.then((res) => {
+					expect(res.body).toEqual({
+						categories: [],
+					});
+				});
+		});
+	});
+});
