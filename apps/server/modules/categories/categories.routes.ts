@@ -33,20 +33,22 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 			async (request, reply) => {
 				const { img, name } = request.body;
 
+				const firstImg = img[0];
+
 				if (img.some((file) => !["image/png", "image/jpeg"].includes(file.mimetype))) {
 					throw reply.badRequest(
 						"Invalid image mimetype! Supported mimetypes: image/png, image/jpeg",
 					);
 				}
 
-				if (img.length > 1 || !img[0]) {
+				if (img.length > 1 || !firstImg) {
 					throw reply.badRequest("Image must be a single file!");
 				}
 
 				const { data, error } = await fastify.supabase.storage
 					.from("categories")
-					.upload(randomUUID(), img[0].data, {
-						contentType: img[0].mimetype,
+					.upload(randomUUID(), firstImg.data, {
+						contentType: firstImg.mimetype,
 					});
 
 				if (error) {
