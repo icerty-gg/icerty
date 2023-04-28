@@ -11,9 +11,9 @@ afterAll(async () => {
 });
 
 afterEach(async () => {
+	await fastify.prisma.offerImage.deleteMany();
+	await fastify.prisma.offer.deleteMany();
 	await fastify.prisma.category.deleteMany();
 	await fastify.prisma.user.deleteMany();
 	await fastify.prisma.followedOffers.deleteMany();
-	await fastify.prisma.offer.deleteMany();
-	await fastify.prisma.offerImage.deleteMany();
 });

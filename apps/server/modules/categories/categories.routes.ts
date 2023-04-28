@@ -96,7 +96,7 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 					},
 				});
 
-				return reply.code(200).send();
+				return reply.code(204).send();
 			},
 		);
 	fastify

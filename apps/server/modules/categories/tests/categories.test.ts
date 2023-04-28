@@ -72,7 +72,10 @@ describe("Tests categories routes", () => {
 
 		describe("POST /categories", () => {
 			it("Fails to create category becuase user is not logged in", async () => {
-				await supertest(fastify.server).post("/api/categories").expect(401);
+				await supertest(fastify.server)
+					.post("/api/categories")
+					.expect(401)
+					.expect("Content-Type", "application/json; charset=utf-8");
 			});
 
 			it("Fails to create category becuase user has no permissions", async () => {
@@ -82,7 +85,11 @@ describe("Tests categories routes", () => {
 					password: DEMO_USER.password,
 				});
 
-				await supertest(fastify.server).post("/api/categories").set("Cookie", cookie).expect(403);
+				await supertest(fastify.server)
+					.post("/api/categories")
+					.set("Cookie", cookie)
+					.expect(403)
+					.expect("Content-Type", "application/json; charset=utf-8");
 			});
 
 			it("Fails to create a category because file mimetype is wrong", async () => {
@@ -114,6 +121,125 @@ describe("Tests categories routes", () => {
 					.attach("img", path.resolve(__dirname, "./testImage.png"))
 					.expect(204);
 			});
+		});
+	});
+
+	describe("DELETE /categories/:id", () => {
+		it("Fails to delete category because user is not logged in", async () => {
+			await supertest(fastify.server)
+				.delete("/api/categories/1")
+				.expect(401)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails to delete category because user has no permissions", async () => {
+			const user = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.delete("/api/categories/1")
+				.expect(403)
+				.set("Cookie", cookie)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails to delete a category because id is wrong", async () => {
+			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.delete("/api/categories/1")
+				.expect(404)
+				.set("Cookie", cookie)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails to delete a category because it is used in an offer", async () => {
+			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.post("/api/categories")
+				.set("Cookie", cookie)
+				.field("name", "Football")
+				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.expect(204);
+
+			const categories = await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8");
+
+			const body = categories.body as { categories: { id: string }[] };
+
+			const category = body.categories[0];
+
+			expect(category?.id).toEqual(expect.any(String));
+
+			if (!category) throw new Error("Category is undefined!");
+
+			await supertest(fastify.server)
+				.post("/api/offers")
+				.set("Cookie", cookie)
+				.field("categoryId", category.id)
+				.field("count", 1)
+				.field("name", "Football")
+				.field(
+					"description",
+					"Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor",
+				)
+				.field("price", 100)
+				.field("city", "Warsaw")
+				.field("condition", "new")
+				.attach("images", path.resolve(__dirname, "./testImage.png"));
+
+			await supertest(fastify.server)
+				.delete(`/api/categories/${category.id}`)
+				.expect(403)
+				.set("Cookie", cookie)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Deletes a category", async () => {
+			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.post("/api/categories")
+				.set("Cookie", cookie)
+				.field("name", "Football")
+				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.expect(204);
+
+			const categories = await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8");
+
+			const body = categories.body as { categories: { id: string }[] };
+
+			const categoryId = body.categories[0]?.id;
+
+			expect(categoryId).toEqual(expect.any(String));
+
+			if (!categoryId) throw new Error("Category id is undefined");
+
+			await supertest(fastify.server)
+				.delete(`/api/categories/${categoryId}`)
+				.expect(204)
+				.set("Cookie", cookie);
 		});
 	});
 });
