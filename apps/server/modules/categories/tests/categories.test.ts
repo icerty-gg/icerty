@@ -141,8 +141,8 @@ describe("Tests categories routes", () => {
 
 			await supertest(fastify.server)
 				.delete("/api/categories/1")
-				.expect(403)
 				.set("Cookie", cookie)
+				.expect(403)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
@@ -155,8 +155,8 @@ describe("Tests categories routes", () => {
 
 			await supertest(fastify.server)
 				.delete("/api/categories/1")
-				.expect(404)
 				.set("Cookie", cookie)
+				.expect(404)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
@@ -204,8 +204,8 @@ describe("Tests categories routes", () => {
 
 			await supertest(fastify.server)
 				.delete(`/api/categories/${category.id}`)
-				.expect(403)
 				.set("Cookie", cookie)
+				.expect(403)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
@@ -238,8 +238,90 @@ describe("Tests categories routes", () => {
 
 			await supertest(fastify.server)
 				.delete(`/api/categories/${categoryId}`)
-				.expect(204)
-				.set("Cookie", cookie);
+				.set("Cookie", cookie)
+				.expect(204);
+		});
+	});
+
+	describe("PUT /categories/:id", () => {
+		it("Fails to update category because user is not logged in", async () => {
+			await supertest(fastify.server)
+				.put("/api/categories/1")
+				.expect(401)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails to update category because user has no permissions", async () => {
+			const user = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.put("/api/categories/1")
+				.set("Cookie", cookie)
+				.expect(403)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails to update a category because id is wrong", async () => {
+			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.put("/api/categories/1")
+				.set("Cookie", cookie)
+				.send({ name: "Basketball" })
+				.expect(404)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Updates a category name", async () => {
+			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.post("/api/categories")
+				.set("Cookie", cookie)
+				.field("name", "Football")
+				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.expect(204);
+
+			const categories = await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8");
+
+			const body = categories.body as { categories: { id: string }[] };
+
+			const categoryId = body.categories[0]?.id;
+
+			expect(categoryId).toEqual(expect.any(String));
+
+			if (!categoryId) throw new Error("Category id is undefined");
+
+			await supertest(fastify.server)
+				.put(`/api/categories/${categoryId}`)
+				.set("Cookie", cookie)
+				.send({ name: "Basketball" })
+				.expect(204);
+
+			await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8")
+				.then((res) => {
+					const body = res.body as { categories: { name: string }[] };
+
+					expect(body.categories[0]?.name).toEqual("Basketball");
+				});
 		});
 	});
 });

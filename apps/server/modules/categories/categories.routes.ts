@@ -106,7 +106,7 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 			{ schema: updateCategorySchema, preValidation: fastify.auth(["admin"]) },
 			async (request, reply) => {
 				const { id } = request.params;
-				const { img, name } = request.body;
+				const { name } = request.body;
 
 				const category = await fastify.prisma.category.findFirst({
 					where: {
@@ -124,7 +124,6 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 					},
 					data: {
 						name,
-						img,
 					},
 				});
 

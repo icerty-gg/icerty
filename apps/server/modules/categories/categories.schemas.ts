@@ -59,7 +59,9 @@ export const deleteCategorySchema = {
 export const updateCategorySchema = {
 	tags: ["categories"],
 	summary: "Update category by id",
-	body: Type.Optional(Type.Pick(CategorySchema, ["name", "img"])),
+	body: Type.Object({
+		name: CategorySchema.properties.name,
+	}),
 	params: Type.Object({
 		id: Type.String(),
 	}),
