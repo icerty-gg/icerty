@@ -7,10 +7,10 @@ import type { FastifySchema } from "fastify";
 export const loginSchema = {
 	tags: ["sessions"],
 	summary: "Login",
-	body: Type.Intersect([
-		Type.Pick(UserSchema, ["email"]),
-		Type.Object({ password: PasswordSchema }),
-	]),
+	body: Type.Object({
+		email: UserSchema.properties.email,
+		password: PasswordSchema,
+	}),
 	response: {
 		201: UserSchema,
 	},

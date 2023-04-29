@@ -49,15 +49,26 @@ export const getAllOffersSchema = {
 		200: Type.Object({
 			maxPage: Type.Number({ minimum: 0 }),
 			offers: Type.Array(
-				Type.Intersect([
-					Type.Omit(OfferSchema, ["userId", "categoryId", "images"]),
-					Type.Object({ image: Type.String() }),
-					Type.Object({
-						user: Type.Pick(UserSchema, ["name", "surname", "img"]),
-						isFollowed: Type.Boolean(),
+				Type.Object({
+					image: Type.String(),
+					user: Type.Object({
+						name: UserSchema.properties.name,
+						surname: UserSchema.properties.surname,
+						img: UserSchema.properties.img,
 					}),
-					Type.Object({ categoryName: CategorySchema.properties.name }),
-				]),
+					categoryName: CategorySchema.properties.name,
+					isFollowed: Type.Boolean(),
+					id: OfferSchema.properties.id,
+					name: OfferSchema.properties.name,
+					description: OfferSchema.properties.description,
+					count: OfferSchema.properties.count,
+					price: OfferSchema.properties.price,
+					isPromoted: OfferSchema.properties.isPromoted,
+					updatedAt: OfferSchema.properties.updatedAt,
+					createdAt: OfferSchema.properties.createdAt,
+					city: OfferSchema.properties.city,
+					condition: OfferSchema.properties.condition,
+				}),
 			),
 			count: Type.Number({ minimum: 0 }),
 		}),
@@ -68,17 +79,34 @@ export const getOfferSchema = {
 	tags: ["offers"],
 	summary: "Get offer by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: OfferSchema.properties.id,
 	}),
 	response: {
-		200: Type.Intersect([
-			Type.Omit(OfferSchema, ["userId", "categoryId"]),
-			Type.Object({
-				user: Type.Pick(UserSchema, ["name", "surname", "img", "email", "createdAt"]),
-				category: Type.Pick(CategorySchema, ["name", "img"]),
-				isFollowed: Type.Boolean(),
+		200: Type.Object({
+			id: OfferSchema.properties.id,
+			name: OfferSchema.properties.name,
+			description: OfferSchema.properties.description,
+			count: OfferSchema.properties.count,
+			price: OfferSchema.properties.price,
+			isPromoted: OfferSchema.properties.isPromoted,
+			updatedAt: OfferSchema.properties.updatedAt,
+			createdAt: OfferSchema.properties.createdAt,
+			city: OfferSchema.properties.city,
+			condition: OfferSchema.properties.condition,
+			images: OfferSchema.properties.images,
+			user: Type.Object({
+				name: UserSchema.properties.name,
+				surname: UserSchema.properties.surname,
+				img: UserSchema.properties.img,
+				email: UserSchema.properties.email,
+				createdAt: UserSchema.properties.createdAt,
 			}),
-		]),
+			category: Type.Object({
+				name: CategorySchema.properties.name,
+				img: CategorySchema.properties.img,
+			}),
+			isFollowed: Type.Boolean(),
+		}),
 	},
 } satisfies FastifySchema;
 
@@ -86,28 +114,24 @@ export const createOfferSchema = {
 	tags: ["offers"],
 	summary: "Create offer",
 	consumes: ["multipart/form-data"],
-	body: Type.Intersect([
-		Type.Pick(OfferSchema, [
-			"name",
-			"description",
-			"count",
-			"price",
-			"categoryId",
-			"city",
-			"condition",
-		]),
-		Type.Object({
-			images: Type.Array(
-				Type.Object({
-					data: BufferType,
-					filename: Type.String(),
-					encoding: Type.String(),
-					mimetype: Type.String(),
-					limit: Type.Boolean(),
-				}),
-			),
-		}),
-	]),
+	body: Type.Object({
+		name: OfferSchema.properties.name,
+		description: OfferSchema.properties.description,
+		count: OfferSchema.properties.count,
+		price: OfferSchema.properties.price,
+		categoryId: OfferSchema.properties.categoryId,
+		city: OfferSchema.properties.city,
+		condition: OfferSchema.properties.condition,
+		images: Type.Array(
+			Type.Object({
+				data: BufferType,
+				filename: Type.String(),
+				encoding: Type.String(),
+				mimetype: Type.String(),
+				limit: Type.Boolean(),
+			}),
+		),
+	}),
 	response: {
 		204: Type.Void(),
 	},
@@ -117,7 +141,7 @@ export const deleteOfferSchema = {
 	tags: ["offers"],
 	summary: "Delete offer by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: OfferSchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),
@@ -128,19 +152,19 @@ export const updateOfferSchema = {
 	tags: ["offers"],
 	summary: "Update offer by id",
 	body: Type.Optional(
-		Type.Pick(OfferSchema, [
-			"name",
-			"description",
-			"count",
-			"price",
-			"categoryId",
-			"isPromoted",
-			"city",
-			"condition",
-		]),
+		Type.Object({
+			name: OfferSchema.properties.name,
+			description: OfferSchema.properties.description,
+			count: OfferSchema.properties.count,
+			price: OfferSchema.properties.price,
+			categoryId: OfferSchema.properties.categoryId,
+			isPromoted: OfferSchema.properties.isPromoted,
+			city: OfferSchema.properties.city,
+			condition: OfferSchema.properties.condition,
+		}),
 	),
 	params: Type.Object({
-		id: Type.String(),
+		id: OfferSchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),
@@ -151,7 +175,7 @@ export const followOfferSchema = {
 	tags: ["offers"],
 	summary: "Follow offer by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: OfferSchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),
@@ -162,7 +186,7 @@ export const unfollowOfferSchema = {
 	tags: ["offers"],
 	summary: "Unfollow offer by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: OfferSchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),

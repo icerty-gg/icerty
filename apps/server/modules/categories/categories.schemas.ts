@@ -26,20 +26,18 @@ export const createCategorySchema = {
 	tags: ["categories"],
 	summary: "Create category",
 	consumes: ["multipart/form-data"],
-	body: Type.Intersect([
-		Type.Pick(CategorySchema, ["name"]),
-		Type.Object({
-			img: Type.Array(
-				Type.Object({
-					data: BufferType,
-					filename: Type.String(),
-					encoding: Type.String(),
-					mimetype: Type.String(),
-					limit: Type.Boolean(),
-				}),
-			),
-		}),
-	]),
+	body: Type.Object({
+		name: CategorySchema.properties.name,
+		img: Type.Array(
+			Type.Object({
+				data: BufferType,
+				filename: Type.String(),
+				encoding: Type.String(),
+				mimetype: Type.String(),
+				limit: Type.Boolean(),
+			}),
+		),
+	}),
 	response: {
 		204: Type.Void(),
 	},
@@ -49,7 +47,7 @@ export const deleteCategorySchema = {
 	tags: ["categories"],
 	summary: "Delete category by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: CategorySchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),
@@ -63,7 +61,7 @@ export const updateCategorySchema = {
 		name: CategorySchema.properties.name,
 	}),
 	params: Type.Object({
-		id: Type.String(),
+		id: CategorySchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),

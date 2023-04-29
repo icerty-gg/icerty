@@ -22,10 +22,12 @@ export type User = Static<typeof UserSchema>;
 export const createUserSchema = {
 	tags: ["users"],
 	summary: "Create user",
-	body: Type.Intersect([
-		Type.Omit(UserSchema, ["id", "role", "password", "createdAt", "img"]),
-		Type.Object({ password: PasswordSchema }),
-	]),
+	body: Type.Object({
+		email: UserSchema.properties.email,
+		name: UserSchema.properties.name,
+		surname: UserSchema.properties.surname,
+		password: PasswordSchema,
+	}),
 	response: {
 		201: UserSchema,
 	},
@@ -43,7 +45,7 @@ export const deleteUserByIdSchema = {
 	tags: ["users"],
 	summary: "Delete user by id",
 	params: Type.Object({
-		id: Type.String(),
+		id: UserSchema.properties.id,
 	}),
 	response: {
 		204: Type.Void(),
@@ -66,7 +68,7 @@ export const updateEmailSchema = {
 	tags: ["users"],
 	summary: "Update email",
 	body: Type.Object({
-		email: Type.String({ format: "email" }),
+		email: UserSchema.properties.email,
 	}),
 	response: {
 		204: Type.Void(),
