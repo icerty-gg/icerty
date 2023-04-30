@@ -1,24 +1,8 @@
 import supertest from "supertest";
 import { describe, expect, it } from "vitest";
 
+import { DEMO_USER, createUser, logInAndReturnCookie } from "../../__tests__/utils";
 import fastify from "../../app";
-import { DEMO_USER } from "../users/users.test";
-import { createUser } from "../users/users.utils";
-
-export const logInAndReturnCookie = async ({
-	email,
-	password,
-}: {
-	email: string;
-	password: string;
-}) => {
-	const res = await supertest(fastify.server).post("/api/sessions/login").send({ email, password });
-
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-	const cookie = [...res.header["set-cookie"]];
-
-	return cookie as string[];
-};
 
 describe("Tests sessions routes", () => {
 	describe("POST /sessions/login", () => {

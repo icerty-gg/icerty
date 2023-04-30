@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	test: {
-		setupFiles: ["./testsSetup.ts"],
+		setupFiles: ["./__tests__/testsSetup.ts"],
 		singleThread: true,
 	},
 });

@@ -2,17 +2,9 @@ import supertest from "supertest";
 import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
-import { logInAndReturnCookie } from "../sessions/sessions.test";
 
+import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
 import { User } from "./users.schemas";
-import { createUser } from "./users.utils";
-
-export const DEMO_USER = {
-	email: "jankowalski@gmail.com",
-	name: "Jan",
-	surname: "Kowalski",
-	password: "passwordpassword",
-};
 
 describe("Tests users utils", () => {
 	it("Creates an user", async () => {

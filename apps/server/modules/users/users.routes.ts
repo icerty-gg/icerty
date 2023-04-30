@@ -7,7 +7,6 @@ import {
 	updateEmailSchema,
 	updatePasswordSchema,
 } from "./users.schemas.js";
-import { createUser } from "./users.utils.js";
 
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import type { FastifyPluginAsync } from "fastify";
@@ -24,11 +23,10 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				throw reply.conflict("This email is already taken!");
 			}
 
-			const user = await createUser({
-				email: email.toLocaleLowerCase(),
-				name,
-				password,
-				surname,
+			const hashedPassword = await hashPassword(password);
+
+			const user = await fastify.prisma.user.create({
+				data: { name, surname, email: email.toLocaleLowerCase(), password: hashedPassword },
 			});
 
 			return reply.code(201).send({ ...user, createdAt: user.createdAt.toISOString() });

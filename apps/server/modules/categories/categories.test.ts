@@ -3,10 +3,9 @@ import path from "path";
 import supertest from "supertest";
 import { describe, expect, it } from "vitest";
 
-import fastify from "../../../app";
-import { logInAndReturnCookie } from "../../sessions/sessions.test";
-import { DEMO_USER } from "../../users/users.test";
-import { createUser } from "../../users/users.utils";
+import fastify from "../../app";
+
+import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
 
 describe("Tests categories routes", () => {
 	describe("GET /categories", () => {
@@ -43,7 +42,7 @@ describe("Tests categories routes", () => {
 				.post("/api/categories")
 				.set("Cookie", cookie)
 				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 				.expect(204);
 
 			await supertest(fastify.server)
@@ -103,7 +102,7 @@ describe("Tests categories routes", () => {
 					.post("/api/categories")
 					.set("Cookie", cookie)
 					.field("name", "Football")
-					.attach("img", path.resolve(__dirname, "./testFile.pdf"))
+					.attach("img", path.resolve(__dirname, "../../__tests__/testFile.pdf"))
 					.expect(400);
 			});
 
@@ -118,7 +117,7 @@ describe("Tests categories routes", () => {
 					.post("/api/categories")
 					.set("Cookie", cookie)
 					.field("name", "Football")
-					.attach("img", path.resolve(__dirname, "./testImage.png"))
+					.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 					.expect(204);
 			});
 		});
@@ -171,7 +170,7 @@ describe("Tests categories routes", () => {
 				.post("/api/categories")
 				.set("Cookie", cookie)
 				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 				.expect(204);
 
 			const categories = await supertest(fastify.server)
@@ -200,7 +199,7 @@ describe("Tests categories routes", () => {
 				.field("price", 100)
 				.field("city", "Warsaw")
 				.field("condition", "new")
-				.attach("images", path.resolve(__dirname, "./testImage.png"));
+				.attach("images", path.resolve(__dirname, "../../__tests__/testImage.png"));
 
 			await supertest(fastify.server)
 				.delete(`/api/categories/${category.id}`)
@@ -220,7 +219,7 @@ describe("Tests categories routes", () => {
 				.post("/api/categories")
 				.set("Cookie", cookie)
 				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 				.expect(204);
 
 			const categories = await supertest(fastify.server)
@@ -291,7 +290,7 @@ describe("Tests categories routes", () => {
 				.post("/api/categories")
 				.set("Cookie", cookie)
 				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "./testImage.png"))
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 				.expect(204);
 
 			const categories = await supertest(fastify.server)

@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll } from "vitest";
 
-import fastify from "./app";
+import fastify from "../app";
 
 const clearDatabase = async () => {
 	await fastify.prisma.offerImage.deleteMany();
