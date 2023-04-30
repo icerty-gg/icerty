@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import { expect, it } from "vitest";
 
-import fastify from "./app";
+import fastify from "../app";
 
 it("Tests if server is running correctly", async () => {
 	await supertest(fastify.server)

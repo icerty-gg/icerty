@@ -129,7 +129,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 
 			return reply.code(200).send({
 				offers: mappedOffers,
-				maxPage: Math.ceil(offers.length / take),
+				maxPage: Math.ceil((offers.length === 0 ? 1 : offers.length) / take),
 				count,
 			});
 		});
@@ -197,6 +197,14 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 			async (request, reply) => {
 				const { categoryId, city, condition, count, description, images, name, price } =
 					request.body;
+
+				const category = await fastify.prisma.category.findFirst({
+					where: { id: categoryId },
+				});
+
+				if (!category) {
+					throw reply.notFound(`Category with id: ${categoryId} was not found!`);
+				}
 
 				if (images.some((file) => !["image/png", "image/jpeg"].includes(file.mimetype))) {
 					throw reply.badRequest(

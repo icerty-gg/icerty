@@ -1,177 +1,169 @@
-// import supertest from "supertest";
-// import { describe, expect, it } from "vitest";
+import path from "path";
 
-// import fastify from "../../app";
+import supertest from "supertest";
+import { describe, expect, it } from "vitest";
 
-// describe("Tests users routes", () => {
-// 	describe("POST /users/register ", () => {
-// 		it("Fails because email is taken", async () => {
-// 			await supertest(fastify.server).post("/api/users/register").send(DEMO_USER);
+import fastify from "../../app";
 
-// 			await supertest(fastify.server)
-// 				.post("/api/users/register")
-// 				.send(DEMO_USER)
-// 				.expect(409)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
 
-// 		it("Registers successfully", async () => {
-// 			await supertest(fastify.server)
-// 				.post("/api/users/register")
-// 				.send(DEMO_USER)
-// 				.expect(201)
-// 				.expect("Content-Type", "application/json; charset=utf-8")
-// 				.then((res) => {
-// 					const body = res.body as User;
+describe("Tests offers routes", () => {
+	describe("GET /offers", () => {
+		it("Returns empty array of offers", async () => {
+			await supertest(fastify.server)
+				.get("/api/offers")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8")
+				.then((res) => {
+					expect(res.body).toEqual({
+						maxPage: 1,
+						offers: [],
+						count: 0,
+					});
+				});
+		});
+	});
 
-// 					expect(body.name).toBe(DEMO_USER.name);
-// 					expect(body.surname).toBe(DEMO_USER.surname);
-// 					expect(body.email).toBe(DEMO_USER.email);
-// 					expect(body.password).not.toBe(DEMO_USER.password);
-// 					expect(body.password).toEqual(expect.any(String));
-// 					expect(body.createdAt).toEqual(expect.any(String));
-// 					expect(body.img).toEqual(expect.any(String));
-// 					expect(body.id).toEqual(expect.any(String));
-// 				});
-// 		});
-// 	});
+	describe("GET /offers/:id", () => {
+		it("Fails because offer is not found", async () => {
+			await supertest(fastify.server)
+				.get("/api/offers/1")
+				.expect(404)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+	});
 
-// 	describe("DELETE /users/me ", () => {
-// 		it("Fails because you are not logged in", async () => {
-// 			await supertest(fastify.server)
-// 				.delete("/api/users/me")
-// 				.expect(401)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+	describe("POST /offers", () => {
+		it("Fails because you are not logged in", async () => {
+			await supertest(fastify.server)
+				.post("/api/offers")
+				.expect(401)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
 
-// 		it("Deletes my account", async () => {
-// 			const user = await createUser(DEMO_USER);
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			await supertest(fastify.server).delete("/api/users/me").set("Cookie", cookie).expect(204);
-// 		});
-// 	});
+		it("Fails to create an offer because categoryId is wrong", async () => {
+			const user = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
 
-// 	describe("DELETE /users/:id ", () => {
-// 		it("Fails because you are not logged in", async () => {
-// 			await supertest(fastify.server)
-// 				.delete("/api/users/1")
-// 				.expect(401)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+			await supertest(fastify.server)
+				.post("/api/offers")
+				.set("Cookie", cookie)
+				.attach("images", path.resolve(__dirname, "../../__tests__/testImage.png"))
+				.field("name", "Football")
+				.field(
+					"description",
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl vitae aliquam luctus, nisl nunc aliquet nunc, quis aliquam nisl nisl vitae nisi. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet.",
+				)
+				.field("price", 100)
+				.field("categoryId", 1)
+				.field("condition", "new")
+				.field("count", 1)
+				.field("city", "Warsaw")
+				.expect(404)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
 
-// 		it("Fails because you don't have permissions", async () => {
-// 			const user = await createUser(DEMO_USER);
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			await supertest(fastify.server)
-// 				.delete("/api/users/1")
-// 				.set("Cookie", cookie)
-// 				.expect(403)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+		it("Fails to create an offer because file type is invalid", async () => {
+			const user = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
 
-// 		it("Fails because user with this id doesn't exist", async () => {
-// 			const user = await createUser({ ...DEMO_USER, role: "admin" });
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			await supertest(fastify.server)
-// 				.delete("/api/users/1")
-// 				.set("Cookie", cookie)
-// 				.expect(404)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+			const adminUser = await createUser({ ...DEMO_USER, email: "admin@gmail.com", role: "admin" });
+			const adminCookie = await logInAndReturnCookie({
+				email: adminUser.email,
+				password: DEMO_USER.password,
+			});
 
-// 		it("Deletes user successfully", async () => {
-// 			const userToBeDeleted = await createUser(DEMO_USER);
-// 			const user = await createUser({ ...DEMO_USER, role: "admin", email: "admin@gmail.com" });
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			await supertest(fastify.server)
-// 				.delete(`/api/users/${userToBeDeleted.id}`)
-// 				.set("Cookie", cookie)
-// 				.expect(204);
-// 		});
-// 	});
+			await supertest(fastify.server)
+				.post("/api/categories")
+				.set("Cookie", adminCookie)
+				.field("name", "Football")
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
+				.expect(204);
 
-// 	describe("PUT /users/password ", () => {
-// 		it("Fails because you are not logged in", async () => {
-// 			await supertest(fastify.server)
-// 				.put("/api/users/password")
-// 				.expect(401)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+			const categories = await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8");
 
-// 		it("Fails because old password doesn't match", async () => {
-// 			const user = await createUser(DEMO_USER);
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			await supertest(fastify.server)
-// 				.put("/api/users/password")
-// 				.set("Cookie", cookie)
-// 				.send({ oldPassword: "ThatsNotCurrentPass", newPassword: "newPassword" })
-// 				.expect(409)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+			const body = categories.body as { categories: { id: string }[] };
 
-// 		it("Updates password successfully", async () => {
-// 			const user = await createUser(DEMO_USER);
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			const newPassword = "newPassword";
-// 			await supertest(fastify.server)
-// 				.put("/api/users/password")
-// 				.set("Cookie", cookie)
-// 				.send({ oldPassword: DEMO_USER.password, newPassword })
-// 				.expect(204);
+			const categoryId = body.categories[0]?.id;
 
-// 			await supertest(fastify.server)
-// 				.post("/api/sessions/login")
-// 				.send({ email: user.email, password: newPassword })
-// 				.expect(201)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
-// 	});
+			expect(categoryId).toEqual(expect.any(String));
 
-// 	describe("PUT /users/email ", () => {
-// 		it("Fails because you are not logged in", async () => {
-// 			await supertest(fastify.server)
-// 				.put("/api/users/email")
-// 				.expect(401)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
+			if (!categoryId) throw new Error("Category id is undefined");
 
-// 		it("Updates email successfully", async () => {
-// 			const user = await createUser(DEMO_USER);
-// 			const cookie = await logInAndReturnCookie({
-// 				email: user.email,
-// 				password: DEMO_USER.password,
-// 			});
-// 			const newEmail = "newemail@gmail.com";
+			await supertest(fastify.server)
+				.post("/api/offers")
+				.set("Cookie", cookie)
+				.attach("images", path.resolve(__dirname, "../../__tests__/testFile.pdf"))
+				.field("name", "Football")
+				.field(
+					"description",
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl vitae aliquam luctus, nisl nunc aliquet nunc, quis aliquam nisl nisl vitae nisi. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet.",
+				)
+				.field("price", 100)
+				.field("count", 1)
+				.field("categoryId", categoryId)
+				.field("condition", "new")
+				.field("city", "Warsaw")
+				.expect(400);
+		});
 
-// 			await supertest(fastify.server)
-// 				.put("/api/users/email")
-// 				.set("Cookie", cookie)
-// 				.send({ email: newEmail })
-// 				.expect(204);
+		it("Creates an offer successfully", async () => {
+			const user = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: user.email,
+				password: DEMO_USER.password,
+			});
 
-// 			await supertest(fastify.server)
-// 				.post("/api/sessions/login")
-// 				.send({ email: newEmail, password: DEMO_USER.password })
-// 				.expect(201)
-// 				.expect("Content-Type", "application/json; charset=utf-8");
-// 		});
-// 	});
-// });
+			const adminUser = await createUser({ ...DEMO_USER, email: "admin@gmail.com", role: "admin" });
+			const adminCookie = await logInAndReturnCookie({
+				email: adminUser.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.post("/api/categories")
+				.set("Cookie", adminCookie)
+				.field("name", "Football")
+				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
+				.expect(204);
+
+			const categories = await supertest(fastify.server)
+				.get("/api/categories")
+				.expect(200)
+				.expect("Content-Type", "application/json; charset=utf-8");
+
+			const body = categories.body as { categories: { id: string }[] };
+
+			const categoryId = body.categories[0]?.id;
+
+			expect(categoryId).toEqual(expect.any(String));
+
+			if (!categoryId) throw new Error("Category id is undefined");
+
+			await supertest(fastify.server)
+				.post("/api/offers")
+				.set("Cookie", cookie)
+				.attach("images", path.resolve(__dirname, "../../__tests__/testImage.png"))
+				.field("name", "Football")
+				.field(
+					"description",
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl vitae aliquam luctus, nisl nunc aliquet nunc, quis aliquam nisl nisl vitae nisi. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet. Sed vitae nisl nec nisl aliquam aliquet.",
+				)
+				.field("count", 1)
+				.field("price", 100)
+				.field("categoryId", categoryId)
+				.field("condition", "new")
+				.field("city", "Warsaw")
+				.expect(204);
+		});
+	});
+});
