@@ -2,7 +2,7 @@
   Icerty
 </h1>
 
-<h4 align="center">Fullstack application, where users can easily post their auctions or browse and purchase items listed by other users, all within a seamless and intuitive marketplace interface.</h4>
+<h4 align="center">Fullstack application, where you can easily post your auctions or browse and purchase items listed by other users, all within a seamless and intuitive marketplace interface.</h4>
 
 ### TODO
 
@@ -33,4 +33,3 @@
 
 MIT
 
----
