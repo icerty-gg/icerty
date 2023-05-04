@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import { describe, expect, it } from "vitest";
 
-import { DEMO_USER, createUser, logInAndReturnCookie } from "../../__tests__/utils";
+import { DEMO_USER, createDemoUser, logInAndReturnCookie } from "../../__tests__/utils";
 import fastify from "../../app";
 
 describe("Tests sessions routes", () => {
@@ -15,7 +15,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Fails because there is wrong password provided", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
@@ -25,7 +25,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Fails because email is wrong", async () => {
-			await createUser(DEMO_USER);
+			await createDemoUser();
 
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
@@ -35,7 +35,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Logs in successfully then logs in again and errors because you're already logged in", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
@@ -51,7 +51,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Successfully logs in and sets cookie", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
@@ -59,8 +59,7 @@ describe("Tests sessions routes", () => {
 				.expect(201)
 				.expect("Content-Type", "application/json; charset=utf-8")
 				.then((res) => {
-					const returnedUser = { ...user, createdAt: user.createdAt.toISOString() };
-					expect(res.body).toEqual(returnedUser);
+					expect(res.body).toEqual({ ...user, createdAt: user.createdAt.toISOString() });
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 					expect(res.header["set-cookie"]).toEqual([expect.any(String)]);
 				});
@@ -76,7 +75,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Logs out successfully", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -95,7 +94,7 @@ describe("Tests sessions routes", () => {
 	});
 
 	describe("GET /sessions/me", () => {
-		it("Throws because you are not logged in", async () => {
+		it("Fails because you are not logged in", async () => {
 			await supertest(fastify.server)
 				.get("/api/sessions/me")
 				.expect(401)
@@ -103,7 +102,7 @@ describe("Tests sessions routes", () => {
 		});
 
 		it("Returns current user", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -115,8 +114,7 @@ describe("Tests sessions routes", () => {
 				.expect(200)
 				.expect("Content-Type", "application/json; charset=utf-8")
 				.then((res) => {
-					const returnedUser = { ...user, createdAt: user.createdAt.toISOString() };
-					expect(res.body).toEqual(returnedUser);
+					expect(res.body).toEqual({ ...user, createdAt: user.createdAt.toISOString() });
 				});
 		});
 	});

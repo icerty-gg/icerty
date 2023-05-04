@@ -23,7 +23,7 @@ export const DEMO_ADMIN = {
 	email: "admin@gmail.com",
 	name: "Admin",
 	surname: "AdminAdmin",
-	password: "passwordpassword",
+	password: "adminpassword123",
 	role: "admin",
 } as const;
 
@@ -45,7 +45,7 @@ export const DEMO_USER = {
 	email: "jankowalski@gmail.com",
 	name: "Jan",
 	surname: "Kowalski",
-	password: "passwordpassword",
+	password: "userpassword123",
 	role: "user",
 } as const;
 
