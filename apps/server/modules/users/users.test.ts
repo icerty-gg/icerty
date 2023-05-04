@@ -3,28 +3,19 @@ import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
 
-import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
+import {
+	DEMO_ADMIN,
+	DEMO_USER,
+	createDemoAdminUser,
+	createDemoUser,
+	logInAndReturnCookie,
+} from "./../../__tests__/utils";
 import { User } from "./users.schemas";
-
-describe("Tests users utils", () => {
-	it("Creates an user", async () => {
-		const user = await createUser(DEMO_USER);
-
-		expect(user.name).toBe(DEMO_USER.name);
-		expect(user.surname).toBe(DEMO_USER.surname);
-		expect(user.email).toBe(DEMO_USER.email);
-		expect(user.password).not.toBe(DEMO_USER.password);
-		expect(user.password).toEqual(expect.any(String));
-		expect(user.createdAt).toEqual(expect.any(Date));
-		expect(user.img).toEqual(expect.any(String));
-		expect(user.id).toEqual(expect.any(String));
-	});
-});
 
 describe("Tests users routes", () => {
 	describe("POST /users/register ", () => {
 		it("Fails because email is taken", async () => {
-			await supertest(fastify.server).post("/api/users/register").send(DEMO_USER);
+			await createDemoUser();
 
 			await supertest(fastify.server)
 				.post("/api/users/register")
@@ -34,6 +25,8 @@ describe("Tests users routes", () => {
 		});
 
 		it("Registers successfully", async () => {
+			expect(await fastify.prisma.user.findMany()).toStrictEqual([]);
+
 			await supertest(fastify.server)
 				.post("/api/users/register")
 				.send(DEMO_USER)
@@ -63,12 +56,17 @@ describe("Tests users routes", () => {
 		});
 
 		it("Deletes my account", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
+
+			expect(await fastify.prisma.user.findFirst({ where: { id: user.id } })).not.toBeNull();
+
 			await supertest(fastify.server).delete("/api/users/me").set("Cookie", cookie).expect(204);
+
+			expect(await fastify.prisma.user.findFirst({ where: { id: user.id } })).toBeNull();
 		});
 	});
 
@@ -81,11 +79,12 @@ describe("Tests users routes", () => {
 		});
 
 		it("Fails because you don't have permissions", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
+
 			await supertest(fastify.server)
 				.delete("/api/users/1")
 				.set("Cookie", cookie)
@@ -94,11 +93,12 @@ describe("Tests users routes", () => {
 		});
 
 		it("Fails because user with this id doesn't exist", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
+
 			await supertest(fastify.server)
 				.delete("/api/users/1")
 				.set("Cookie", cookie)
@@ -107,16 +107,21 @@ describe("Tests users routes", () => {
 		});
 
 		it("Deletes user successfully", async () => {
-			const userToBeDeleted = await createUser(DEMO_USER);
-			const user = await createUser({ ...DEMO_USER, role: "admin", email: "admin@gmail.com" });
-			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+			const user = await createDemoUser();
+			const adminUser = await createDemoAdminUser();
+			const adminCookie = await logInAndReturnCookie({
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
+
+			expect(await fastify.prisma.user.findFirst({ where: { id: user.id } })).not.toBeNull();
+
 			await supertest(fastify.server)
-				.delete(`/api/users/${userToBeDeleted.id}`)
-				.set("Cookie", cookie)
+				.delete(`/api/users/${user.id}`)
+				.set("Cookie", adminCookie)
 				.expect(204);
+
+			expect(await fastify.prisma.user.findFirst({ where: { id: user.id } })).toBeNull();
 		});
 	});
 
@@ -129,37 +134,41 @@ describe("Tests users routes", () => {
 		});
 
 		it("Fails because old password doesn't match", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
+
 			await supertest(fastify.server)
 				.put("/api/users/password")
 				.set("Cookie", cookie)
 				.send({ oldPassword: "ThatsNotCurrentPass", newPassword: "newPassword" })
 				.expect(409)
 				.expect("Content-Type", "application/json; charset=utf-8");
+
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password).toBe(
+				user.password,
+			);
 		});
 
 		it("Updates password successfully", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
 			const newPassword = "newPassword";
+
 			await supertest(fastify.server)
 				.put("/api/users/password")
 				.set("Cookie", cookie)
 				.send({ oldPassword: DEMO_USER.password, newPassword })
 				.expect(204);
 
-			await supertest(fastify.server)
-				.post("/api/sessions/login")
-				.send({ email: user.email, password: newPassword })
-				.expect(201)
-				.expect("Content-Type", "application/json; charset=utf-8");
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password).not.toBe(
+				user.password,
+			);
 		});
 	});
 
@@ -172,7 +181,7 @@ describe("Tests users routes", () => {
 		});
 
 		it("Updates email successfully", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -185,11 +194,9 @@ describe("Tests users routes", () => {
 				.send({ email: newEmail })
 				.expect(204);
 
-			await supertest(fastify.server)
-				.post("/api/sessions/login")
-				.send({ email: newEmail, password: DEMO_USER.password })
-				.expect(201)
-				.expect("Content-Type", "application/json; charset=utf-8");
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.email).toBe(
+				newEmail,
+			);
 		});
 	});
 });
