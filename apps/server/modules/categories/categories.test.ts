@@ -5,7 +5,16 @@ import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
 
-import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
+import {
+	DEMO_ADMIN,
+	DEMO_CATEGORY,
+	DEMO_USER,
+	createDemoAdminUser,
+	createDemoCategory,
+	createDemoOffer,
+	createDemoUser,
+	logInAndReturnCookie,
+} from "./../../__tests__/utils";
 
 describe("Tests categories routes", () => {
 	describe("GET /categories", () => {
@@ -22,28 +31,8 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Returns array with one created category", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
-			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
-			});
-
-			await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8")
-				.then((res) => {
-					expect(res.body).toEqual({
-						categories: [],
-					});
-				});
-
-			await supertest(fastify.server)
-				.post("/api/categories")
-				.set("Cookie", cookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
-				.expect(204);
+			expect(await fastify.prisma.category.count()).toEqual(0);
+			const category = await createDemoCategory();
 
 			await supertest(fastify.server)
 				.get("/api/categories")
@@ -60,13 +49,16 @@ describe("Tests categories routes", () => {
 						}[];
 					};
 					expect(body.categories.length).toEqual(1);
-					const category = body.categories[0];
-					expect(category?.createdAt).toEqual(expect.any(String));
-					expect(category?.updatedAt).toEqual(expect.any(String));
-					expect(category?.img).toEqual(expect.any(String));
-					expect(category?.name).toEqual("Football");
-					expect(category?.id).toEqual(expect.any(String));
+					const returnedCategory = body.categories[0];
+
+					expect(returnedCategory).toEqual({
+						...category,
+						createdAt: category.createdAt.toISOString(),
+						updatedAt: category.updatedAt.toISOString(),
+					});
 				});
+
+			expect(await fastify.prisma.category.count()).toEqual(1);
 		});
 
 		describe("POST /categories", () => {
@@ -78,7 +70,7 @@ describe("Tests categories routes", () => {
 			});
 
 			it("Fails to create category becuase user has no permissions", async () => {
-				const user = await createUser(DEMO_USER);
+				const user = await createDemoUser();
 				const cookie = await logInAndReturnCookie({
 					email: user.email,
 					password: DEMO_USER.password,
@@ -92,33 +84,38 @@ describe("Tests categories routes", () => {
 			});
 
 			it("Fails to create a category because file mimetype is wrong", async () => {
-				const user = await createUser({ ...DEMO_USER, role: "admin" });
+				const adminUser = await createDemoAdminUser();
 				const cookie = await logInAndReturnCookie({
-					email: user.email,
-					password: DEMO_USER.password,
+					email: adminUser.email,
+					password: DEMO_ADMIN.password,
 				});
 
 				await supertest(fastify.server)
 					.post("/api/categories")
 					.set("Cookie", cookie)
-					.field("name", "Football")
+					.field("name", DEMO_CATEGORY.name)
 					.attach("img", path.resolve(__dirname, "../../__tests__/testFile.pdf"))
 					.expect(400);
 			});
 
 			it("Creates a category", async () => {
-				const user = await createUser({ ...DEMO_USER, role: "admin" });
+				const adminUser = await createDemoAdminUser();
 				const cookie = await logInAndReturnCookie({
-					email: user.email,
-					password: DEMO_USER.password,
+					email: adminUser.email,
+					password: DEMO_ADMIN.password,
 				});
+
+				expect(await fastify.prisma.category.count()).toEqual(0);
 
 				await supertest(fastify.server)
 					.post("/api/categories")
 					.set("Cookie", cookie)
-					.field("name", "Football")
+					.field("name", DEMO_CATEGORY.name)
 					.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
 					.expect(204);
+
+				expect(await fastify.prisma.category.count()).toEqual(1);
+				expect((await fastify.prisma.category.findFirst())?.name).toEqual(DEMO_CATEGORY.name);
 			});
 		});
 	});
@@ -132,7 +129,7 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Fails to delete category because user has no permissions", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -146,10 +143,10 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Fails to delete a category because id is wrong", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
 
 			await supertest(fastify.server)
@@ -160,85 +157,38 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Fails to delete a category because it is used in an offer", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
 
-			await supertest(fastify.server)
-				.post("/api/categories")
-				.set("Cookie", cookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
-				.expect(204);
-
-			const categories = await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8");
-
-			const body = categories.body as { categories: { id: string }[] };
-
-			const category = body.categories[0];
-
-			expect(category?.id).toEqual(expect.any(String));
-
-			if (!category) throw new Error("Category is undefined!");
+			const offer = await createDemoOffer();
 
 			await supertest(fastify.server)
-				.post("/api/offers")
-				.set("Cookie", cookie)
-				.field("categoryId", category.id)
-				.field("count", 1)
-				.field("name", "Football")
-				.field(
-					"description",
-					"Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor",
-				)
-				.field("price", 100)
-				.field("city", "Warsaw")
-				.field("condition", "new")
-				.attach("images", path.resolve(__dirname, "../../__tests__/testImage.png"));
-
-			await supertest(fastify.server)
-				.delete(`/api/categories/${category.id}`)
+				.delete(`/api/categories/${offer.categoryId}`)
 				.set("Cookie", cookie)
 				.expect(403)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
 		it("Deletes a category", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
 
-			await supertest(fastify.server)
-				.post("/api/categories")
-				.set("Cookie", cookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
-				.expect(204);
+			const category = await createDemoCategory();
 
-			const categories = await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8");
-
-			const body = categories.body as { categories: { id: string }[] };
-
-			const categoryId = body.categories[0]?.id;
-
-			expect(categoryId).toEqual(expect.any(String));
-
-			if (!categoryId) throw new Error("Category id is undefined");
+			expect(await fastify.prisma.category.count()).toEqual(1);
 
 			await supertest(fastify.server)
-				.delete(`/api/categories/${categoryId}`)
+				.delete(`/api/categories/${category.id}`)
 				.set("Cookie", cookie)
 				.expect(204);
+
+			expect(await fastify.prisma.category.count()).toEqual(0);
 		});
 	});
 
@@ -251,7 +201,7 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Fails to update category because user has no permissions", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -265,10 +215,10 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Fails to update a category because id is wrong", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
 
 			await supertest(fastify.server)
@@ -280,47 +230,29 @@ describe("Tests categories routes", () => {
 		});
 
 		it("Updates a category name", async () => {
-			const user = await createUser({ ...DEMO_USER, role: "admin" });
+			const adminUser = await createDemoAdminUser();
 			const cookie = await logInAndReturnCookie({
-				email: user.email,
-				password: DEMO_USER.password,
+				email: adminUser.email,
+				password: DEMO_ADMIN.password,
 			});
 
+			const newCategoryName = "Basketball";
+
+			const category = await createDemoCategory();
+
+			expect(
+				(await fastify.prisma.category.findFirst({ where: { id: category.id } }))?.name,
+			).not.toEqual(newCategoryName);
+
 			await supertest(fastify.server)
-				.post("/api/categories")
+				.put(`/api/categories/${category.id}`)
 				.set("Cookie", cookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
+				.send({ name: newCategoryName })
 				.expect(204);
 
-			const categories = await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8");
-
-			const body = categories.body as { categories: { id: string }[] };
-
-			const categoryId = body.categories[0]?.id;
-
-			expect(categoryId).toEqual(expect.any(String));
-
-			if (!categoryId) throw new Error("Category id is undefined");
-
-			await supertest(fastify.server)
-				.put(`/api/categories/${categoryId}`)
-				.set("Cookie", cookie)
-				.send({ name: "Basketball" })
-				.expect(204);
-
-			await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8")
-				.then((res) => {
-					const body = res.body as { categories: { name: string }[] };
-
-					expect(body.categories[0]?.name).toEqual("Basketball");
-				});
+			expect(
+				(await fastify.prisma.category.findFirst({ where: { id: category.id } }))?.name,
+			).toEqual(newCategoryName);
 		});
 	});
 });

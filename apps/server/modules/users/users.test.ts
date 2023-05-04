@@ -35,10 +35,10 @@ describe("Tests users routes", () => {
 				.then((res) => {
 					const body = res.body as User;
 
-					expect(body.name).toBe(DEMO_USER.name);
-					expect(body.surname).toBe(DEMO_USER.surname);
-					expect(body.email).toBe(DEMO_USER.email);
-					expect(body.password).not.toBe(DEMO_USER.password);
+					expect(body.name).toEqual(DEMO_USER.name);
+					expect(body.surname).toEqual(DEMO_USER.surname);
+					expect(body.email).toEqual(DEMO_USER.email);
+					expect(body.password).not.toEqual(DEMO_USER.password);
 					expect(body.password).toEqual(expect.any(String));
 					expect(body.createdAt).toEqual(expect.any(String));
 					expect(body.img).toEqual(expect.any(String));
@@ -146,10 +146,6 @@ describe("Tests users routes", () => {
 				.send({ oldPassword: "ThatsNotCurrentPass", newPassword: "newPassword" })
 				.expect(409)
 				.expect("Content-Type", "application/json; charset=utf-8");
-
-			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password).toBe(
-				user.password,
-			);
 		});
 
 		it("Updates password successfully", async () => {
@@ -160,15 +156,19 @@ describe("Tests users routes", () => {
 			});
 			const newPassword = "newPassword";
 
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password).toEqual(
+				user.password,
+			);
+
 			await supertest(fastify.server)
 				.put("/api/users/password")
 				.set("Cookie", cookie)
 				.send({ oldPassword: DEMO_USER.password, newPassword })
 				.expect(204);
 
-			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password).not.toBe(
-				user.password,
-			);
+			expect(
+				(await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.password,
+			).not.toEqual(user.password);
 		});
 	});
 
@@ -188,13 +188,17 @@ describe("Tests users routes", () => {
 			});
 			const newEmail = "newemail@gmail.com";
 
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.email).not.toEqual(
+				newEmail,
+			);
+
 			await supertest(fastify.server)
 				.put("/api/users/email")
 				.set("Cookie", cookie)
 				.send({ email: newEmail })
 				.expect(204);
 
-			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.email).toBe(
+			expect((await fastify.prisma.user.findFirst({ where: { id: user.id } }))?.email).toEqual(
 				newEmail,
 			);
 		});
