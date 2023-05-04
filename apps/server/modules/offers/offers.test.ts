@@ -9,8 +9,9 @@ import {
 	DEMO_ADMIN,
 	DEMO_USER,
 	createDemoAdminUser,
+	createDemoCategory,
 	createDemoOffer,
-	createUser,
+	createDemoUser,
 	logInAndReturnCookie,
 } from "./../../__tests__/utils";
 
@@ -48,8 +49,8 @@ describe("Tests offers routes", () => {
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
-		it("Fails to create an offer because categoryId is wrong", async () => {
-			const user = await createUser(DEMO_USER);
+		it("Fails to create an offer because categoryId doesn't exist", async () => {
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
@@ -74,37 +75,13 @@ describe("Tests offers routes", () => {
 		});
 
 		it("Fails to create an offer because file type is invalid", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
 
-			const adminUser = await createUser({ ...DEMO_USER, email: "admin@gmail.com", role: "admin" });
-			const adminCookie = await logInAndReturnCookie({
-				email: adminUser.email,
-				password: DEMO_USER.password,
-			});
-
-			await supertest(fastify.server)
-				.post("/api/categories")
-				.set("Cookie", adminCookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
-				.expect(204);
-
-			const categories = await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8");
-
-			const body = categories.body as { categories: { id: string }[] };
-
-			const categoryId = body.categories[0]?.id;
-
-			expect(categoryId).toEqual(expect.any(String));
-
-			if (!categoryId) throw new Error("Category id is undefined");
+			const category = await createDemoCategory();
 
 			await supertest(fastify.server)
 				.post("/api/offers")
@@ -117,44 +94,22 @@ describe("Tests offers routes", () => {
 				)
 				.field("price", 100)
 				.field("count", 1)
-				.field("categoryId", categoryId)
+				.field("categoryId", category.id)
 				.field("condition", "new")
 				.field("city", "Warsaw")
 				.expect(400);
 		});
 
 		it("Creates an offer successfully", async () => {
-			const user = await createUser(DEMO_USER);
+			const user = await createDemoUser();
 			const cookie = await logInAndReturnCookie({
 				email: user.email,
 				password: DEMO_USER.password,
 			});
 
-			const adminUser = await createUser({ ...DEMO_USER, email: "admin@gmail.com", role: "admin" });
-			const adminCookie = await logInAndReturnCookie({
-				email: adminUser.email,
-				password: DEMO_USER.password,
-			});
+			const category = await createDemoCategory();
 
-			await supertest(fastify.server)
-				.post("/api/categories")
-				.set("Cookie", adminCookie)
-				.field("name", "Football")
-				.attach("img", path.resolve(__dirname, "../../__tests__/testImage.png"))
-				.expect(204);
-
-			const categories = await supertest(fastify.server)
-				.get("/api/categories")
-				.expect(200)
-				.expect("Content-Type", "application/json; charset=utf-8");
-
-			const body = categories.body as { categories: { id: string }[] };
-
-			const categoryId = body.categories[0]?.id;
-
-			expect(categoryId).toEqual(expect.any(String));
-
-			if (!categoryId) throw new Error("Category id is undefined");
+			expect(await fastify.prisma.offer.count()).toEqual(0);
 
 			await supertest(fastify.server)
 				.post("/api/offers")
@@ -167,10 +122,12 @@ describe("Tests offers routes", () => {
 				)
 				.field("count", 1)
 				.field("price", 100)
-				.field("categoryId", categoryId)
+				.field("categoryId", category.id)
 				.field("condition", "new")
 				.field("city", "Warsaw")
 				.expect(204);
+
+			expect(await fastify.prisma.offer.count()).toEqual(1);
 		});
 	});
 
@@ -183,15 +140,15 @@ describe("Tests offers routes", () => {
 		});
 
 		it("Fails because offer is not found", async () => {
-			const adminUser = await createUser(DEMO_USER);
-			const cookie = await logInAndReturnCookie({
-				email: adminUser.email,
-				password: DEMO_USER.password,
+			const admin = await createDemoAdminUser();
+			const adminCookie = await logInAndReturnCookie({
+				email: admin.email,
+				password: DEMO_ADMIN.password,
 			});
 
 			await supertest(fastify.server)
 				.delete("/api/offers/1")
-				.set("Cookie", cookie)
+				.set("Cookie", adminCookie)
 				.expect(404)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
