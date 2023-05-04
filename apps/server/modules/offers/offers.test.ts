@@ -5,7 +5,14 @@ import { describe, expect, it } from "vitest";
 
 import fastify from "../../app";
 
-import { DEMO_USER, createUser, logInAndReturnCookie } from "./../../__tests__/utils";
+import {
+	DEMO_ADMIN,
+	DEMO_USER,
+	createDemoAdminUser,
+	createDemoOffer,
+	createUser,
+	logInAndReturnCookie,
+} from "./../../__tests__/utils";
 
 describe("Tests offers routes", () => {
 	describe("GET /offers", () => {
@@ -164,6 +171,44 @@ describe("Tests offers routes", () => {
 				.field("condition", "new")
 				.field("city", "Warsaw")
 				.expect(204);
+		});
+	});
+
+	describe("DELETE /offers/:id", () => {
+		it("Fails to delete an offer because user is not logged in", async () => {
+			await supertest(fastify.server)
+				.delete("/api/offers/1")
+				.expect(401)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Fails because offer is not found", async () => {
+			const adminUser = await createUser(DEMO_USER);
+			const cookie = await logInAndReturnCookie({
+				email: adminUser.email,
+				password: DEMO_USER.password,
+			});
+
+			await supertest(fastify.server)
+				.delete("/api/offers/1")
+				.set("Cookie", cookie)
+				.expect(404)
+				.expect("Content-Type", "application/json; charset=utf-8");
+		});
+
+		it("Deletes an offer successfully", async () => {
+			const offer = await createDemoOffer();
+			const admin = await createDemoAdminUser();
+			const adminCookie = await logInAndReturnCookie({
+				email: admin.email,
+				password: DEMO_ADMIN.password,
+			});
+
+			await supertest(fastify.server)
+				.delete(`/api/offers/${offer.id}")}`)
+				.set("Cookie", adminCookie)
+				.expect(404)
+				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 	});
 });
