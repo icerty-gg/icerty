@@ -26,7 +26,7 @@ export const Lists = () => {
 	return (
 		<div className="flex h-full w-full flex-col items-center gap-4">
 			<div className="flex items-center gap-2">
-				<Heading title="Your lists" />
+				<Heading>Your lists</Heading>
 				{offers?.offers.length ? <p className=" text-white">({offers?.offers.length})</p> : null}
 			</div>
 

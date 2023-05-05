@@ -36,7 +36,7 @@ const Offers = () => {
 
 				<Container>
 					<div className="flex items-center justify-center gap-4 pb-6">
-						<Heading title="Offers" />
+						<Heading>Offers</Heading>
 						<SearchFilter />
 					</div>
 					{isLoading || isFetching ? (

@@ -19,7 +19,7 @@ export const Filter = () => {
 		<div className="h-full w-full">
 			<Container className="sticky top-[6rem] max-lg:col-span-2">
 				<div className="flex items-center justify-center gap-4 pb-6">
-					<Heading title="Filters" />
+					<Heading>Filters</Heading>
 					<Button intent="secondary">Clear</Button>
 				</div>
 

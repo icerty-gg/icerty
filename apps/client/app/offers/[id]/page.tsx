@@ -111,13 +111,13 @@ const OfferDetails = async ({ params }: { params: { id: string } }) => {
 					</div>
 					<div className="grid grid-cols-1 gap-4 max-lg:grid-cols-1">
 						<Container>
-							<Heading title="Description" className="pb-4" />
+							<Heading className="pb-4">Description</Heading>
 
 							<p className="text-white">{offer.description}</p>
 						</Container>
 					</div>
 					<Container>
-						<Heading title="Similar offers" className="pb-4" />
+						<Heading className="pb-4">Similar offers</Heading>
 
 						<SimilarOffers category={offer.category.name} />
 					</Container>
@@ -126,7 +126,7 @@ const OfferDetails = async ({ params }: { params: { id: string } }) => {
 					<div className="sticky top-[6rem] max-lg:col-span-2">
 						<div className="grid grid-cols-1 gap-4">
 							<Container>
-								<Heading title="About offer" className="pb-4" />
+								<Heading className="pb-4">About offer</Heading>
 								<div className="flex flex-col gap-8">
 									<div className="flex flex-col gap-2">
 										<p className="flex items-center gap-2 text-sky-500">
@@ -159,7 +159,7 @@ const OfferDetails = async ({ params }: { params: { id: string } }) => {
 							</Container>
 
 							<Container className="flex flex-col gap-2">
-								<Heading title="About seller" className="pb-4" />
+								<Heading className="pb-4">About seller</Heading>
 								<div className="flex flex-col gap-2 rounded-lg bg-sky-400/10 p-2 text-sky-600">
 									<Link href="/user" className="flex items-center gap-2 p-2">
 										<Image

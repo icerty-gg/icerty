@@ -10,11 +10,6 @@
 		"noEmit": true,
 		"jsx": "preserve",
 		"incremental": true,
-		"resolveJsonModule": true,
-		"plugins": [
-			{
-				"name": "next"
-			}
-		]
+		"resolveJsonModule": true
 	}
 }

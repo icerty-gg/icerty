@@ -86,7 +86,7 @@ const Register = () => {
 		<Layout>
 			<div className="m-auto grid w-full max-w-[46rem] grid-cols-1 gap-4">
 				<Container>
-					<Heading title="Create Account" className="pb-6" />
+					<Heading className="pb-6">Create Account</Heading>
 
 					<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-6">
 						<Input

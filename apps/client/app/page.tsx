@@ -19,7 +19,7 @@ const Home = async () => {
 		<Layout>
 			<div className="grid grid-cols-2 gap-4">
 				<Container className="z-20 col-span-2 bg-transparent">
-					<Heading title="Find offers" className="pb-6" />
+					<Heading className="pb-6">Find offers</Heading>
 					<form>
 						<div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
 							<div className="relative flex items-center">
@@ -45,7 +45,7 @@ const Home = async () => {
 
 				<div className="col-span-2 grid grid-cols-[1fr,_2fr] gap-4 max-lg:grid-cols-1">
 					<Container>
-						<Heading title="Categories" className="pb-6" />
+						<Heading className="pb-6">Categories</Heading>
 						<ul className="sticky grid max-h-[35rem] grid-cols-2 gap-4 overflow-hidden overflow-y-scroll backdrop-blur max-lg:grid-cols-2 max-md:grid-cols-1">
 							{categories.map((c) => (
 								<li
@@ -75,7 +75,7 @@ const Home = async () => {
 
 					<Container>
 						<div className="flex items-center justify-center gap-4 pb-6">
-							<Heading title="Promoted offers" />
+							<Heading>Promoted offers </Heading>
 							<ButtonLink intent="secondary" href="/offers">
 								Check all
 							</ButtonLink>
@@ -90,7 +90,7 @@ const Home = async () => {
 				</div>
 
 				<Container className="col-span-2">
-					<Heading title="Your offers" className="pb-6" />
+					<Heading className="pb-6">Your offers</Heading>
 					<div className="relative">
 						<UserStats />
 

@@ -19,7 +19,7 @@ interface Props {
 export const Slider = ({ images }: Props) => {
 	return (
 		<Container className="relative">
-			<Heading title="Images" className="mb-4" />
+			<Heading className="mb-4">Images</Heading>
 			<div className="flex h-full w-full items-center justify-center">
 				<div className="max-w-[50rem]">
 					<Carousel showThumbs={true} swipeable={true} infiniteLoop autoPlay interval={5000}>
