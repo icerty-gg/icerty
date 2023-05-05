@@ -151,18 +151,16 @@ export const deleteOfferSchema = {
 export const updateOfferSchema = {
 	tags: ["offers"],
 	summary: "Update offer by id",
-	body: Type.Optional(
-		Type.Object({
-			name: OfferSchema.properties.name,
-			description: OfferSchema.properties.description,
-			count: OfferSchema.properties.count,
-			price: OfferSchema.properties.price,
-			categoryId: OfferSchema.properties.categoryId,
-			isPromoted: OfferSchema.properties.isPromoted,
-			city: OfferSchema.properties.city,
-			condition: OfferSchema.properties.condition,
-		}),
-	),
+	body: Type.Object({
+		name: Type.Optional(OfferSchema.properties.name),
+		description: Type.Optional(OfferSchema.properties.description),
+		count: Type.Optional(OfferSchema.properties.count),
+		price: Type.Optional(OfferSchema.properties.price),
+		categoryId: Type.Optional(OfferSchema.properties.categoryId),
+		isPromoted: Type.Optional(OfferSchema.properties.isPromoted),
+		city: Type.Optional(OfferSchema.properties.city),
+		condition: Type.Optional(OfferSchema.properties.condition),
+	}),
 	params: Type.Object({
 		id: OfferSchema.properties.id,
 	}),

@@ -8,10 +8,10 @@ export const DEMO_CATEGORY = {
 	img: "Football.png",
 };
 
-export const createDemoCategory = async () => {
+export const createDemoCategory = async (name = DEMO_CATEGORY.name) => {
 	const category = await fastify.prisma.category.create({
 		data: {
-			name: DEMO_CATEGORY.name,
+			name: name,
 			img: DEMO_CATEGORY.img,
 		},
 	});
@@ -91,7 +91,7 @@ export const createDemoOffer = async () => {
 		},
 	});
 
-	return offer;
+	return { offer, category, user };
 };
 
 export const logInAndReturnCookie = async ({

@@ -270,7 +270,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 				}
 
 				if (user.role === "user" && offer.userId !== user.id) {
-					throw reply.forbidden("You can only delete your own offers!");
+					throw reply.forbidden();
 				}
 
 				await fastify.prisma.offer.delete({
@@ -296,12 +296,8 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 					where: { id },
 				});
 
-				if (!offer) {
+				if (!offer || offer.userId !== request.session.user.id) {
 					throw reply.notFound("Offer not found!");
-				}
-
-				if (offer.userId !== request.session.user.id) {
-					throw reply.forbidden("You can only update your own offers!");
 				}
 
 				await fastify.prisma.offer.update({
@@ -321,9 +317,13 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 			async (request, reply) => {
 				const { id } = request.params;
 
-				const offer = await fastify.prisma.offer.findFirst({ where: { id } });
+				const { id: userId } = request.session.user;
+
+				const offer = await fastify.prisma.offer.findFirst({
+					where: { id },
+				});
 				const followedOffer = await fastify.prisma.followedOffers.findFirst({
-					where: { offerId: id, userId: request.session.user.id },
+					where: { offerId: id, userId },
 				});
 
 				if (!offer) {
@@ -335,7 +335,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 				}
 
 				await fastify.prisma.followedOffers.create({
-					data: { offerId: request.params.id, userId: request.session.user.id },
+					data: { offerId: id, userId },
 				});
 
 				return reply.code(204).send();

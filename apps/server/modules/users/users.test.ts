@@ -109,7 +109,7 @@ describe("Tests users routes", () => {
 		it("Deletes user successfully", async () => {
 			const user = await createDemoUser();
 			const adminUser = await createDemoAdminUser();
-			const adminCookie = await logInAndReturnCookie({
+			const cookie = await logInAndReturnCookie({
 				email: adminUser.email,
 				password: DEMO_ADMIN.password,
 			});
@@ -118,7 +118,7 @@ describe("Tests users routes", () => {
 
 			await supertest(fastify.server)
 				.delete(`/api/users/${user.id}`)
-				.set("Cookie", adminCookie)
+				.set("Cookie", cookie)
 				.expect(204);
 
 			expect(await fastify.prisma.user.findFirst({ where: { id: user.id } })).toBeNull();

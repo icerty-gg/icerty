@@ -163,7 +163,7 @@ describe("Tests categories routes", () => {
 				password: DEMO_ADMIN.password,
 			});
 
-			const offer = await createDemoOffer();
+			const { offer } = await createDemoOffer();
 
 			await supertest(fastify.server)
 				.delete(`/api/categories/${offer.categoryId}`)

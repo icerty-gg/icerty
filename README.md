@@ -6,7 +6,7 @@
 
 ### TODO
 
-- [ ] Backend integration and unit tests
+- [x] Backend integration and unit tests
 - [ ] Refactor frontend login/signup pages to use useZodForm
 
 ## Technologies
