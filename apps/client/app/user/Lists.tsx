@@ -5,23 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
-import { EmptyContent } from "../../../components/ui/EmptyContent";
-import { FollowButton } from "../../../components/ui/FollowButton";
-import { Heading } from "../../../components/ui/Heading";
-import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
-import { api } from "../../../utils/api";
+import { EmptyContent } from "../../components/ui/EmptyContent";
+import { FollowButton } from "../../components/ui/FollowButton";
+import { Heading } from "../../components/ui/Heading";
+import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
+import { api } from "../../utils/api";
 
 export const Lists = () => {
 	const { data: offers, isLoading } = useQuery({
 		queryKey: ["followedOffers"],
 		queryFn: () => api.get("/api/offers/", { queries: { followed: true } }),
 	});
-
-	// const groupedByCategory = offers?.offers.reduce((acc, offer) => {
-	//   acc[offer.categoryName] ??= [];
-	//   acc[offer.categoryName].push(offer);
-	//   return acc;
-	// }, {});
 
 	return (
 		<div className="flex h-full w-full flex-col items-center gap-4">

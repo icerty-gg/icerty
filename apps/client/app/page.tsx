@@ -11,12 +11,12 @@ import { UserStats } from "../components/userStats/UserStats";
 import { api } from "../utils/api";
 
 const Home = async () => {
-	const { categories } = await api.get("/api/categories/");
-	const { offers } = await api.get("/api/offers/");
+	// const { categories } = await api.get("/api/categories/");
+	// const { offers } = await api.get("/api/offers/");
 
 	return (
 		<div className="grid grid-cols-2 gap-4">
-			<Container className="z-20 col-span-2 bg-transparent">
+			{/* <Container className="z-20 col-span-2 bg-transparent">
 				<Heading className="pb-6">Find offers</Heading>
 				<form>
 					<div className="grid grid-cols-2 gap-4 max-md:grid-cols-1">
@@ -99,7 +99,7 @@ const Home = async () => {
 						<ButtonLink href="/login">Login</ButtonLink>
 					</div>
 				</div>
-			</Container>
+			</Container> */}
 		</div>
 	);
 };

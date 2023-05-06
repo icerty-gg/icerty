@@ -9,14 +9,14 @@ import { UserLinksData } from "../../components/navbar/Navbar";
 import { Container } from "../../components/ui/Container";
 import { useUser } from "../../hooks/useUser";
 
-import { Lists } from "./tabs/Lists";
+import { Lists } from "./Lists";
 
 // export const metadata: Metadata = {
 // 	title: "User",
 // };
 
 const User = () => {
-	const { user } = useUser();
+	const { userQuery } = useUser();
 	const pathname = usePathname();
 	const router = useRouter();
 	const searchParams = useSearchParams();
@@ -25,8 +25,8 @@ const User = () => {
 	useEffect(() => {
 		if (!tabSearchParams) router.push("/user?tab=account");
 
-		if (!user) router.push("/");
-	}, [tabSearchParams, router, user]);
+		if (!userQuery.data) router.push("/");
+	}, [tabSearchParams, router, userQuery]);
 
 	return (
 		<div className="grid grid-cols-[1fr,_2fr] gap-4">

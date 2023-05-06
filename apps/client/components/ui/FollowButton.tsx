@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const FollowButton = ({ className, id }: Props) => {
-	const { user } = useUser();
+	const { userQuery } = useUser();
 
 	const { data, refetch } = useQuery({
 		queryFn: () => api.get("/api/offers/", { queries: { followed: true } }),
@@ -35,7 +35,7 @@ export const FollowButton = ({ className, id }: Props) => {
 			void refetch();
 		},
 		onError: () => {
-			if (!user) {
+			if (!userQuery.data) {
 				notify("You need to login!", "error");
 				return;
 			}
@@ -65,7 +65,7 @@ export const FollowButton = ({ className, id }: Props) => {
 			</div>
 		);
 
-	if (!user) return null;
+	if (!userQuery.data) return null;
 
 	return (
 		<button

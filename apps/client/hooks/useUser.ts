@@ -12,7 +12,7 @@ type UserLoginData = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
 export const useUser = () => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
-	const { data: user, isLoading } = useQuery({
+	const userQuery = useQuery({
 		queryKey: [USER_QUERY_KEY],
 		queryFn: () => api.get("/api/sessions/me"),
 		staleTime: Infinity,
@@ -38,5 +38,5 @@ export const useUser = () => {
 		},
 	});
 
-	return { user, isLoading, logout, login };
+	return { userQuery, logout, login };
 };

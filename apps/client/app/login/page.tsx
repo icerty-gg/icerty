@@ -4,7 +4,9 @@ import { Heading } from "../../components/ui/Heading";
 
 import { LoginForm } from "./login-form";
 
-const Login = () => {
+// #TODO Deny access for logged in users
+
+const LoginPage = () => {
 	return (
 		<div className="m-auto grid w-full max-w-[35rem] grid-cols-1 gap-4">
 			<Container>
@@ -22,4 +24,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default LoginPage;

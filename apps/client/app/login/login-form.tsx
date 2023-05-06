@@ -29,7 +29,7 @@ export const LoginForm = () => {
 					message: "Invalid email or password",
 				});
 			} else {
-				notify("Internal server error!", "error");
+				notify("Internal server error", "error");
 			}
 		}
 	});
