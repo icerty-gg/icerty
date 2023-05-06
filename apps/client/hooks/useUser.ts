@@ -33,7 +33,7 @@ export const useUser = () => {
 		mutationFn: () => api.post("/api/sessions/logout", undefined),
 		onSuccess: async () => {
 			queryClient.setQueryData([USER_QUERY_KEY], null);
-			notify("Logged out!", "success");
+			notify("Logged out", "success");
 			router.push("/");
 		},
 	});

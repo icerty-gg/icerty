@@ -12,7 +12,6 @@ import { Input } from "../../components/Form/input/Input";
 import { Button, ButtonLink } from "../../components/common/Button";
 import { Container } from "../../components/ui/Container";
 import { Heading } from "../../components/ui/Heading";
-import { Layout } from "../../components/ui/Layout";
 import { useUser } from "../../hooks/useUser";
 import { api } from "../../utils/api";
 import { notify } from "../../utils/notifications";
@@ -83,73 +82,71 @@ const Register = () => {
 	};
 
 	return (
-		<Layout>
-			<div className="m-auto grid w-full max-w-[46rem] grid-cols-1 gap-4">
-				<Container>
-					<Heading className="pb-6">Create Account</Heading>
+		<div className="m-auto grid w-full max-w-[46rem] grid-cols-1 gap-4">
+			<Container>
+				<Heading className="pb-6">Create Account</Heading>
 
-					<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-6">
-						<Input
-							className="max-md:col-span-2"
-							icon={<BiUser className="text-lg" />}
-							type="text"
-							placeholder="First name"
-							errorMessage={errors.name?.message}
-							{...register("name")}
-						/>
-						<Input
-							className="max-md:col-span-2"
-							icon={<BiUser className="text-lg" />}
-							type="text"
-							placeholder="Last name"
-							errorMessage={errors.surname?.message}
-							{...register("surname")}
-						/>
-						<Input
-							className="col-span-2"
-							icon={<BiMailSend className="text-lg" />}
-							type="email"
-							placeholder="Email"
-							errorMessage={errors.email?.message}
-							{...register("email")}
-						/>
-						<Input
-							className="col-span-2"
-							icon={<BiLockAlt className="text-lg" />}
-							type="password"
-							placeholder="Password"
-							errorMessage={errors.password?.message}
-							{...register("password")}
-						/>
-						<Input
-							className="col-span-2"
-							icon={<BiLockAlt className="text-lg" />}
-							type="password"
-							placeholder="Repeat password"
-							errorMessage={errors.repeatPassword?.message}
-							{...register("repeatPassword")}
-						/>
-						<div className="col-span-2">
-							<CheckboxInput
-								errorMessage={errors.acceptPolicy?.message}
-								{...register("acceptPolicy")}
-							>
-								I Accept the Terms of Service
-							</CheckboxInput>
-						</div>
+				<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-6">
+					<Input
+						className="max-md:col-span-2"
+						icon={<BiUser className="text-lg" />}
+						type="text"
+						placeholder="First name"
+						errorMessage={errors.name?.message}
+						{...register("name")}
+					/>
+					<Input
+						className="max-md:col-span-2"
+						icon={<BiUser className="text-lg" />}
+						type="text"
+						placeholder="Last name"
+						errorMessage={errors.surname?.message}
+						{...register("surname")}
+					/>
+					<Input
+						className="col-span-2"
+						icon={<BiMailSend className="text-lg" />}
+						type="email"
+						placeholder="Email"
+						errorMessage={errors.email?.message}
+						{...register("email")}
+					/>
+					<Input
+						className="col-span-2"
+						icon={<BiLockAlt className="text-lg" />}
+						type="password"
+						placeholder="Password"
+						errorMessage={errors.password?.message}
+						{...register("password")}
+					/>
+					<Input
+						className="col-span-2"
+						icon={<BiLockAlt className="text-lg" />}
+						type="password"
+						placeholder="Repeat password"
+						errorMessage={errors.repeatPassword?.message}
+						{...register("repeatPassword")}
+					/>
+					<div className="col-span-2">
+						<CheckboxInput
+							errorMessage={errors.acceptPolicy?.message}
+							{...register("acceptPolicy")}
+						>
+							I Accept the Terms of Service
+						</CheckboxInput>
+					</div>
 
-						<Button className="col-span-2 text-sm">Register</Button>
-					</form>
-				</Container>
-				<div className="flex flex-col items-center gap-4 rounded-xl border border-slate-800 bg-gray-800/20 p-4">
-					<p className="text-white">Already have an account?</p>
+					<Button className="col-span-2 text-sm">Register</Button>
+				</form>
+			</Container>
+			<div className="flex flex-col items-center gap-4 rounded-xl border border-slate-800 bg-gray-800/20 p-4">
+				<p className="text-white">Already have an account?</p>
 
-					<ButtonLink intent="secondary" href="/login">
-						Login to your account!
-					</ButtonLink>
-				</div>
+				<ButtonLink intent="secondary" href="/login">
+					Login to your account!
+				</ButtonLink>
 			</div>
-		</Layout>
+		</div>
 	);
 };
 

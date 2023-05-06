@@ -15,7 +15,6 @@ import { Container } from "../../../components/ui/Container";
 import { FollowButton } from "../../../components/ui/FollowButton";
 import { GetBackButton } from "../../../components/ui/GetBackButton";
 import { Heading } from "../../../components/ui/Heading";
-import { Layout } from "../../../components/ui/Layout";
 import { Slider } from "../../../components/ui/slider/Slider";
 import { api } from "../../../utils/api";
 
@@ -102,87 +101,85 @@ const OfferDetails = async ({ params }: { params: { id: string } }) => {
 	];
 
 	return (
-		<Layout>
-			<div className="grid grid-cols-[2fr,_1fr] gap-4 max-lg:grid-cols-1">
-				<div className="grid grid-cols-1 gap-4 max-lg:col-span-2">
-					<div className="relative grid gap-4">
-						<Slider images={offer.images} />
-						<GetBackButton />
-					</div>
-					<div className="grid grid-cols-1 gap-4 max-lg:grid-cols-1">
-						<Container>
-							<Heading className="pb-4">Description</Heading>
-
-							<p className="text-white">{offer.description}</p>
-						</Container>
-					</div>
+		<div className="grid grid-cols-[2fr,_1fr] gap-4 max-lg:grid-cols-1">
+			<div className="grid grid-cols-1 gap-4 max-lg:col-span-2">
+				<div className="relative grid gap-4">
+					<Slider images={offer.images} />
+					<GetBackButton />
+				</div>
+				<div className="grid grid-cols-1 gap-4 max-lg:grid-cols-1">
 					<Container>
-						<Heading className="pb-4">Similar offers</Heading>
+						<Heading className="pb-4">Description</Heading>
 
-						<SimilarOffers category={offer.category.name} />
+						<p className="text-white">{offer.description}</p>
 					</Container>
 				</div>
-				<div className="relative h-full w-full">
-					<div className="sticky top-[6rem] max-lg:col-span-2">
-						<div className="grid grid-cols-1 gap-4">
-							<Container>
-								<Heading className="pb-4">About offer</Heading>
-								<div className="flex flex-col gap-8">
-									<div className="flex flex-col gap-2">
-										<p className="flex items-center gap-2 text-sky-500">
-											<BiBadgeCheck className="text-xl" /> Item is Avaible
-										</p>
-										<h1 className="text-3xl text-white">{offer.name}</h1>
-										<p className="text-2xl font-bold text-white">{offer.price} USD</p>
-									</div>
+				<Container>
+					<Heading className="pb-4">Similar offers</Heading>
 
-									<div className="flex flex-col gap-4">
-										<div className="grid grid-cols-2 gap-4">
-											{offerParamsData.map((o) => {
-												return (
-													<OfferParams
-														key={o.title}
-														title={o.title}
-														type={o.type}
-														className={o.className}
-														icon={o.icon}
-													/>
-												);
-											})}
-										</div>
-									</div>
-									<div className="flex items-center gap-4">
-										<Button className="w-full">Buy</Button>
-										<FollowButton id={offer.id} />
-									</div>
-								</div>
-							</Container>
-
-							<Container className="flex flex-col gap-2">
-								<Heading className="pb-4">About seller</Heading>
-								<div className="flex flex-col gap-2 rounded-lg bg-sky-400/10 p-2 text-sky-600">
-									<Link href="/user" className="flex items-center gap-2 p-2">
-										<Image
-											src={offer.user.img}
-											width={50}
-											height={50}
-											alt={`Profile picture of ${offer.user.name} ${offer.user.surname}`}
-											className="h-[2.5rem] w-[2.5rem] rounded-[50%]"
-										/>
-										<p className="text-lg text-white">
-											{offer.user.name} {offer.user.surname}
-										</p>
-									</Link>
+					<SimilarOffers category={offer.category.name} />
+				</Container>
+			</div>
+			<div className="relative h-full w-full">
+				<div className="sticky top-[6rem] max-lg:col-span-2">
+					<div className="grid grid-cols-1 gap-4">
+						<Container>
+							<Heading className="pb-4">About offer</Heading>
+							<div className="flex flex-col gap-8">
+								<div className="flex flex-col gap-2">
 									<p className="flex items-center gap-2 text-sky-500">
-										<BiBadgeCheck className="text-xl" /> Verified seller
+										<BiBadgeCheck className="text-xl" /> Item is Avaible
 									</p>
+									<h1 className="text-3xl text-white">{offer.name}</h1>
+									<p className="text-2xl font-bold text-white">{offer.price} USD</p>
 								</div>
-							</Container>
-						</div>
+
+								<div className="flex flex-col gap-4">
+									<div className="grid grid-cols-2 gap-4">
+										{offerParamsData.map((o) => {
+											return (
+												<OfferParams
+													key={o.title}
+													title={o.title}
+													type={o.type}
+													className={o.className}
+													icon={o.icon}
+												/>
+											);
+										})}
+									</div>
+								</div>
+								<div className="flex items-center gap-4">
+									<Button className="w-full">Buy</Button>
+									<FollowButton id={offer.id} />
+								</div>
+							</div>
+						</Container>
+
+						<Container className="flex flex-col gap-2">
+							<Heading className="pb-4">About seller</Heading>
+							<div className="flex flex-col gap-2 rounded-lg bg-sky-400/10 p-2 text-sky-600">
+								<Link href="/user" className="flex items-center gap-2 p-2">
+									<Image
+										src={offer.user.img}
+										width={50}
+										height={50}
+										alt={`Profile picture of ${offer.user.name} ${offer.user.surname}`}
+										className="h-[2.5rem] w-[2.5rem] rounded-[50%]"
+									/>
+									<p className="text-lg text-white">
+										{offer.user.name} {offer.user.surname}
+									</p>
+								</Link>
+								<p className="flex items-center gap-2 text-sky-500">
+									<BiBadgeCheck className="text-xl" /> Verified seller
+								</p>
+							</div>
+						</Container>
 					</div>
 				</div>
 			</div>
-		</Layout>
+		</div>
 	);
 };
 

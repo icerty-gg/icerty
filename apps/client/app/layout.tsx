@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { Roboto } from "@next/font/google";
 import { Metadata } from "next";
+import { Roboto } from "next/font/google";
 import { Suspense } from "react";
 
 import { Providers } from "../components/Providers";
@@ -34,7 +34,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 							<div className="pointer-events-none absolute right-0 top-28 h-[50rem] w-[50rem] rounded-full bg-sky-500 opacity-10 blur-[250px]" />
 						</main>
 					</Suspense>
-					{/* <ToastContainer /> */}
 				</Providers>
 			</body>
 		</html>

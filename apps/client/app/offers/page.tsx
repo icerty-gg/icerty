@@ -8,7 +8,6 @@ import { Offer } from "../../components/offers/Offer";
 import { Container } from "../../components/ui/Container";
 import { EmptyContent } from "../../components/ui/EmptyContent";
 import { Heading } from "../../components/ui/Heading";
-import { Layout } from "../../components/ui/Layout";
 import { LoadingSpinner } from "../../components/ui/LoadingSpinner";
 import { useOffers } from "../../hooks/useOffers";
 import { useParams } from "../../hooks/useParams";
@@ -30,31 +29,29 @@ const Offers = () => {
 	}, [refetch, searchParams]);
 
 	return (
-		<Layout>
-			<div className="grid grid-cols-[1fr,_2fr] grid-rows-none gap-4 max-lg:grid-cols-1">
-				<Filter />
+		<div className="grid grid-cols-[1fr,_2fr] grid-rows-none gap-4 max-lg:grid-cols-1">
+			<Filter />
 
-				<Container>
-					<div className="flex items-center justify-center gap-4 pb-6">
-						<Heading>Offers</Heading>
-						<SearchFilter />
+			<Container>
+				<div className="flex items-center justify-center gap-4 pb-6">
+					<Heading>Offers</Heading>
+					<SearchFilter />
+				</div>
+				{isLoading || isFetching ? (
+					<div className="flex w-full items-center justify-center">
+						<LoadingSpinner size="w-10 h-10" />
 					</div>
-					{isLoading || isFetching ? (
-						<div className="flex w-full items-center justify-center">
-							<LoadingSpinner size="w-10 h-10" />
-						</div>
-					) : offers?.offers.length ? (
-						<ul className="sticky grid grid-cols-1 gap-4 backdrop-blur">
-							{offers?.offers.map((o) => {
-								return <Offer key={o.id} {...o} />;
-							})}
-						</ul>
-					) : (
-						<EmptyContent />
-					)}
-				</Container>
-			</div>
-		</Layout>
+				) : offers?.offers.length ? (
+					<ul className="sticky grid grid-cols-1 gap-4 backdrop-blur">
+						{offers?.offers.map((o) => {
+							return <Offer key={o.id} {...o} />;
+						})}
+					</ul>
+				) : (
+					<EmptyContent />
+				)}
+			</Container>
+		</div>
 	);
 };
 
