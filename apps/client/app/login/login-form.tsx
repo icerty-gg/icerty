@@ -36,8 +36,13 @@ export const LoginForm = () => {
 			queryClient.setQueryData(["user"], data);
 			notify("Successfully logged in", "success");
 		} catch (err) {
-			if (isAxiosError(err) && err.response?.status === 404) {
-				notify("Invalid credentials", "error");
+			if (isAxiosError(err) && err.response?.status === 401) {
+				form.setError("email", {
+					message: "Invalid email or password",
+				});
+				form.setError("password", {
+					message: "Invalid email or password",
+				});
 			} else {
 				notify("Internal server error!", "error");
 			}

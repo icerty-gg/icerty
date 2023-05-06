@@ -10,7 +10,7 @@ describe("Tests sessions routes", () => {
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
 				.send({ email: DEMO_USER.email, password: DEMO_USER.password })
-				.expect(404)
+				.expect(401)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
@@ -20,7 +20,7 @@ describe("Tests sessions routes", () => {
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
 				.send({ email: user.email, password: "Wrong password" })
-				.expect(404)
+				.expect(401)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 
@@ -30,7 +30,7 @@ describe("Tests sessions routes", () => {
 			await supertest(fastify.server)
 				.post("/api/sessions/login")
 				.send({ email: "Wrong.email@gmail.com", password: DEMO_USER.password })
-				.expect(404)
+				.expect(401)
 				.expect("Content-Type", "application/json; charset=utf-8");
 		});
 

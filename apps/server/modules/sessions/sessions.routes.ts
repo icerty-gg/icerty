@@ -22,7 +22,7 @@ const sessionsPlugin: FastifyPluginAsync = async (fastify) => {
 			});
 
 			if (!user || !(await comparePasswords(password, user.password))) {
-				throw reply.notFound("Invalid email or password!");
+				throw reply.unauthorized("Invalid email or password!");
 			}
 
 			request.session.user = { ...user, createdAt: user.createdAt.toISOString() };

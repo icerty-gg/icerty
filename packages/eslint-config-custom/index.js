@@ -31,6 +31,7 @@ module.exports = {
 
 		// react rules
 		"react/display-name": "off",
+		"react/no-unescaped-entities": "off",
 
 		// Fastify async plugins
 		"@typescript-eslint/require-await": "off",
