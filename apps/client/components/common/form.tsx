@@ -8,6 +8,7 @@ import {
 	UseFormReturn,
 } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import { BiErrorCircle } from "react-icons/bi";
 import { TypeOf, ZodSchema } from "zod";
 
 interface Props<T extends FieldValues> extends Omit<ComponentProps<"form">, "onSubmit"> {
@@ -41,3 +42,15 @@ export const useZodForm = <Z extends ZodSchema>({ schema, ...formProps }: UseZod
 		...formProps,
 		resolver: zodResolver(schema),
 	});
+
+interface ErrorMessageProps {
+	children: string;
+}
+
+export const ErrorMessage = ({ children }: ErrorMessageProps) => {
+	return (
+		<p className="flex items-center gap-2 text-sm font-medium text-red-400" role="alert">
+			<BiErrorCircle className="text-lg" /> {children}
+		</p>
+	);
+};

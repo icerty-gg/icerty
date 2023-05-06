@@ -6,5 +6,5 @@ interface Props {
 }
 
 export const Heading = ({ className, children }: Props) => (
-	<h2 className={twMerge("text-center text-2xl font-bold text-white", className)}>{children}</h2>
+	<h2 className={twMerge("text-center text-2xl font-bold text-black", className)}>{children}</h2>
 );

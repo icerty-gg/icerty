@@ -10,11 +10,12 @@ module.exports = {
 			fontFamily: {
 				sans: ["var(--font-inter)"],
 			},
-			keyframes: {
-				ripple: {
-					"0%": { width: "0", height: "0", opacity: "1" },
-					"100%": { width: "80rem", height: "80rem", opacity: "0" },
-				},
+			colors: {
+				primaryWhite: "#FFFEFF",
+				secondaryWhite: "#F7F8FB",
+				tertiaryWhite: "#F9F8FB",
+				gray: "#E2E0E2",
+				darkGray: "#817981",
 			},
 		},
 	},

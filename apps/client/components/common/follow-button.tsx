@@ -8,7 +8,7 @@ import { useUser } from "../../hooks/useUser";
 import { api } from "../../utils/api";
 import { notify } from "../../utils/notifications";
 
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner } from "./loading-spinner";
 
 interface Props {
 	className?: string;
@@ -61,7 +61,7 @@ export const FollowButton = ({ className, id }: Props) => {
 					className,
 				)}
 			>
-				<LoadingSpinner size="w-[18px] h-[18px]" />
+				<LoadingSpinner className="h-[18px] w-[18px]" />
 			</div>
 		);
 

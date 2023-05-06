@@ -5,7 +5,7 @@ import { Roboto } from "next/font/google";
 import { Suspense } from "react";
 
 import { Providers } from "../components/Providers";
-import { Navbar } from "../components/navbar/Navbar";
+import { Navbar } from "../components/navbar/navbar";
 
 import Loading from "./loading";
 
@@ -13,7 +13,7 @@ import type { ReactNode } from "react";
 
 const roboto = Roboto({
 	subsets: ["latin"],
-	weight: ["400", "700"],
+	weight: ["400", "500", "700"],
 	variable: "--font-inter",
 });
 
@@ -25,14 +25,11 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: ReactNode }) => {
 	return (
 		<html className={`${roboto.variable} font-sans`} lang="en">
-			<body className="relative bg-gray-900">
+			<body className="min-h-screen bg-secondaryWhite">
 				<Providers>
 					<Navbar />
 					<Suspense fallback={<Loading />}>
-						<main className="mx-auto my-0 w-full max-w-screen-2xl px-8 py-32 max-md:px-4">
-							{children}
-							<div className="pointer-events-none absolute right-0 top-28 h-[50rem] w-[50rem] rounded-full bg-sky-500 opacity-10 blur-[250px]" />
-						</main>
+						<main className="mx-auto flex h-full w-full max-w-screen-2xl">{children}</main>
 					</Suspense>
 				</Providers>
 			</body>

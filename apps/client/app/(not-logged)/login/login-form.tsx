@@ -3,12 +3,11 @@
 import { isAxiosError } from "axios";
 import { BiLockAlt, BiMailSend } from "react-icons/bi";
 
-import { Button } from "../../components/common/Button";
-import { Form, useZodForm } from "../../components/common/Form";
-import { Input } from "../../components/common/Input";
-import { useUser } from "../../hooks/useUser";
-import { SCHEMAS } from "../../utils/api";
-import { notify } from "../../utils/notifications";
+import { Form, useZodForm } from "../../../components/common/form";
+import { Input } from "../../../components/common/input";
+import { useUser } from "../../../hooks/useUser";
+import { SCHEMAS } from "../../../utils/api";
+import { notify } from "../../../utils/notifications";
 
 export const LoginForm = () => {
 	const { login } = useUser();
@@ -48,9 +47,9 @@ export const LoginForm = () => {
 				placeholder="Password"
 				{...form.register("password")}
 			/>
-			<Button className="text-sm" intent="secondary">
+			<button className="rounded-md bg-slate-200 px-4 py-2 font-medium text-black outline-none transition-colors hover:bg-slate-300 focus:bg-slate-300">
 				Login
-			</Button>
+			</button>
 		</Form>
 	);
 };

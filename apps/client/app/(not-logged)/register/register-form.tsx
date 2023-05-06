@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import { BiLockAlt, BiMailSend, BiUser } from "react-icons/bi";
 import { z } from "zod";
 
-import { Button } from "../../components/common/Button";
-import { Checkbox } from "../../components/common/Checkbox";
-import { Form, useZodForm } from "../../components/common/Form";
-import { Input } from "../../components/common/Input";
-import { SCHEMAS, api } from "../../utils/api";
-import { notify } from "../../utils/notifications";
+import { Checkbox } from "../../../components/common/checkbox";
+import { Form, useZodForm } from "../../../components/common/form";
+import { Input } from "../../../components/common/input";
+import { SCHEMAS, api } from "../../../utils/api";
+import { notify } from "../../../utils/notifications";
 
 const RegisterSchema = SCHEMAS.postApiusersregister_Body
 	.extend({
@@ -96,7 +95,9 @@ export const RegisterForm = () => {
 				<Checkbox {...form.register("acceptPolicy")}>I Accept the Terms of Service</Checkbox>
 			</div>
 
-			<Button className="col-span-2 text-sm">Register</Button>
+			<button className="col-span-2 rounded-md bg-slate-200 px-4 py-2 font-medium text-black outline-none transition-colors hover:bg-slate-300 focus:bg-slate-300">
+				Register
+			</button>
 		</Form>
 	);
 };
