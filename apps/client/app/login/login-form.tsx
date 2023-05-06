@@ -14,6 +14,8 @@ import { notify } from "../../utils/notifications";
 import type { Api } from "../../utils/api";
 import type { ZodiosBodyByPath } from "@zodios/core";
 
+type User = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
+
 export const LoginForm = () => {
 	const queryClient = useQueryClient();
 	const router = useRouter();
@@ -42,7 +44,6 @@ export const LoginForm = () => {
 		}
 	});
 
-	type User = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
 	return (
 		<Form form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
 			<Input

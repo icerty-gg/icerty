@@ -1,31 +1,23 @@
-import { toast } from "react-toastify";
+import { ToastOptions, toast } from "react-toastify";
 
-export const notify = (text: string, type: string) => {
+const defaultOptions: ToastOptions = {
+	position: "top-right",
+	autoClose: 1000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: false,
+	theme: "colored",
+};
+
+export const notify = (text: string, type: "success" | "error") => {
 	switch (type) {
 		case "success":
-			toast.success(text, {
-				position: "top-right",
-				autoClose: 1000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: false,
-				progress: undefined,
-				theme: "colored",
-			});
+			toast.success(text, defaultOptions);
 			break;
 
 		case "error":
-			toast.error(text, {
-				position: "top-right",
-				autoClose: 1000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: false,
-				progress: undefined,
-				theme: "colored",
-			});
+			toast.error(text, defaultOptions);
 			break;
 	}
 };
