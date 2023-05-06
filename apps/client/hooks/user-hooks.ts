@@ -7,27 +7,37 @@ import { notify } from "../utils/notifications";
 
 const USER_QUERY_KEY = "user";
 
-type UserLoginData = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
-
 export const useUser = () => {
-	const router = useRouter();
-	const queryClient = useQueryClient();
 	const userQuery = useQuery({
 		queryKey: [USER_QUERY_KEY],
 		queryFn: () => api.get("/api/sessions/me"),
 		staleTime: Infinity,
-		refetchOnWindowFocus: false,
-		// Do not refetch after user is unauthorized on first load - query that errors is never stale
 	});
 
+	return userQuery;
+};
+
+type LoginData = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
+
+export const useLogin = () => {
+	const router = useRouter();
+	const queryClient = useQueryClient();
+
 	const { mutateAsync: login } = useMutation({
-		mutationFn: (data: UserLoginData) => api.post("/api/sessions/login", data),
+		mutationFn: (data: LoginData) => api.post("/api/sessions/login", data),
 		onSuccess: async (user) => {
 			queryClient.setQueryData([USER_QUERY_KEY], user);
 			notify("Successfully logged in", "success");
 			router.push("/");
 		},
 	});
+
+	return login;
+};
+
+export const useLogout = () => {
+	const router = useRouter();
+	const queryClient = useQueryClient();
 
 	const { mutate: logout } = useMutation({
 		mutationFn: () => api.post("/api/sessions/logout", undefined),
@@ -38,5 +48,5 @@ export const useUser = () => {
 		},
 	});
 
-	return { userQuery, logout, login };
+	return logout;
 };

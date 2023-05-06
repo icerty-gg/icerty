@@ -3,15 +3,15 @@
 import { isAxiosError } from "axios";
 import { BiLockAlt, BiMailSend } from "react-icons/bi";
 
+import { DEFAULT_ERROR_MESSAGE } from "../../../components/Providers";
 import { Form, useZodForm } from "../../../components/common/form";
 import { Input } from "../../../components/common/input";
-import { useUser } from "../../../hooks/useUser";
+import { useLogin } from "../../../hooks/user-hooks";
 import { SCHEMAS } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";
 
 export const LoginForm = () => {
-	const { login } = useUser();
-
+	const login = useLogin();
 	const form = useZodForm({
 		schema: SCHEMAS.postApisessionslogin_Body,
 	});
@@ -28,7 +28,7 @@ export const LoginForm = () => {
 					message: "Invalid email or password",
 				});
 			} else {
-				notify("Internal server error", "error");
+				notify(DEFAULT_ERROR_MESSAGE, "error");
 			}
 		}
 	});

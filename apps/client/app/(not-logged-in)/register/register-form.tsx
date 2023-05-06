@@ -1,14 +1,17 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
+import { ZodiosBodyByPath } from "@zodios/core";
 import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { BiLockAlt, BiMailSend, BiUser } from "react-icons/bi";
 import { z } from "zod";
 
+import { DEFAULT_ERROR_MESSAGE } from "../../../components/Providers";
 import { Checkbox } from "../../../components/common/checkbox";
 import { Form, useZodForm } from "../../../components/common/form";
 import { Input } from "../../../components/common/input";
-import { SCHEMAS, api } from "../../../utils/api";
+import { Api, SCHEMAS, api } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";
 
 const RegisterSchema = SCHEMAS.postApiusersregister_Body
@@ -31,16 +34,20 @@ const RegisterSchema = SCHEMAS.postApiusersregister_Body
 		}
 	});
 
+type RegisterData = ZodiosBodyByPath<Api, "post", "/api/users/register">;
+
 export const RegisterForm = () => {
 	const router = useRouter();
-
+	const { mutateAsync: register } = useMutation({
+		mutationFn: (data: RegisterData) => api.post("/api/users/register", data),
+	});
 	const form = useZodForm({
 		schema: RegisterSchema,
 	});
 
 	const onSubmit = form.handleSubmit(async ({ email, surname, name, password }) => {
 		try {
-			await api.post("/api/users/register", { email, surname, name, password });
+			await register({ email, surname, name, password });
 
 			router.push("/login");
 			notify("Successfully created account!", "success");
@@ -50,7 +57,7 @@ export const RegisterForm = () => {
 					message: "This email is already taken",
 				});
 			} else {
-				notify("Internal server error", "error");
+				notify(DEFAULT_ERROR_MESSAGE, "error");
 			}
 		}
 	});

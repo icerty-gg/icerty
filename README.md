@@ -9,6 +9,7 @@
 - [x] Backend integration and unit tests
 - [x] Refactor frontend login/signup pages to use useZodForm
 - [x] Home page server side offers search
+- [ ] Settings page (change password, delete account, etc)
 
 ## Technologies
 

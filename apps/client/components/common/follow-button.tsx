@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { twMerge } from "tailwind-merge";
 
-import { useUser } from "../../hooks/useUser";
+import { useUser } from "../../hooks/user-hooks";
 import { api } from "../../utils/api";
 import { notify } from "../../utils/notifications";
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const FollowButton = ({ className, id }: Props) => {
-	const { userQuery } = useUser();
+	const userQuery = useUser();
 
 	const { data, refetch } = useQuery({
 		queryFn: () => api.get("/api/offers/", { queries: { followed: true } }),

@@ -8,6 +8,8 @@ import { ToastContainer } from "react-toastify";
 import type { QueryOptions } from "@tanstack/react-query";
 import type { ReactNode } from "react";
 
+export const DEFAULT_ERROR_MESSAGE = "Something went wrong";
+
 const customRetry: QueryOptions["retry"] = (failureCount, error) => {
 	if (failureCount > 3) {
 		return false;

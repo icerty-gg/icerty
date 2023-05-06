@@ -5,10 +5,11 @@ import Link from "next/link";
 import { CiDollar, CiHeart, CiLogout, CiStar, CiUser } from "react-icons/ci";
 import { twMerge } from "tailwind-merge";
 
-import { useUser } from "../../hooks/useUser";
+import { useLogout, useUser } from "../../hooks/user-hooks";
 
 export const ProfileIcon = () => {
-	const { userQuery, logout } = useUser();
+	const logout = useLogout();
+	const userQuery = useUser();
 
 	return (
 		<div>
@@ -47,7 +48,7 @@ export const ProfileIcon = () => {
 									href="/settings"
 								>
 									<CiUser className="text-2xl" />
-									Account
+									Account settings
 								</Link>
 							</li>
 							<li>
