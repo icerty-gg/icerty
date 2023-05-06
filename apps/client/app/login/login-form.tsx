@@ -1,28 +1,17 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import { useRouter } from "next/navigation";
 import { BiLockAlt, BiMailSend } from "react-icons/bi";
 
 import { Button } from "../../components/common/Button";
 import { Form, useZodForm } from "../../components/common/Form";
 import { Input } from "../../components/common/Input";
-import { SCHEMAS, api } from "../../utils/api";
+import { useUser } from "../../hooks/useUser";
+import { SCHEMAS } from "../../utils/api";
 import { notify } from "../../utils/notifications";
 
-import type { Api } from "../../utils/api";
-import type { ZodiosBodyByPath } from "@zodios/core";
-
-type User = ZodiosBodyByPath<Api, "post", "/api/sessions/login">;
-
 export const LoginForm = () => {
-	const queryClient = useQueryClient();
-	const router = useRouter();
-
-	const { mutateAsync: login } = useMutation({
-		mutationFn: (data: User) => api.post("/api/sessions/login", data),
-	});
+	const { login } = useUser();
 
 	const form = useZodForm({
 		schema: SCHEMAS.postApisessionslogin_Body,
@@ -31,10 +20,6 @@ export const LoginForm = () => {
 	const onSubmit = form.handleSubmit(async (data) => {
 		try {
 			await login(data);
-
-			router.push("/");
-			queryClient.setQueryData(["user"], data);
-			notify("Successfully logged in", "success");
 		} catch (err) {
 			if (isAxiosError(err) && err.response?.status === 401) {
 				form.setError("email", {

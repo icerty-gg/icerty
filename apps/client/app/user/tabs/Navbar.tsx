@@ -1,9 +1,7 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import {
 	CiHeart,
@@ -23,8 +21,6 @@ import { LoadingSpinner } from "../../../components/ui/LoadingSpinner";
 import { useCheckScroll } from "../../../hooks/useCheckScroll";
 import { useUser } from "../../../hooks/useUser";
 import Logotype from "../../../public/logo.svg";
-import { api } from "../../../utils/api";
-import { notify } from "../../../utils/notifications";
 
 import type { ReactNode } from "react";
 
@@ -99,23 +95,9 @@ const NavbarLink = ({ href, icon, isSmallerNavbar, title }: NavbarLinkProps) => 
 };
 
 export const Navbar = () => {
-	const queryClient = useQueryClient();
-	const router = useRouter();
-	const { isLoading, user } = useUser();
+	const { isLoading, user, logout } = useUser();
 	const isSmallerNavbar = useCheckScroll(80);
 	const navbarRef = useRef<HTMLElement | null>(null);
-
-	const { isLoading: logoutLoading, mutate: logout } = useMutation({
-		mutationFn: () => api.post("/api/sessions/logout", undefined),
-		onSuccess: () => {
-			router.push("/");
-			queryClient.setQueryData(["user"], null);
-			notify("Successfully logout", "success");
-		},
-		onError: () => {
-			notify("Error", "error");
-		},
-	});
 
 	return (
 		<>
@@ -210,13 +192,7 @@ export const Navbar = () => {
 											"flex items-center justify-center gap-2 rounded-full border border-slate-800 bg-sky-400/10 px-10  py-[0.5rem] text-center text-sm text-sky-600 transition-all hover:border-sky-500 hover:bg-sky-400/20",
 										)}
 									>
-										{logoutLoading ? (
-											<LoadingSpinner size="w-[18px] h-[18px]" />
-										) : (
-											<>
-												<CiLogout className="text-xl" /> <span>Logout</span>
-											</>
-										)}
+										<CiLogout className="text-xl" /> <span>Logout</span>
 									</button>
 								</div>
 							</div>
