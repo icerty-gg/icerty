@@ -3,6 +3,10 @@ import { LoggedRoute } from "../../../components/common/logged-route";
 
 import { SettingsForm } from "./settings-form";
 
+export const metadata = {
+	title: "Settings",
+};
+
 const SettingsPage = () => {
 	return (
 		<LoggedRoute>

@@ -5,6 +5,10 @@ import { UnloggedRoute } from "../../../components/common/unlogged-route";
 
 import { RegisterForm } from "./register-form";
 
+export const metadata = {
+	title: "Register",
+};
+
 const RegisterPage = () => {
 	return (
 		<UnloggedRoute>

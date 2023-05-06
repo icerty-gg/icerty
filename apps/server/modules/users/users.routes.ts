@@ -73,7 +73,12 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				const { newPassword, oldPassword } = request.body;
 				const { user } = request.session;
 
-				if (!(await comparePasswords(oldPassword, user.password))) {
+				const currentUser = await fastify.prisma.user.findFirstOrThrow({
+					where: { id: user.id },
+				});
+
+				// Compare password from actual db not from session because when user changes password session pass is not updated
+				if (!(await comparePasswords(oldPassword, currentUser.password))) {
 					throw reply.conflict("Invalid old password provided!");
 				}
 

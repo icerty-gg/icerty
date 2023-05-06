@@ -12,6 +12,10 @@ interface Props {
 	searchParams: { [key: string]: string | string[] | undefined };
 }
 
+export const metadata = {
+	title: "Browse offers",
+};
+
 const HomePage = async ({ searchParams }: Props) => {
 	const { offers } = await api.get("/api/offers/", {
 		queries: {
