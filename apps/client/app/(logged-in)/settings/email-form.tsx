@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ZodiosBodyByPath } from "@zodios/core";
-import { BiLockAlt } from "react-icons/bi";
+import { BiMailSend } from "react-icons/bi";
 import { z } from "zod";
 
 import { Form, useZodForm } from "../../../components/common/form";
@@ -44,7 +44,7 @@ export const EmailForm = () => {
 	return (
 		<Form form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
 			<Input
-				icon={<BiLockAlt className="text-lg" />}
+				icon={<BiMailSend className="text-lg" />}
 				type="email"
 				placeholder="Email"
 				{...form.register("email")}

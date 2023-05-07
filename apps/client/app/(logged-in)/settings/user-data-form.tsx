@@ -1,45 +1,58 @@
-// "use client";
+"use client";
 
-// import { useMutation } from "@tanstack/react-query";
-// import { ZodiosBodyByPath } from "@zodios/core";
-// import { isAxiosError } from "axios";
-// import { BiLockAlt } from "react-icons/bi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { BiLockAlt } from "react-icons/bi";
+import { z } from "zod";
 
-// import { Form, useZodForm } from "../../../components/common/form";
-// import { Input } from "../../../components/common/input";
-// import { DEFAULT_ERROR_MESSAGE } from "../../../components/providers";
-// import { Api, SCHEMAS, api } from "../../../utils/api";
-// import { notify } from "../../../utils/notifications";
+import { Form, useZodForm } from "../../../components/common/form";
+import { Input } from "../../../components/common/input";
+import { useUserCtx } from "../../../components/common/logged-route";
+import { USER_QUERY_KEY } from "../../../hooks/user-hooks";
+import { api } from "../../../utils/api";
+import { notify } from "../../../utils/notifications";
 
-// type ChanePasswordData = ZodiosBodyByPath<Api, "put", "/api/users/password">;
+export const UserDataForm = () => {
+	const user = useUserCtx();
+	const queryClient = useQueryClient();
+	const router = useRouter();
 
-// export const PasswordForm = () => {
-// 	const { mutateAsync: changePassword } = useMutation({
-// 		mutationFn: (data: ChanePasswordData) => api.put("/api/users/password", data),
-// 	});
+	const { mutate: deleteMyAccount } = useMutation({
+		mutationFn: () => api.delete("/api/users/me", undefined),
+		onSuccess: () => {
+			queryClient.setQueryData([USER_QUERY_KEY], null);
+			notify("Account deleted", "success");
+			router.push("/");
+		},
+	});
 
-// 	const form = useZodForm({
-// 		schema: SCHEMAS.putApiuserspassword_Body,
-// 	});
+	const form = useZodForm({
+		schema: z.object({
+			name: z.string(),
+			surname: z.string(),
+			createdAt: z.string(),
+		}),
+		defaultValues: {
+			name: user.name,
+			surname: user.surname,
+			createdAt: user.createdAt,
+		},
+	});
 
-// 	return (
-// 		<Form form={form}   className="flex flex-col gap-6">
-// 			<Input
-// 				icon={<BiLockAlt className="text-lg" />}
-// 				type="password"
-// 				placeholder="Old password"
-// 				{...form.register("oldPassword")}
-// 			/>
-// 			<Input
-// 				icon={<BiLockAlt className="text-lg" />}
-// 				type="password"
-// 				placeholder="New password"
-// 				{...form.register("newPassword")}
-// 			/>
+	return (
+		<>
+			<Form form={form} manuallyDisabled className="flex flex-col gap-6">
+				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("name")} />
+				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("surname")} />
+				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("createdAt")} />
+			</Form>
 
-// 			<button className="rounded-md bg-slate-200 px-4 py-2 font-medium text-black outline-none transition-colors hover:bg-slate-300 focus:bg-slate-300">
-// 				Change password
-// 			</button>
-// 		</Form>
-// 	);
-// };
+			<button
+				className="rounded-md bg-red-400 px-4 py-2 font-medium text-white outline-none transition-colors hover:bg-red-500 focus:bg-red-500"
+				onClick={() => deleteMyAccount()}
+			>
+				Delete my account
+			</button>
+		</>
+	);
+};

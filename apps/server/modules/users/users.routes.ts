@@ -39,6 +39,7 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 			{ schema: deleteCurrentUserSchema, preValidation: fastify.auth() },
 			async (request, reply) => {
 				await fastify.prisma.user.delete({ where: { id: request.session.user.id } });
+				await request.session.destroy();
 
 				return reply.code(204).send();
 			},

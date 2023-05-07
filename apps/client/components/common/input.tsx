@@ -12,23 +12,23 @@ import { ErrorMessage } from "./form";
 import type { ComponentProps } from "react";
 
 interface Props extends ComponentProps<"input"> {
-	name: string;
+	name?: string;
 	icon: JSX.Element;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(({ icon, className, ...props }, ref) => {
 	const [isVisible, toggleIsVisible] = useToggle();
 	const form = useFormContext();
-	const state = form.getFieldState(props.name);
+	const state = props.name ? form.getFieldState(props.name) : null;
 
 	return (
 		<div className={twMerge("flex w-full flex-col gap-3", className)}>
 			<div className="relative flex items-center">
 				<input
-					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
+					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray disabled:bg-gray/30"
 					{...props}
 					type={isVisible ? "text" : props.type}
-					aria-invalid={state.error?.message ? "true" : "false"}
+					aria-invalid={!state ? "false" : state.error?.message ? "true" : "false"}
 					id={props.name}
 					ref={ref}
 				/>
@@ -55,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({ icon, className, ...
 				</label>
 			</div>
 
-			{state.error?.message && <ErrorMessage>{state.error.message}</ErrorMessage>}
+			{state?.error?.message && <ErrorMessage>{state.error.message}</ErrorMessage>}
 		</div>
 	);
 });

@@ -36,7 +36,7 @@ model Offer {
   isPromoted     Boolean          @default(false)
   city           String
   condition      condition
-  user           User             @relation(fields: [userId], references: [id])
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   category       Category         @relation(fields: [categoryId], references: [id])
   offerImage     OfferImage[]
   followedOffers FollowedOffers[]
@@ -64,8 +64,8 @@ model FollowedOffers {
   id      String @id @default(uuid())
   offerId String
   userId  String
-  user    User   @relation(fields: [userId], references: [id])
-  offer   Offer  @relation(fields: [offerId], references: [id])
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  offer   Offer  @relation(fields: [offerId], references: [id], onDelete: Cascade)
 }
 
 enum role {
