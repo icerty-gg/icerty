@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Api, api } from "../utils/api";
 import { notify } from "../utils/notifications";
 
-const USER_QUERY_KEY = "user";
+export const USER_QUERY_KEY = "user";
 
 export const useUser = () => {
 	const userQuery = useQuery({

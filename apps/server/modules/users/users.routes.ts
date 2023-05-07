@@ -73,12 +73,7 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 				const { newPassword, oldPassword } = request.body;
 				const { user } = request.session;
 
-				const currentUser = await fastify.prisma.user.findFirstOrThrow({
-					where: { id: user.id },
-				});
-
-				// Compare password from actual db not from session because when user changes password session pass is not updated
-				if (!(await comparePasswords(oldPassword, currentUser.password))) {
+				if (!(await comparePasswords(oldPassword, user.password))) {
 					throw reply.conflict("Invalid old password provided!");
 				}
 
@@ -91,6 +86,9 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 					},
 				});
 
+				// Update password in the current session
+				request.session.user = { ...user, password: hashedPassword };
+
 				return reply.code(204).send();
 			},
 		);
@@ -102,6 +100,7 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 			{ schema: updateEmailSchema, preValidation: fastify.auth() },
 			async (request, reply) => {
 				const { email } = request.body;
+				const { user } = request.session;
 
 				await fastify.prisma.user.update({
 					where: { id: request.session.user.id },
@@ -109,6 +108,9 @@ const usersPlugin: FastifyPluginAsync = async (fastify) => {
 						email,
 					},
 				});
+
+				// Update email in the current session
+				request.session.user = { ...user, email };
 
 				return reply.code(204).send();
 			},

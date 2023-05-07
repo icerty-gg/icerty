@@ -3,9 +3,9 @@
 import { isAxiosError } from "axios";
 import { BiLockAlt, BiMailSend } from "react-icons/bi";
 
-import { DEFAULT_ERROR_MESSAGE } from "../../../components/Providers";
 import { Form, useZodForm } from "../../../components/common/form";
 import { Input } from "../../../components/common/input";
+import { DEFAULT_ERROR_MESSAGE } from "../../../components/providers";
 import { useLogin } from "../../../hooks/user-hooks";
 import { SCHEMAS } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";

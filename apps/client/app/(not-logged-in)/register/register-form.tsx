@@ -7,10 +7,10 @@ import { useRouter } from "next/navigation";
 import { BiLockAlt, BiMailSend, BiUser } from "react-icons/bi";
 import { z } from "zod";
 
-import { DEFAULT_ERROR_MESSAGE } from "../../../components/Providers";
 import { Checkbox } from "../../../components/common/checkbox";
 import { Form, useZodForm } from "../../../components/common/form";
 import { Input } from "../../../components/common/input";
+import { DEFAULT_ERROR_MESSAGE } from "../../../components/providers";
 import { Api, SCHEMAS, api } from "../../../utils/api";
 import { notify } from "../../../utils/notifications";
 

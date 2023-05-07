@@ -1,4 +1,4 @@
-import { makeApi, Zodios } from "@zodios/core";
+import { makeApi, Zodios, type ZodiosOptions } from "@zodios/core";
 import { z } from "zod";
 
 const postApisessionslogin_Body = z.object({
@@ -8,9 +8,9 @@ const postApisessionslogin_Body = z.object({
 const postApioffers_Body = z.object({
 	name: z.string().min(8).max(50),
 	description: z.string().min(50).max(1500),
-	categoryId: z.string(),
 	count: z.number().gte(1),
 	price: z.number().gte(1),
+	categoryId: z.string(),
 	city: z.string().min(3).max(50),
 	condition: z.enum(["new", "used"]),
 	images: z.array(
@@ -23,16 +23,18 @@ const postApioffers_Body = z.object({
 		}),
 	),
 });
-const putApioffersId_Body = z.object({
-	name: z.string().min(8).max(50),
-	description: z.string().min(50).max(1500),
-	categoryId: z.string(),
-	count: z.number().gte(1),
-	price: z.number().gte(1),
-	isPromoted: z.boolean(),
-	city: z.string().min(3).max(50),
-	condition: z.enum(["new", "used"]),
-});
+const putApioffersId_Body = z
+	.object({
+		name: z.string().min(8).max(50),
+		description: z.string().min(50).max(1500),
+		count: z.number().gte(1),
+		price: z.number().gte(1),
+		categoryId: z.string(),
+		isPromoted: z.boolean(),
+		city: z.string().min(3).max(50),
+		condition: z.enum(["new", "used"]),
+	})
+	.partial();
 const postApicategories_Body = z.object({
 	name: z.string().min(3),
 	img: z.array(
@@ -45,11 +47,10 @@ const postApicategories_Body = z.object({
 		}),
 	),
 });
-const putApicategoriesId_Body = z.object({ name: z.string().min(3), img: z.string() });
 const postApiusersregister_Body = z.object({
+	email: z.string().email(),
 	name: z.string().min(3).max(16),
 	surname: z.string().min(3).max(20),
-	email: z.string().email(),
 	password: z.string().min(8).max(20),
 });
 const putApiuserspassword_Body = z.object({
@@ -62,7 +63,6 @@ export const schemas = {
 	postApioffers_Body,
 	putApioffersId_Body,
 	postApicategories_Body,
-	putApicategoriesId_Body,
 	postApiusersregister_Body,
 	putApiuserspassword_Body,
 };
@@ -124,7 +124,7 @@ const endpoints = makeApi([
 			{
 				name: "body",
 				type: "Body",
-				schema: putApicategoriesId_Body,
+				schema: z.object({ name: z.string().min(3) }),
 			},
 			{
 				name: "id",
@@ -206,9 +206,17 @@ const endpoints = makeApi([
 			},
 		],
 		response: z.object({
-			maxPage: z.number(),
+			maxPage: z.number().gte(0),
 			offers: z.array(
 				z.object({
+					image: z.string(),
+					user: z.object({
+						name: z.string().min(3).max(16),
+						surname: z.string().min(3).max(20),
+						img: z.string(),
+					}),
+					categoryName: z.string().min(3),
+					isFollowed: z.boolean(),
 					id: z.string(),
 					name: z.string().min(8).max(50),
 					description: z.string().min(50).max(1500),
@@ -219,17 +227,9 @@ const endpoints = makeApi([
 					createdAt: z.string(),
 					city: z.string().min(3).max(50),
 					condition: z.enum(["new", "used"]),
-					image: z.string(),
-					user: z.object({
-						name: z.string().min(3).max(16),
-						surname: z.string().min(3).max(20),
-						img: z.string(),
-					}),
-					isFollowed: z.boolean(),
-					categoryName: z.string().min(3),
 				}),
 			),
-			count: z.number(),
+			count: z.number().gte(0),
 		}),
 	},
 	{
@@ -450,6 +450,6 @@ const endpoints = makeApi([
 
 export const api = new Zodios(endpoints);
 
-export function createApiClient(baseUrl: string) {
-	return new Zodios(baseUrl, endpoints);
+export function createApiClient(baseUrl: string, options?: ZodiosOptions) {
+	return new Zodios(baseUrl, endpoints, options);
 }

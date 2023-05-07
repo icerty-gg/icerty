@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Suspense } from "react";
 
-import { Providers } from "../components/Providers";
 import { Navbar } from "../components/navbar/navbar";
+import { Providers } from "../components/providers";
 
 import Loading from "./loading";
 
