@@ -10,7 +10,7 @@
 - [x] Refactor frontend login/signup pages to use useZodForm
 - [x] Home page server side offers search
 - [x] Settings page (change password, delete account, etc)
-- [ ] Home page offers filtering, sorting and pagination 
+- [ ] Home page offers filtering, sorting and pagination
 
 ## Technologies
 

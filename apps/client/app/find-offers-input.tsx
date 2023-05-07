@@ -32,7 +32,7 @@ export const FindOffersInput = () => {
 				id="searchOfferInput"
 				placeholder="Search"
 				onChange={handleSearch}
-				className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black"
+				className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
 			/>
 			<label className="absolute left-4" htmlFor="searchOfferInput">
 				<BiSearchAlt2 className="text-2xl text-gray" />

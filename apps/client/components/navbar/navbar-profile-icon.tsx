@@ -12,7 +12,7 @@ export const ProfileIcon = () => {
 	const userQuery = useUser();
 
 	return (
-		<div>
+		<>
 			{userQuery.data ? (
 				<div className="group relative">
 					<Link href="/settings">
@@ -104,6 +104,6 @@ export const ProfileIcon = () => {
 					</Link>
 				</div>
 			)}
-		</div>
+		</>
 	);
 };

@@ -12,6 +12,8 @@ export const useUser = () => {
 		queryKey: [USER_QUERY_KEY],
 		queryFn: () => api.get("/api/sessions/me"),
 		staleTime: Infinity,
+		refetchOnWindowFocus: false,
+		// Do not refetch on windows focus after user is unauthorized after first load -- data is never stale when it's error
 	});
 
 	return userQuery;
@@ -25,8 +27,8 @@ export const useLogin = () => {
 
 	const { mutateAsync: login } = useMutation({
 		mutationFn: (data: LoginData) => api.post("/api/sessions/login", data),
-		onSuccess: async (user) => {
-			queryClient.setQueryData([USER_QUERY_KEY], user);
+		onSuccess: (data) => {
+			queryClient.setQueryData([USER_QUERY_KEY], () => data);
 			notify("Successfully logged in", "success");
 			router.push("/");
 		},
@@ -41,12 +43,28 @@ export const useLogout = () => {
 
 	const { mutate: logout } = useMutation({
 		mutationFn: () => api.post("/api/sessions/logout", undefined),
-		onSuccess: async () => {
-			queryClient.setQueryData([USER_QUERY_KEY], null);
+		onSuccess: () => {
+			queryClient.setQueryData([USER_QUERY_KEY], () => null);
 			notify("Logged out", "success");
 			router.push("/");
 		},
 	});
 
 	return logout;
+};
+
+export const useDeleteMyAccount = () => {
+	const queryClient = useQueryClient();
+	const router = useRouter();
+
+	const { mutate: deleteMyAccount } = useMutation({
+		mutationFn: () => api.delete("/api/users/me", undefined),
+		onSuccess: () => {
+			queryClient.setQueryData([USER_QUERY_KEY], null);
+			notify("Account deleted", "success");
+			router.push("/");
+		},
+	});
+
+	return deleteMyAccount;
 };

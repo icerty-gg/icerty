@@ -1,30 +1,16 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { BiLockAlt } from "react-icons/bi";
 import { z } from "zod";
 
 import { Form, useZodForm } from "../../../components/common/form";
 import { Input } from "../../../components/common/input";
 import { useUserCtx } from "../../../components/common/logged-route";
-import { USER_QUERY_KEY } from "../../../hooks/user-hooks";
-import { api } from "../../../utils/api";
-import { notify } from "../../../utils/notifications";
+import { useDeleteMyAccount } from "../../../hooks/user-hooks";
 
 export const UserDataForm = () => {
 	const user = useUserCtx();
-	const queryClient = useQueryClient();
-	const router = useRouter();
-
-	const { mutate: deleteMyAccount } = useMutation({
-		mutationFn: () => api.delete("/api/users/me", undefined),
-		onSuccess: () => {
-			queryClient.setQueryData([USER_QUERY_KEY], null);
-			notify("Account deleted", "success");
-			router.push("/");
-		},
-	});
+	const deleteMyAccount = useDeleteMyAccount();
 
 	const form = useZodForm({
 		schema: z.object({
@@ -35,7 +21,7 @@ export const UserDataForm = () => {
 		defaultValues: {
 			name: user.name,
 			surname: user.surname,
-			createdAt: user.createdAt,
+			createdAt: new Date(user.createdAt).toUTCString(),
 		},
 	});
 
