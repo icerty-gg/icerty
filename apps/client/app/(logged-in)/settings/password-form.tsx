@@ -41,12 +41,14 @@ export const PasswordForm = () => {
 	return (
 		<Form form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
 			<Input
+				label="Current password"
 				icon={<BiLockAlt className="text-lg" />}
 				type="password"
-				placeholder="Old password"
+				placeholder="Current password"
 				{...form.register("oldPassword")}
 			/>
 			<Input
+				label="New password"
 				icon={<BiLockAlt className="text-lg" />}
 				type="password"
 				placeholder="New password"

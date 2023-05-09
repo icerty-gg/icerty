@@ -65,12 +65,14 @@ export const RegisterForm = () => {
 	return (
 		<Form form={form} onSubmit={onSubmit} className="grid grid-cols-2 gap-6">
 			<Input
+				label="First name"
 				className="max-md:col-span-2"
 				icon={<BiUser className="text-lg" />}
 				placeholder="First name"
 				{...form.register("name")}
 			/>
 			<Input
+				label="Last name"
 				className="max-md:col-span-2"
 				icon={<BiUser className="text-lg" />}
 				type="text"
@@ -78,6 +80,7 @@ export const RegisterForm = () => {
 				{...form.register("surname")}
 			/>
 			<Input
+				label="Email"
 				className="col-span-2"
 				icon={<BiMailSend className="text-lg" />}
 				type="email"
@@ -85,6 +88,7 @@ export const RegisterForm = () => {
 				{...form.register("email")}
 			/>
 			<Input
+				label="Password"
 				className="col-span-2"
 				icon={<BiLockAlt className="text-lg" />}
 				type="password"
@@ -92,6 +96,7 @@ export const RegisterForm = () => {
 				{...form.register("password")}
 			/>
 			<Input
+				label="Repeat password"
 				className="col-span-2"
 				icon={<BiLockAlt className="text-lg" />}
 				type="password"

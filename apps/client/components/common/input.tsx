@@ -14,6 +14,7 @@ import type { ComponentProps } from "react";
 interface Props extends ComponentProps<"input"> {
 	name?: string;
 	icon: JSX.Element;
+	label: string;
 }
 
 export const Input = forwardRef<HTMLInputElement, Props>(({ icon, className, ...props }, ref) => {
@@ -22,7 +23,8 @@ export const Input = forwardRef<HTMLInputElement, Props>(({ icon, className, ...
 	const state = props.name ? form.getFieldState(props.name) : null;
 
 	return (
-		<div className={twMerge("flex w-full flex-col gap-3", className)}>
+		<div className={twMerge("flex w-full flex-col gap-2", className)}>
+			<label htmlFor={props.name}>{props.label}</label>
 			<div className="relative flex items-center">
 				<input
 					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray disabled:bg-gray/30"
@@ -50,9 +52,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(({ icon, className, ...
 							<AiOutlineEye />
 						</button>
 					))}
-				<label className="absolute left-4" htmlFor={props.name}>
-					{icon}
-				</label>
+				<span className="absolute left-4">{icon}</span>
 			</div>
 
 			{state?.error?.message && <ErrorMessage>{state.error.message}</ErrorMessage>}

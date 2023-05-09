@@ -36,12 +36,14 @@ export const LoginForm = () => {
 	return (
 		<Form form={form} onSubmit={onSubmit} className="flex flex-col gap-6">
 			<Input
+				label="Email"
 				icon={<BiMailSend className="text-lg" />}
 				type="email"
 				placeholder="Email"
 				{...form.register("email")}
 			/>
 			<Input
+				label="Password"
 				icon={<BiLockAlt className="text-lg" />}
 				type="password"
 				placeholder="Password"

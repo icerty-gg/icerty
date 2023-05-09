@@ -28,9 +28,17 @@ export const UserDataForm = () => {
 	return (
 		<>
 			<Form form={form} manuallyDisabled className="flex flex-col gap-6">
-				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("name")} />
-				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("surname")} />
-				<Input icon={<BiLockAlt className="text-lg" />} {...form.register("createdAt")} />
+				<Input label="Name" icon={<BiLockAlt className="text-lg" />} {...form.register("name")} />
+				<Input
+					label="Surname"
+					icon={<BiLockAlt className="text-lg" />}
+					{...form.register("surname")}
+				/>
+				<Input
+					label="Created at"
+					icon={<BiLockAlt className="text-lg" />}
+					{...form.register("createdAt")}
+				/>
 			</Form>
 
 			<button

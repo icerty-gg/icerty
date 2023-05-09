@@ -142,7 +142,7 @@ async function main() {
 
 	const { data: offer1 } = supabase.storage.from("offers").getPublicUrl(offer1Upload.path);
 
-	const offer1Uuid = randomUUID();
+	const offer1Uuid = "6a1de6ea-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer1Uuid },
@@ -184,7 +184,7 @@ async function main() {
 
 	const { data: offer2 } = supabase.storage.from("offers").getPublicUrl(offer2Upload.path);
 
-	const offer2Uuid = randomUUID();
+	const offer2Uuid = "6a1dea96-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer2Uuid },
@@ -222,7 +222,7 @@ async function main() {
 
 	const { data: offer3 } = supabase.storage.from("offers").getPublicUrl(offer3Upload.path);
 
-	const offer3Uuid = randomUUID();
+	const offer3Uuid = "6a1dec6c-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer3Uuid },
