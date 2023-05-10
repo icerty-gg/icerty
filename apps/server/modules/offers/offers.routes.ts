@@ -19,7 +19,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 		.withTypeProvider<TypeBoxTypeProvider>()
 		.get("/", { schema: getAllOffersSchema }, async (request, reply) => {
 			const {
-				category,
+				"category[]": category,
 				city,
 				count_from,
 				count_to,
@@ -52,12 +52,14 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 					lte: price_to,
 				},
 				isPromoted: promoted,
-				category: {
-					name: {
-						contains: category,
-						mode: "insensitive",
-					},
-				},
+				category: category
+					? {
+							name: {
+								in: category,
+								mode: "insensitive",
+							},
+					  }
+					: undefined,
 				followedOffers: followed
 					? {
 							some: {

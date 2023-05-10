@@ -2,12 +2,9 @@ import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { Suspense } from "react";
 
 import { Navbar } from "../components/navbar/navbar";
 import { Providers } from "../components/providers";
-
-import Loading from "./loading";
 
 import type { ReactNode } from "react";
 
@@ -28,9 +25,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 			<body className="min-h-screen bg-secondaryWhite">
 				<Providers>
 					<Navbar />
-					<Suspense fallback={<Loading />}>
-						<main className="mx-auto flex h-full w-full max-w-screen-2xl">{children}</main>
-					</Suspense>
+					<main className="mx-auto flex h-full w-full max-w-screen-2xl">{children}</main>
 				</Providers>
 			</body>
 		</html>

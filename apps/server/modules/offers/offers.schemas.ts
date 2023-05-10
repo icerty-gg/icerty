@@ -41,7 +41,7 @@ export const getAllOffersSchema = {
 		count_to: Type.Optional(Type.Number({ minimum: 1 })),
 		promoted: Type.Optional(Type.Boolean()),
 		followed: Type.Optional(Type.Boolean()),
-		category: Type.Optional(Type.String({ minLength: 1 })),
+		"category[]": Type.Optional(Type.Array(CategorySchema.properties.name)),
 		order_direction: StringEnum(["asc", "desc"], "asc"),
 		order_by: StringEnum(["price", "createdAt"], "createdAt"),
 	}),

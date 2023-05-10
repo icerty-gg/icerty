@@ -6,6 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { FollowButton } from "../components/common/follow-button";
 import { api } from "../utils/api";
 
+import { FilterCategoryButton } from "./filter-category-button";
 import { FindOffersInput } from "./find-offers-input";
 
 interface Props {
@@ -17,16 +18,34 @@ export const metadata = {
 };
 
 const HomePage = async ({ searchParams }: Props) => {
-	const { offers } = await api.get("/api/offers/", {
+	const offersPromise = api.get("/api/offers/", {
 		queries: {
 			name: typeof searchParams?.search === "string" ? searchParams?.search : undefined,
+			"category[]":
+				typeof searchParams?.category === "string"
+					? [searchParams?.category]
+					: searchParams?.category,
 		},
 	});
 
+	const categoriesPromise = api.get("/api/categories/");
+
+	const [{ offers }, { categories }] = await Promise.all([offersPromise, categoriesPromise]);
+
 	return (
 		<>
-			<aside className="w-96 bg-secondaryWhite p-10">
-				<h2 className="text-3xl font-bold text-black">Fiter</h2>
+			<aside className="flex w-96 flex-col bg-secondaryWhite p-10">
+				<h2 className="mb-2 text-3xl font-bold text-black">Fiter</h2>
+
+				<h3 className="mb-2 font-medium text-black">Choose a category</h3>
+				<div className="grid grid-cols-2 gap-2">
+					{categories.map((c) => (
+						<FilterCategoryButton key={c.id} categoryName={c.name}>
+							<Image src={c.img} width={50} height={50} alt={c.name} />
+							<p className="font-semibold text-black">{c.name}</p>
+						</FilterCategoryButton>
+					))}
+				</div>
 			</aside>
 			<div className="flex h-screen w-full flex-col bg-primaryWhite px-6 py-4 shadow-lg">
 				<div className="flex items-center justify-between pb-4">

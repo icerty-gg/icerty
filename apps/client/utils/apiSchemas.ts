@@ -190,9 +190,9 @@ const endpoints = makeApi([
 				schema: z.boolean().optional(),
 			},
 			{
-				name: "category",
+				name: "category[]",
 				type: "Query",
-				schema: z.string().min(1).optional(),
+				schema: z.array(z.string()).optional(),
 			},
 			{
 				name: "order_direction",
