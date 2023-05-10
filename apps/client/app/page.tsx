@@ -21,10 +21,7 @@ const HomePage = async ({ searchParams }: Props) => {
 	const offersPromise = api.get("/api/offers/", {
 		queries: {
 			name: typeof searchParams?.search === "string" ? searchParams?.search : undefined,
-			"category[]":
-				typeof searchParams?.category === "string"
-					? [searchParams?.category]
-					: searchParams?.category,
+			"category[]": searchParams?.category,
 		},
 	});
 

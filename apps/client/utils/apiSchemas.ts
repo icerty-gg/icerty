@@ -5,6 +5,12 @@ const postApisessionslogin_Body = z.object({
 	email: z.string().email(),
 	password: z.string().min(8).max(20),
 });
+const category_ = z
+	.union([
+		z.union([z.array(z.string()), z.string()]),
+		z.array(z.union([z.array(z.string()), z.string()])),
+	])
+	.optional();
 const postApioffers_Body = z.object({
 	name: z.string().min(8).max(50),
 	description: z.string().min(50).max(1500),
@@ -60,6 +66,7 @@ const putApiuserspassword_Body = z.object({
 
 export const schemas = {
 	postApisessionslogin_Body,
+	category_,
 	postApioffers_Body,
 	putApioffersId_Body,
 	postApicategories_Body,
@@ -192,7 +199,7 @@ const endpoints = makeApi([
 			{
 				name: "category[]",
 				type: "Query",
-				schema: z.array(z.string()).optional(),
+				schema: category_,
 			},
 			{
 				name: "order_direction",

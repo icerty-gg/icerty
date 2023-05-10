@@ -19,7 +19,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 		.withTypeProvider<TypeBoxTypeProvider>()
 		.get("/", { schema: getAllOffersSchema }, async (request, reply) => {
 			const {
-				"category[]": category,
+				"category[]": categories,
 				city,
 				count_from,
 				count_to,
@@ -33,6 +33,8 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 				promoted,
 				take,
 			} = request.query;
+
+			console.log(categories);
 
 			const offersWhereConditions: Prisma.OfferWhereInput = {
 				name: {
@@ -52,14 +54,12 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 					lte: price_to,
 				},
 				isPromoted: promoted,
-				category: category
-					? {
-							name: {
-								in: category,
-								mode: "insensitive",
-							},
-					  }
-					: undefined,
+				category: {
+					name: {
+						in: categories,
+						mode: "insensitive",
+					},
+				},
 				followedOffers: followed
 					? {
 							some: {
