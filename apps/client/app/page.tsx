@@ -35,7 +35,7 @@ const HomePage = async ({ searchParams }: Props) => {
 				<h2 className="mb-2 text-3xl font-bold text-black">Fiter</h2>
 
 				<h3 className="mb-2 font-medium text-black">Choose a category</h3>
-				<div className="grid grid-cols-2 gap-2">
+				<div className="grid max-h-52 grid-cols-2 gap-2 overflow-y-auto">
 					{categories.map((c) => (
 						<FilterCategoryButton key={c.id} categoryName={c.name}>
 							<Image src={c.img} width={50} height={50} alt={c.name} />

@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useTransition } from "react";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
 	children: ReactNode;
@@ -11,10 +12,11 @@ interface Props {
 export const FilterCategoryButton = ({ children, categoryName }: Props) => {
 	const router = useRouter();
 	const pathname = usePathname();
+	const searchParams = useSearchParams();
 	const [, startTransition] = useTransition();
 
 	const handleClick = () => {
-		const params = new URLSearchParams(window.location.search);
+		const params = new URLSearchParams(searchParams);
 		const categoriesInParams = params.getAll("category");
 
 		if (categoriesInParams.includes(categoryName)) {
@@ -36,7 +38,10 @@ export const FilterCategoryButton = ({ children, categoryName }: Props) => {
 	return (
 		<button
 			onClick={handleClick}
-			className="flex h-fit flex-col items-center gap-2 rounded-md border border-gray p-1"
+			className={twMerge(
+				"flex h-fit flex-col items-center gap-2 rounded-md border border-gray p-1",
+				searchParams.getAll("category").includes(categoryName) && "bg-primaryWhite",
+			)}
 		>
 			{children}
 		</button>
