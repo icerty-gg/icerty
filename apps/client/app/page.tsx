@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { FollowButton } from "../components/common/follow-button";
 import { api } from "../utils/api";
 
-import { FilterCategoryButton } from "./filter-category-button";
+import { FilterCategoryButton, FilterCountInputs, FilterPriceInputs } from "./filter";
 import { FindOffersInput } from "./find-offers-input";
 
 interface Props {
@@ -17,11 +17,27 @@ export const metadata = {
 	title: "Browse offers",
 };
 
+const POSITIVE_NUMBER_REGEX = /^(?!0)[0-9]*$/;
+
+const parsePositiveNumberSearchParam = (param: string | string[] | undefined) => {
+	if (typeof param !== "string" || !POSITIVE_NUMBER_REGEX.test(param)) {
+		return undefined;
+	} else {
+		const onlyPositiveNumber = parseInt(param);
+
+		return onlyPositiveNumber;
+	}
+};
+
 const HomePage = async ({ searchParams }: Props) => {
 	const offersPromise = api.get("/api/offers/", {
 		queries: {
 			name: typeof searchParams?.search === "string" ? searchParams?.search : undefined,
 			"category[]": searchParams?.category,
+			price_from: parsePositiveNumberSearchParam(searchParams?.price_from),
+			price_to: parsePositiveNumberSearchParam(searchParams?.price_to),
+			count_from: parsePositiveNumberSearchParam(searchParams?.count_from),
+			count_to: parsePositiveNumberSearchParam(searchParams?.count_to),
 		},
 	});
 
@@ -31,17 +47,27 @@ const HomePage = async ({ searchParams }: Props) => {
 
 	return (
 		<>
-			<aside className="flex w-96 flex-col bg-secondaryWhite p-10">
-				<h2 className="mb-2 text-3xl font-bold text-black">Fiter</h2>
+			<aside className="flex w-96 flex-col gap-2 bg-secondaryWhite p-10">
+				<h2 className="text-3xl font-bold text-black">Fiter</h2>
 
-				<h3 className="mb-2 font-medium text-black">Choose a category</h3>
-				<div className="grid max-h-52 grid-cols-2 gap-2 overflow-y-auto">
-					{categories.map((c) => (
-						<FilterCategoryButton key={c.id} categoryName={c.name}>
-							<Image src={c.img} width={50} height={50} alt={c.name} />
-							<p className="font-semibold text-black">{c.name}</p>
-						</FilterCategoryButton>
-					))}
+				<div>
+					<h3 className="mb-2 font-medium text-black">Choose a category</h3>
+					<div className="grid max-h-52 grid-cols-2 gap-2 overflow-y-auto">
+						{categories.map((c) => (
+							<FilterCategoryButton key={c.id} categoryName={c.name}>
+								<Image src={c.img} width={50} height={50} alt={c.name} />
+								<p className="font-semibold text-black">{c.name}</p>
+							</FilterCategoryButton>
+						))}
+					</div>
+				</div>
+				<div>
+					<h3 className="mb-2 font-medium text-black">Select a price range</h3>
+					<FilterPriceInputs />
+				</div>
+				<div>
+					<h3 className="mb-2 font-medium text-black">Select a product count range</h3>
+					<FilterCountInputs />
 				</div>
 			</aside>
 			<div className="flex h-screen w-full flex-col bg-primaryWhite px-6 py-4 shadow-lg">

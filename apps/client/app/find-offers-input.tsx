@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useTransition } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 
@@ -10,18 +10,19 @@ export const FindOffersInput = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 	const [isPending, startTransition] = useTransition();
+	const searchParams = useSearchParams();
 
 	const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-		const params = new URLSearchParams(window.location.search);
+		const newParams = new URLSearchParams(searchParams);
 
 		if (e.target.value) {
-			params.set("search", e.target.value);
+			newParams.set("search", e.target.value);
 		} else {
-			params.delete("search");
+			newParams.delete("search");
 		}
 
 		startTransition(() => {
-			router.replace(`${pathname}?${params.toString()}`);
+			router.replace(`${pathname}?${newParams.toString()}`);
 		});
 	};
 
@@ -31,6 +32,7 @@ export const FindOffersInput = () => {
 				type="text"
 				id="searchOfferInput"
 				placeholder="Search"
+				defaultValue={searchParams.get("search") ?? ""}
 				onChange={handleSearch}
 				className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
 			/>

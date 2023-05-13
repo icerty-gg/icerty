@@ -34,8 +34,6 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 				take,
 			} = request.query;
 
-			console.log(categories);
-
 			const offersWhereConditions: Prisma.OfferWhereInput = {
 				name: {
 					contains: name,
