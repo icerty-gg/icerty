@@ -8,6 +8,7 @@ import { api } from "../utils/api";
 
 import { FilterCategoryButton, FilterCountInputs, FilterPriceInputs } from "./filter";
 import { FindOffersInput } from "./find-offers-input";
+import { POSITIVE_NUMBER_REGEX } from "./regexp";
 
 interface Props {
 	searchParams: { [key: string]: string | string[] | undefined };
@@ -16,8 +17,6 @@ interface Props {
 export const metadata = {
 	title: "Browse offers",
 };
-
-const POSITIVE_NUMBER_REGEX = /^(?!0)[0-9]*$/;
 
 const parsePositiveNumberSearchParam = (param: string | string[] | undefined) => {
 	if (typeof param !== "string" || !POSITIVE_NUMBER_REGEX.test(param)) {

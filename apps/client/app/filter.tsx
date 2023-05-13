@@ -6,6 +6,8 @@ import { BiDollar } from "react-icons/bi";
 import { MdOutlineNumbers } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
+import { POSITIVE_NUMBER_REGEX } from "./regexp";
+
 interface Props {
 	children: ReactNode;
 	categoryName: string;
@@ -49,8 +51,6 @@ export const FilterCategoryButton = ({ children, categoryName }: Props) => {
 		</button>
 	);
 };
-
-const POSITIVE_NUMBER_REGEX = /^(?!0)[0-9]*$/;
 
 const usePositiveNumberInputChange = (paramName: string) => {
 	const router = useRouter();
