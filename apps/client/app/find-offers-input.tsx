@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useTransition } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 
+import { Input } from "../components/common/input";
 import { LoadingSpinner } from "../components/common/loading-spinner";
 
 export const FindOffersInput = () => {
@@ -28,17 +29,17 @@ export const FindOffersInput = () => {
 
 	return (
 		<div className="relative flex items-center">
-			<input
-				type="text"
-				id="searchOfferInput"
+			<Input
+				type="search"
 				placeholder="Search"
+				withFormCtx={false}
+				showLabel={false}
 				defaultValue={searchParams.get("search") ?? ""}
 				onChange={handleSearch}
-				className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
+				name="Search offers"
+				label="Search offers"
+				icon={<BiSearchAlt2 className="text-2xl text-gray" />}
 			/>
-			<label className="absolute left-4" htmlFor="searchOfferInput">
-				<BiSearchAlt2 className="text-2xl text-gray" />
-			</label>
 
 			{isPending && <LoadingSpinner className="absolute right-8 h-5 w-5" />}
 		</div>

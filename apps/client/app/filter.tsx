@@ -6,6 +6,8 @@ import { BiDollar } from "react-icons/bi";
 import { MdOutlineNumbers } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
+import { Input } from "../components/common/input";
+
 import { POSITIVE_NUMBER_REGEX } from "./regexp";
 
 interface Props {
@@ -101,36 +103,30 @@ export const FilterPriceInputs = () => {
 
 	return (
 		<div className="grid grid-cols-2 gap-4">
-			<div className="relative flex items-center">
-				<input
-					type="text"
-					id="priceFrom"
-					inputMode="numeric"
-					pattern="(?!0$)[0-9]*"
-					placeholder="From"
-					defaultValue={priceFromDefaultValue}
-					onChange={handlePriceFromChange}
-					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
-				/>
-				<label className="absolute left-4" htmlFor="priceFrom">
-					<BiDollar className="text-2xl text-gray" />
-				</label>
-			</div>
-			<div className="relative flex items-center">
-				<input
-					type="text"
-					id="priceTo"
-					inputMode="numeric"
-					pattern="(?!0$)[0-9]*"
-					placeholder="To"
-					defaultValue={priceToDefaultValue}
-					onChange={handlePriceToChange}
-					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
-				/>
-				<label className="absolute left-4" htmlFor="priceTo">
-					<BiDollar className="text-2xl text-gray" />
-				</label>
-			</div>
+			<Input
+				name="Price from"
+				showLabel={false}
+				withFormCtx={false}
+				label="Price from"
+				icon={<BiDollar className="text-2xl text-gray" />}
+				inputMode="numeric"
+				pattern="(?!0$)[0-9]*"
+				placeholder="From"
+				defaultValue={priceFromDefaultValue}
+				onChange={handlePriceFromChange}
+			/>
+			<Input
+				name="Price to"
+				showLabel={false}
+				withFormCtx={false}
+				label="Price to"
+				icon={<BiDollar className="text-2xl text-gray" />}
+				inputMode="numeric"
+				pattern="(?!0$)[0-9]*"
+				placeholder="To"
+				defaultValue={priceToDefaultValue}
+				onChange={handlePriceToChange}
+			/>
 		</div>
 	);
 };
@@ -143,36 +139,30 @@ export const FilterCountInputs = () => {
 
 	return (
 		<div className="grid grid-cols-2 gap-4">
-			<div className="relative flex items-center">
-				<input
-					type="text"
-					id="countFrom"
-					inputMode="numeric"
-					pattern="(?!0$)[0-9]*"
-					placeholder="From"
-					defaultValue={countFromDefaultValue}
-					onChange={handleCountFromChange}
-					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
-				/>
-				<label className="absolute left-4" htmlFor="countFrom">
-					<MdOutlineNumbers className="text-2xl text-gray" />
-				</label>
-			</div>
-			<div className="relative flex items-center">
-				<input
-					type="text"
-					id="countTo"
-					inputMode="numeric"
-					pattern="(?!0$)[0-9]*"
-					placeholder="To"
-					defaultValue={countToDefaultValue}
-					onChange={handleCountToChange}
-					className="w-full rounded-md border border-gray bg-primaryWhite p-4 pl-12 text-black outline-none focus:border-darkGray"
-				/>
-				<label className="absolute left-4" htmlFor="countTo">
-					<MdOutlineNumbers className="text-2xl text-gray" />
-				</label>
-			</div>
+			<Input
+				name="Count from"
+				showLabel={false}
+				withFormCtx={false}
+				label="Count from"
+				icon={<MdOutlineNumbers className="text-2xl text-gray" />}
+				inputMode="numeric"
+				pattern="(?!0$)[0-9]*"
+				placeholder="From"
+				defaultValue={countFromDefaultValue}
+				onChange={handleCountFromChange}
+			/>
+			<Input
+				name="Count to"
+				showLabel={false}
+				withFormCtx={false}
+				label="Count to"
+				icon={<MdOutlineNumbers className="text-2xl text-gray" />}
+				inputMode="numeric"
+				pattern="(?!0$)[0-9]*"
+				placeholder="To"
+				defaultValue={countToDefaultValue}
+				onChange={handleCountToChange}
+			/>
 		</div>
 	);
 };
