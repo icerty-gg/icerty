@@ -7,12 +7,34 @@ import { twMerge } from "tailwind-merge";
 
 import { useLogout, useUser } from "../../hooks/user-hooks";
 
-export const ProfileIcon = () => {
+export const NavbarLinks = () => {
 	const logout = useLogout();
 	const userQuery = useUser();
 
 	return (
 		<>
+			<div className="flex items-center gap-8">
+				<h1>
+					<Link href="/" className="text-3xl font-bold text-black">
+						Icerty
+					</Link>
+				</h1>
+
+				<Link
+					href="/"
+					className="rounded-md border border-gray bg-tertiaryWhite px-4 py-2 text-base text-black outline-none focus:border-darkGray"
+				>
+					Offers
+				</Link>
+				{userQuery.data && (
+					<Link
+						href="/new-offer"
+						className="rounded-md border border-gray bg-tertiaryWhite px-4 py-2 text-base text-black outline-none focus:border-darkGray"
+					>
+						New offer
+					</Link>
+				)}
+			</div>
 			{userQuery.data ? (
 				<div className="group relative">
 					<Link href="/settings">

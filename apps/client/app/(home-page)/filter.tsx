@@ -6,7 +6,7 @@ import { BiDollar } from "react-icons/bi";
 import { MdOutlineNumbers } from "react-icons/md";
 import { twMerge } from "tailwind-merge";
 
-import { Input } from "../components/common/input";
+import { Input } from "../../components/common/input";
 
 import { POSITIVE_NUMBER_REGEX } from "./regexp";
 
@@ -45,7 +45,7 @@ export const FilterCategoryButton = ({ children, categoryName }: Props) => {
 		<button
 			onClick={handleClick}
 			className={twMerge(
-				"flex h-fit flex-col items-center gap-2 rounded-md border border-gray p-1",
+				"flex h-fit flex-col items-center gap-2 rounded-md border border-gray p-1 outline-none focus:border-darkGray",
 				searchParams.getAll("category").includes(categoryName) && "bg-primaryWhite",
 			)}
 		>
@@ -110,7 +110,7 @@ export const FilterPriceInputs = () => {
 				label="Price from"
 				icon={<BiDollar className="text-2xl text-gray" />}
 				inputMode="numeric"
-				pattern="(?!0$)[0-9]*"
+				pattern={POSITIVE_NUMBER_REGEX.source}
 				placeholder="From"
 				defaultValue={priceFromDefaultValue}
 				onChange={handlePriceFromChange}
@@ -122,7 +122,7 @@ export const FilterPriceInputs = () => {
 				label="Price to"
 				icon={<BiDollar className="text-2xl text-gray" />}
 				inputMode="numeric"
-				pattern="(?!0$)[0-9]*"
+				pattern={POSITIVE_NUMBER_REGEX.source}
 				placeholder="To"
 				defaultValue={priceToDefaultValue}
 				onChange={handlePriceToChange}
@@ -146,7 +146,7 @@ export const FilterCountInputs = () => {
 				label="Count from"
 				icon={<MdOutlineNumbers className="text-2xl text-gray" />}
 				inputMode="numeric"
-				pattern="(?!0$)[0-9]*"
+				pattern={POSITIVE_NUMBER_REGEX.source}
 				placeholder="From"
 				defaultValue={countFromDefaultValue}
 				onChange={handleCountFromChange}
@@ -158,7 +158,7 @@ export const FilterCountInputs = () => {
 				label="Count to"
 				icon={<MdOutlineNumbers className="text-2xl text-gray" />}
 				inputMode="numeric"
-				pattern="(?!0$)[0-9]*"
+				pattern={POSITIVE_NUMBER_REGEX.source}
 				placeholder="To"
 				defaultValue={countToDefaultValue}
 				onChange={handleCountToChange}

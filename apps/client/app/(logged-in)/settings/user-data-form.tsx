@@ -15,7 +15,7 @@ export const UserDataForm = () => {
 			<div className="flex flex-col gap-6">
 				<Input
 					label="Name"
-					icon={<BiLockAlt className="text-lg" />}
+					icon={<BiLockAlt className="text-lg text-gray" />}
 					name="Name"
 					withFormCtx={false}
 					disabled
@@ -23,7 +23,7 @@ export const UserDataForm = () => {
 				/>
 				<Input
 					label="Surname"
-					icon={<BiLockAlt className="text-lg" />}
+					icon={<BiLockAlt className="text-lg text-gray" />}
 					name="Surname"
 					withFormCtx={false}
 					disabled
@@ -31,7 +31,7 @@ export const UserDataForm = () => {
 				/>
 				<Input
 					label="Created at"
-					icon={<BiLockAlt className="text-lg" />}
+					icon={<BiLockAlt className="text-lg text-gray" />}
 					name="Created at"
 					withFormCtx={false}
 					disabled

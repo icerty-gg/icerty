@@ -3,8 +3,8 @@ import Link from "next/link";
 import { CiHashtag, CiLocationOn } from "react-icons/ci";
 import { twMerge } from "tailwind-merge";
 
-import { FollowButton } from "../components/common/follow-button";
-import { api } from "../utils/api";
+import { FollowButton } from "../../components/common/follow-button";
+import { api } from "../../utils/api";
 
 import { FilterCategoryButton, FilterCountInputs, FilterPriceInputs } from "./filter";
 import { FindOffersInput } from "./find-offers-input";

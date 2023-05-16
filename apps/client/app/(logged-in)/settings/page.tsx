@@ -11,11 +11,11 @@ export const metadata = {
 const SettingsPage = () => {
 	return (
 		<div className="mx-auto flex w-full max-w-[45rem] flex-col gap-6 rounded-md bg-primaryWhite p-4">
-			<Heading className="pb-6">Change password</Heading>
+			<Heading>Change password</Heading>
 			<PasswordForm />
-			<Heading className="pb-6">Change email</Heading>
+			<Heading>Change email</Heading>
 			<EmailForm />
-			<Heading className="pb-6">Other settings</Heading>
+			<Heading>Other settings</Heading>
 			<UserDataForm />
 		</div>
 	);

@@ -16,10 +16,7 @@ import { notify } from "../../../utils/notifications";
 
 const RegisterSchema = SCHEMAS.postApiusersregister_Body
 	.extend({
-		repeatPassword: z
-			.string()
-			.min(8, { message: "Password must be at least 8 characters long" })
-			.max(20, { message: "Password must be at most 20 characters long" }),
+		repeatPassword: z.string().min(8).max(20),
 		acceptPolicy: z.literal(true, {
 			invalid_type_error: "You must accept Terms and Conditions",
 		}),
@@ -67,14 +64,14 @@ export const RegisterForm = () => {
 			<Input
 				label="First name"
 				className="max-md:col-span-2"
-				icon={<BiUser className="text-lg" />}
+				icon={<BiUser className="text-lg text-gray" />}
 				placeholder="First name"
 				{...form.register("name")}
 			/>
 			<Input
 				label="Last name"
 				className="max-md:col-span-2"
-				icon={<BiUser className="text-lg" />}
+				icon={<BiUser className="text-lg text-gray" />}
 				type="text"
 				placeholder="Last name"
 				{...form.register("surname")}
@@ -82,7 +79,7 @@ export const RegisterForm = () => {
 			<Input
 				label="Email"
 				className="col-span-2"
-				icon={<BiMailSend className="text-lg" />}
+				icon={<BiMailSend className="text-lg text-gray" />}
 				type="email"
 				placeholder="Email"
 				{...form.register("email")}
@@ -90,7 +87,7 @@ export const RegisterForm = () => {
 			<Input
 				label="Password"
 				className="col-span-2"
-				icon={<BiLockAlt className="text-lg" />}
+				icon={<BiLockAlt className="text-lg text-gray" />}
 				type="password"
 				placeholder="Password"
 				{...form.register("password")}
@@ -98,7 +95,7 @@ export const RegisterForm = () => {
 			<Input
 				label="Repeat password"
 				className="col-span-2"
-				icon={<BiLockAlt className="text-lg" />}
+				icon={<BiLockAlt className="text-lg text-gray" />}
 				type="password"
 				placeholder="Repeat password"
 				{...form.register("repeatPassword")}

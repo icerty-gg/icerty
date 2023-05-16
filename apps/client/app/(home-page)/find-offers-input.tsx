@@ -4,8 +4,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useTransition } from "react";
 import { BiSearchAlt2 } from "react-icons/bi";
 
-import { Input } from "../components/common/input";
-import { LoadingSpinner } from "../components/common/loading-spinner";
+import { Input } from "../../components/common/input";
+import { LoadingSpinner } from "../../components/common/loading-spinner";
 
 export const FindOffersInput = () => {
 	const router = useRouter();

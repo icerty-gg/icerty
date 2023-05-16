@@ -14,7 +14,6 @@ import { TypeOf, ZodSchema } from "zod";
 interface Props<T extends FieldValues> extends Omit<ComponentProps<"form">, "onSubmit"> {
 	form: UseFormReturn<T>;
 	onSubmit?: ReturnType<UseFormHandleSubmit<T>>;
-	manuallyDisabled?: boolean;
 }
 
 export const Form = <T extends FieldValues>({
@@ -22,12 +21,11 @@ export const Form = <T extends FieldValues>({
 	onSubmit,
 	children,
 	className,
-	manuallyDisabled,
 	...props
 }: Props<T>) => (
 	<FormProvider {...form}>
 		<form onSubmit={onSubmit} {...props}>
-			<fieldset disabled={manuallyDisabled ?? form.formState.isSubmitting} className={className}>
+			<fieldset disabled={form.formState.isSubmitting} className={className}>
 				{children}
 			</fieldset>
 		</form>
