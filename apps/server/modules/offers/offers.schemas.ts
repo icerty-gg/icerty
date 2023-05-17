@@ -31,7 +31,7 @@ export const getAllOffersSchema = {
 	tags: ["offers"],
 	summary: "Get all offers",
 	querystring: Type.Object({
-		take: Type.Number({ minimum: 1, default: 20, maximum: 50 }),
+		take: Type.Number({ minimum: 1, default: 10, maximum: 50 }),
 		city: Type.Optional(Type.String({ minLength: 1 })),
 		name: Type.Optional(Type.String({ minLength: 1 })),
 		page: Type.Number({ minimum: 1, default: 1 }),
