@@ -8,7 +8,7 @@ import { Heading } from "../../components/common/heading";
 import { api } from "../../utils/api";
 
 import { FilterCategoryButton, FilterCountInputs, FilterPriceInputs } from "./filter";
-import { FindOffersInput } from "./find-offers-input";
+import { ListTopBar } from "./list-top-bar";
 import { Pagination } from "./pagination";
 import { POSITIVE_NUMBER_REGEX } from "./regexp";
 
@@ -33,6 +33,15 @@ const parsePositiveNumberSearchParam = (param: string | string[] | undefined) =>
 const HomePage = async ({ searchParams }: Props) => {
 	const currentPage = parsePositiveNumberSearchParam(searchParams?.page) ?? 1;
 	const take = 10;
+	const order_by =
+		searchParams?.order_by === "price" || searchParams?.order_by === "createdAt"
+			? searchParams?.order_by
+			: undefined;
+
+	const order_direction =
+		searchParams?.order_direction === "asc" || searchParams?.order_direction === "desc"
+			? searchParams?.order_direction
+			: undefined;
 
 	const offersPromise = api.get("/api/offers/", {
 		queries: {
@@ -44,6 +53,8 @@ const HomePage = async ({ searchParams }: Props) => {
 			count_to: parsePositiveNumberSearchParam(searchParams?.count_to),
 			page: currentPage,
 			take,
+			order_by,
+			order_direction,
 		},
 	});
 
@@ -79,11 +90,13 @@ const HomePage = async ({ searchParams }: Props) => {
 					<FilterCountInputs />
 				</div>
 			</aside>
-			<div className="flex w-full flex-col bg-primaryWhite px-6 py-4 shadow-lg">
+			<div className="flex h-fit w-full flex-col bg-primaryWhite px-6 py-4 shadow-lg">
 				<div className="flex items-center justify-between pb-4">
 					<h2 className="text-4xl font-bold text-black">Offers</h2>
 
-					<FindOffersInput />
+					<div className="grid w-1/2 grid-cols-[1fr_1fr_2fr] items-center gap-2">
+						<ListTopBar />
+					</div>
 				</div>
 
 				{offers.length === 0 ? (
@@ -91,7 +104,7 @@ const HomePage = async ({ searchParams }: Props) => {
 						<Heading>No offers found!</Heading>
 					</div>
 				) : (
-					<ul className="flex w-full flex-grow flex-col gap-4 overflow-auto">
+					<ul className="flex w-full flex-col gap-4 overflow-auto">
 						{offers.map((o) => (
 							<li
 								key={o.id}

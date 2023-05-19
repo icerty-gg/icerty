@@ -25,7 +25,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
 			<body className="min-h-screen bg-secondaryWhite">
 				<Providers>
 					<Navbar />
-					<main className="mx-auto flex h-full w-full max-w-screen-2xl">{children}</main>
+					<main className="mx-auto flex min-h-screen w-full max-w-screen-2xl">{children}</main>
 				</Providers>
 			</body>
 		</html>

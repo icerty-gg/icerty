@@ -10,7 +10,7 @@
 - [x] Refactor frontend login/signup pages to use useZodForm
 - [x] Home page server side offers search
 - [x] Settings page (change password, delete account, etc)
-- [ ] Home page offers filtering, sorting and pagination
+- [x] Server side offers filtering, sorting and pagination
 - [ ] Supabase storage remove files after offer / category / user deletion
 
 ## Technologies
