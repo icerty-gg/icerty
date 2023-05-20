@@ -90,6 +90,14 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 					throw reply.notFound("Category not found!");
 				}
 
+				const supabaseImgPath = category.img.split("/categories/")[1];
+
+				if (!supabaseImgPath) {
+					throw reply.internalServerError("Failed to parse supabase image path!");
+				}
+
+				await fastify.supabase.storage.from("categories").remove([supabaseImgPath]);
+
 				await fastify.prisma.category.delete({
 					where: {
 						id,

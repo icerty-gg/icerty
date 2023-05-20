@@ -21,6 +21,9 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_API_SECRET) {
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_API_SECRET);
 
 async function main() {
+	await supabase.storage.emptyBucket("categories");
+	await supabase.storage.emptyBucket("offers");
+
 	await prisma.user.upsert({
 		where: { email: "admin@example.com" },
 		update: {},
