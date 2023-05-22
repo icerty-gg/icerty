@@ -8,7 +8,7 @@ import { twMerge } from "tailwind-merge";
 
 import { Input } from "../../components/common/input";
 
-import { POSITIVE_NUMBER_REGEX } from "./regexp";
+import { POSITIVE_NUMBER_REGEX } from "./home-utils";
 
 interface Props {
 	children: ReactNode;

@@ -8,9 +8,9 @@ import { Heading } from "../../components/common/heading";
 import { api } from "../../utils/api";
 
 import { FilterCategoryButton, FilterCountInputs, FilterPriceInputs } from "./filter";
+import { parsePositiveNumberSearchParam } from "./home-utils";
 import { ListTopBar } from "./list-top-bar";
 import { Pagination } from "./pagination";
-import { POSITIVE_NUMBER_REGEX } from "./regexp";
 
 interface Props {
 	searchParams: { [key: string]: string | string[] | undefined };
@@ -18,16 +18,6 @@ interface Props {
 
 export const metadata = {
 	title: "Browse offers",
-};
-
-const parsePositiveNumberSearchParam = (param: string | string[] | undefined) => {
-	if (typeof param !== "string" || !POSITIVE_NUMBER_REGEX.test(param)) {
-		return undefined;
-	} else {
-		const onlyPositiveNumber = parseInt(param);
-
-		return onlyPositiveNumber;
-	}
 };
 
 const HomePage = async ({ searchParams }: Props) => {

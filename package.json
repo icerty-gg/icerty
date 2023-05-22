@@ -22,5 +22,10 @@
 		"prettier-plugin-tailwindcss": "^0.2.7",
 		"turbo": "^1.9.2",
 		"typescript": "^5.0.4"
+	},
+	"dependencies": {
+		"@vitest/coverage-c8": "^0.31.1",
+		"@vitest/ui": "^0.31.1",
+		"vitest": "^0.31.1"
 	}
 }

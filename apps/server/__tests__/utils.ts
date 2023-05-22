@@ -1,11 +1,31 @@
+import { randomUUID } from "crypto";
+import { readFileSync } from "fs";
+import path from "path";
+
 import supertest from "supertest";
 
 import fastify from "../app";
 import { hashPassword } from "../utils/password";
 
+const football_img = readFileSync(
+	path.resolve(__dirname, "../prisma/seed_images/categories_football.png"),
+);
+
+const { data, error } = await fastify.supabase.storage
+	.from("categories")
+	.upload(randomUUID(), football_img, {
+		contentType: "image/png",
+	});
+
+if (error) {
+	throw new Error(error.message);
+}
+
+const { data: url } = fastify.supabase.storage.from("categories").getPublicUrl(data.path);
+
 export const DEMO_CATEGORY = {
 	name: "Football",
-	img: "Football.png",
+	img: url.publicUrl,
 };
 
 export const createDemoCategory = async (name = DEMO_CATEGORY.name) => {

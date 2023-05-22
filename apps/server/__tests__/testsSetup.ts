@@ -10,15 +10,23 @@ const clearDatabase = async () => {
 	await fastify.prisma.user.deleteMany();
 };
 
+const clearSupabase = async () => {
+	await fastify.supabase.storage.emptyBucket("categories");
+	await fastify.supabase.storage.emptyBucket("offers");
+};
+
 beforeAll(async () => {
 	await fastify.ready();
 	await clearDatabase();
+	await clearSupabase();
 });
 
 afterAll(async () => {
 	await fastify.close();
+	await clearSupabase();
 });
 
 afterEach(async () => {
 	await clearDatabase();
+	await clearSupabase();
 });

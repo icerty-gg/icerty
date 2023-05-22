@@ -44,15 +44,12 @@
 		"@types/ms": "^0.7.31",
 		"@types/node": "^18.7.14",
 		"@types/supertest": "^2.0.12",
-		"@vitest/coverage-c8": "^0.30.1",
-		"@vitest/ui": "^0.30.1",
 		"dotenv-cli": "^7.2.1",
 		"eslint-config-custom": "workspace:*",
 		"nodemon": "^2.0.22",
 		"prisma": "^4.12.0",
 		"supertest": "^6.3.3",
 		"ts-node": "^10.9.1",
-		"tsconfig": "workspace:*",
-		"vitest": "^0.30.1"
+		"tsconfig": "workspace:*"
 	}
 }

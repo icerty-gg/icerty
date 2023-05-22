@@ -8,7 +8,10 @@
 		"start": "next start",
 		"lint": "next lint --dir .",
 		"lint:fix": "next lint --dir . --fix",
-		"generateApiSchema": "openapi-zod-client http://localhost:3001/docs/json --output utils/apiSchemas.ts"
+		"generateApiSchema": "openapi-zod-client http://localhost:3001/docs/json --output utils/apiSchemas.ts",
+		"test": "vitest run --coverage",
+		"test:ui": "vitest --ui",
+		"test:run": "vitest run"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.0.1",
