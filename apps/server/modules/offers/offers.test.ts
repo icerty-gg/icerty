@@ -72,7 +72,7 @@ describe("Tests offers routes", () => {
 					expect(body.user.createdAt).toEqual(user.createdAt.toISOString());
 					expect(body.user.img).toEqual(user.img);
 					expect(body.user.surname).toEqual(user.surname);
-					expect(body.images).toEqual([]);
+					expect(body.images.length).toEqual(1);
 				});
 		});
 	});
@@ -220,10 +220,16 @@ describe("Tests offers routes", () => {
 				password: DEMO_ADMIN.password,
 			});
 
+			expect(await fastify.prisma.offer.count()).toEqual(1);
+			expect(await fastify.prisma.offerImage.count()).toEqual(1);
+
 			await supertest(fastify.server)
 				.delete(`/api/offers/${offer.id}`)
 				.set("Cookie", cookie)
 				.expect(204);
+
+			expect(await fastify.prisma.offer.count()).toEqual(0);
+			expect(await fastify.prisma.offerImage.count()).toEqual(0);
 		});
 
 		it("Deletes own offer", async () => {
@@ -233,10 +239,16 @@ describe("Tests offers routes", () => {
 				password: DEMO_USER.password,
 			});
 
+			expect(await fastify.prisma.offer.count()).toEqual(1);
+			expect(await fastify.prisma.offerImage.count()).toEqual(1);
+
 			await supertest(fastify.server)
 				.delete(`/api/offers/${offer.id}`)
 				.set("Cookie", cookie)
 				.expect(204);
+
+			expect(await fastify.prisma.offer.count()).toEqual(0);
+			expect(await fastify.prisma.offerImage.count()).toEqual(0);
 		});
 	});
 

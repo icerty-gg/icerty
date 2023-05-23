@@ -186,7 +186,7 @@ describe("Tests categories routes", () => {
 			await supertest(fastify.server)
 				.delete(`/api/categories/${category.id}`)
 				.set("Cookie", cookie)
-				.then((r) => console.log(r.body));
+				.expect(204);
 
 			expect(await fastify.prisma.category.count()).toEqual(0);
 		});

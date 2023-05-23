@@ -212,10 +212,12 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 					);
 				}
 
+				const offerId = randomUUID();
+
 				const promises = images.map(async (file) => {
 					const { data, error } = await fastify.supabase.storage
 						.from("offers")
-						.upload(randomUUID(), file.data, {
+						.upload(`${offerId}/${randomUUID()}`, file.data, {
 							contentType: file.mimetype,
 						});
 
@@ -232,6 +234,7 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 
 				await fastify.prisma.offer.create({
 					data: {
+						id: offerId,
 						count,
 						name,
 						price,
@@ -263,6 +266,9 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 
 				const offer = await fastify.prisma.offer.findFirst({
 					where: { id },
+					include: {
+						offerImage: true,
+					},
 				});
 
 				if (!offer) {
@@ -271,6 +277,20 @@ const offersPlugin: FastifyPluginAsync = async (fastify) => {
 
 				if (user.role === "user" && offer.userId !== user.id) {
 					throw reply.forbidden();
+				}
+
+				const supabaseImagesPath = offer.offerImage.map((i) => i.img.split("/offers/")[1]);
+
+				if (!supabaseImagesPath.length || supabaseImagesPath.some((path) => path === undefined)) {
+					throw reply.internalServerError("Failted to retrieve offer images paths from supabase!");
+				}
+
+				const { error } = await fastify.supabase.storage
+					.from("offers")
+					.remove(supabaseImagesPath as string[]);
+
+				if (error) {
+					throw reply.internalServerError(error.message);
 				}
 
 				await fastify.prisma.offer.delete({

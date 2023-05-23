@@ -11,7 +11,8 @@
 - [x] Home page server side offers search
 - [x] Settings page (change password, delete account, etc)
 - [x] Server side offers filtering, sorting and pagination
-- [ ] Supabase storage remove files after offer / category / user deletion
+- [x] Supabase storage remove files after offer / category deletion
+- [ ] Frontend offer creation page
 
 ## Technologies
 

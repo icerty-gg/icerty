@@ -131,11 +131,17 @@ async function main() {
 		},
 	});
 
+	const offer1Uuid = randomUUID();
+
 	const { data: offer1Upload, error: offer1Error } = await supabase.storage
 		.from("offers")
-		.upload(randomUUID(), readFileSync(path.resolve(__dirname, "./seed_images/offers_bike.jpg")), {
-			contentType: "image/jpeg",
-		});
+		.upload(
+			`${offer1Uuid}/${randomUUID()}`,
+			readFileSync(path.resolve(__dirname, "./seed_images/offers_bike.jpg")),
+			{
+				contentType: "image/jpeg",
+			},
+		);
 
 	if (offer1Error) {
 		throw new Error(
@@ -144,8 +150,6 @@ async function main() {
 	}
 
 	const { data: offer1 } = supabase.storage.from("offers").getPublicUrl(offer1Upload.path);
-
-	const offer1Uuid = "6a1de6ea-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer1Uuid },
@@ -169,10 +173,12 @@ async function main() {
 		},
 	});
 
+	const offer2Uuid = randomUUID();
+
 	const { data: offer2Upload, error: offer2Error } = await supabase.storage
 		.from("offers")
 		.upload(
-			randomUUID(),
+			`${offer2Uuid}/${randomUUID()}`,
 			readFileSync(path.resolve(__dirname, "./seed_images/offers_football_shoes.jpg")),
 			{
 				contentType: "image/jpeg",
@@ -186,8 +192,6 @@ async function main() {
 	}
 
 	const { data: offer2 } = supabase.storage.from("offers").getPublicUrl(offer2Upload.path);
-
-	const offer2Uuid = "6a1dea96-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer2Uuid },
@@ -211,11 +215,17 @@ async function main() {
 		},
 	});
 
+	const offer3Uuid = randomUUID();
+
 	const { data: offer3Upload, error: offer3Error } = await supabase.storage
 		.from("offers")
-		.upload(randomUUID(), readFileSync(path.resolve(__dirname, "./seed_images/offers_desk.jpg")), {
-			contentType: "image/jpeg",
-		});
+		.upload(
+			`${offer3Uuid}/${randomUUID()}`,
+			readFileSync(path.resolve(__dirname, "./seed_images/offers_desk.jpg")),
+			{
+				contentType: "image/jpeg",
+			},
+		);
 
 	if (offer3Error) {
 		throw new Error(
@@ -224,8 +234,6 @@ async function main() {
 	}
 
 	const { data: offer3 } = supabase.storage.from("offers").getPublicUrl(offer3Upload.path);
-
-	const offer3Uuid = "6a1dec6c-ece8-11ed-a05b-0242ac120003";
 
 	await prisma.offer.upsert({
 		where: { id: offer3Uuid },

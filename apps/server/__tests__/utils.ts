@@ -7,13 +7,13 @@ import supertest from "supertest";
 import fastify from "../app";
 import { hashPassword } from "../utils/password";
 
-const football_img = readFileSync(
+const footballCategoryImage = readFileSync(
 	path.resolve(__dirname, "../prisma/seed_images/categories_football.png"),
 );
 
 const { data, error } = await fastify.supabase.storage
 	.from("categories")
-	.upload(randomUUID(), football_img, {
+	.upload(randomUUID(), footballCategoryImage, {
 		contentType: "image/png",
 	});
 
@@ -97,6 +97,24 @@ export const createDemoOffer = async () => {
 	const category = await createDemoCategory();
 	const user = await createDemoUser();
 
+	const offerId = randomUUID();
+
+	const footballOfferImage = readFileSync(
+		path.resolve(__dirname, "../prisma/seed_images/offers_football_shoes.jpg"),
+	);
+
+	const { data, error } = await fastify.supabase.storage
+		.from("offers")
+		.upload(`${offerId}/${randomUUID()}`, footballOfferImage, {
+			contentType: "image/jpeg",
+		});
+
+	if (error) {
+		throw new Error(error.message);
+	}
+
+	const { data: url } = fastify.supabase.storage.from("offers").getPublicUrl(data.path);
+
 	const offer = await fastify.prisma.offer.create({
 		data: {
 			name: "Football shoes",
@@ -108,6 +126,11 @@ export const createDemoOffer = async () => {
 			city: "Warsaw",
 			categoryId: category.id,
 			userId: user.id,
+			offerImage: {
+				createMany: {
+					data: [{ img: url.publicUrl }],
+				},
+			},
 		},
 	});
 

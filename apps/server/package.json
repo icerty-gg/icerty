@@ -10,7 +10,7 @@
 		"lint:fix": "eslint . --fix --quiet",
 		"docker:up": "docker compose up --wait",
 		"docker:down": "docker compose down",
-		"test": "pnpm docker:up && dotenv -e .env.test -- prisma migrate deploy && vitest run --coverage && pnpm docker:down",
+		"test": "pnpm docker:up && npx wait-on tcp:localhost:5433 && dotenv -e .env.test -- prisma migrate deploy && vitest run --coverage && pnpm docker:down",
 		"test:ui": "vitest --ui",
 		"test:run": "vitest run"
 	},
@@ -50,6 +50,7 @@
 		"prisma": "^4.12.0",
 		"supertest": "^6.3.3",
 		"ts-node": "^10.9.1",
-		"tsconfig": "workspace:*"
+		"tsconfig": "workspace:*",
+		"wait-on": "^7.0.1"
 	}
 }

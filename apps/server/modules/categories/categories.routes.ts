@@ -96,7 +96,13 @@ const categoriesPlugin: FastifyPluginAsync = async (fastify) => {
 					throw reply.internalServerError("Failed to parse supabase image path!");
 				}
 
-				await fastify.supabase.storage.from("categories").remove([supabaseImgPath]);
+				const { error } = await fastify.supabase.storage
+					.from("categories")
+					.remove([supabaseImgPath]);
+
+				if (error) {
+					throw reply.internalServerError(error.message);
+				}
 
 				await fastify.prisma.category.delete({
 					where: {
